@@ -1,0 +1,4 @@
+(executable
+ (name compiler)
+ (preprocess (pps ppx_deriving.show))
+ (libraries yojson ppx_deriving))
