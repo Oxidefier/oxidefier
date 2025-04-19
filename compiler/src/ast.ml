@@ -15,19 +15,17 @@ type expression =
   [@@deriving show]
 
 type typed_identifier = identifier * type_name option [@@deriving show]
-type typed_identifier_list = typed_identifier list [@@deriving show]
-type identifier_list = identifier list [@@deriving show]
 
 type statement =
   | Block of statement list
   | FunctionDefinition of {
       name: identifier;
-      params: typed_identifier_list option;
-      returns: typed_identifier_list option;
+      params: typed_identifier list option;
+      returns: typed_identifier list option;
       body: statement list;
     }
-  | VariableDeclaration of typed_identifier_list * expression option
-  | Assignment of identifier_list * expression
+  | VariableDeclaration of typed_identifier list * expression option
+  | Assignment of identifier list * expression
   | If of expression * statement list
   | Expression of expression
   | Switch of expression * (literal * statement list) list * (statement list option)
