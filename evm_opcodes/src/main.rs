@@ -1,8 +1,10 @@
-use alloy_primitives::U256;
+use alloy_primitives::{FixedBytes, U256};
 use core::cmp::Ordering;
 
 mod i256;
 mod macros;
+
+// Pure opcodes
 
 fn add(x: U256, y: U256) -> U256 {
     x.wrapping_add(y)
@@ -146,6 +148,67 @@ fn signextend(ext: U256, x: U256) -> U256 {
     } else {
         x
     }
+}
+
+// Memory opcodes
+#[derive(Debug)]
+struct Memory {
+    inner: Vec<u8>,
+}
+
+impl Memory {
+    fn new() -> Self {
+        Self { inner: Vec::new() }
+    }
+
+    fn get_byte(&self, index: usize) -> u8
+    {
+        // let index: usize = U256::try_into(index).unwrap();
+        self.inner.get(index).cloned().unwrap_or_default()
+    }
+
+    fn set_byte(&mut self, index: usize, value: u8) {
+        // let index: usize = U256::try_into(index).unwrap();
+        if index >= self.inner.len() {
+            self.inner.resize(index + 1, 0);
+        }
+        self.inner[index] = value;
+    }
+
+    fn load(&self, address: U256, length: U256) -> Vec<u8> {
+        let address: usize = U256::try_into(address).unwrap();
+        let length: usize = U256::try_into(length).unwrap();
+        let mut result = Vec::new();
+
+        for i in 0..length {
+            result.push(self.get_byte(address + i));
+        }
+
+        result
+    }
+
+    fn store(&mut self, address: U256, value: Vec<u8>) {
+        let address: usize = U256::try_into(address).unwrap();
+        for (i, byte) in value.iter().enumerate() {
+            self.set_byte(address + i, *byte);
+        }
+    }
+}
+
+fn mload(memory: &Memory, address: U256) -> U256 {
+    let bytes: Vec<u8> = memory.load(address, U256::from(32));
+    let bytes: [u8; 32] = bytes.try_into().unwrap();
+    let bytes: FixedBytes<32> = bytes.into();
+    U256::try_from(bytes).unwrap()
+}
+
+fn mstore(memory: &mut Memory, address: U256, value: U256) {
+    let bytes: [u8; 32] = value.to_be_bytes::<32>();
+    memory.store(address, bytes.to_vec());
+}
+
+fn mstore8(memory: &mut Memory, address: U256, value: U256) {
+    memory.store(address, vec![value.byte(0)]);
 }
 
 fn main() {
