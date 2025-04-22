@@ -1,4 +1,4 @@
-let test_ast = 
+let _test_ast = 
   let open Ast in
   let zero_lit = NumberLiteral ("0", None) in
   let zero = Literal zero_lit in
@@ -17,7 +17,6 @@ let () =
   );
   let filename = Sys.argv.(1) in
   let _ast = Parser.load_yul_ast filename in
-  print_endline @@ Ast.show_statement _ast;
-  print_endline "Successfully parsed Yul JSON into AST.";
-  print_endline @@ Rust.statement test_ast
+  print_endline @@ Rust.main _ast
+  (* print_endline @@ Rust.statement test_ast *)
 
