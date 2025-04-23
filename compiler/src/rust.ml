@@ -15,27 +15,23 @@ module Ctx = struct
 
 end
 
-let default_tyn = "u256"
-let default_tyn_res = "Result<u256, ReturnOrRevert>"
+let default_tyn = "U256"
+let default_tyn_res = "Result<U256, ReturnOrRevert>"
+let memory_param = "mem: &mut Memory"
+let memory_arg = "mem"
 
 let aspf = Format.asprintf
 
 let prelude =
-  {|type u256 = u8;
-  enum ReturnOrRevert {
-      Return {start: u256, end: u256},
-      Revert {start: u256, end: u256}
+  {|#![allow(warnings)]
+use alloy_primitives::U256;
+mod opcodes;
+use opcodes::*;
+enum ReturnOrRevert {
+      Return {start: U256, end: U256},
+      Revert {start: U256, end: U256}
     }
-    fn f(_: u256) -> Result<u256, ReturnOrRevert> {
-      Ok(0)
-      }
-    fn g(_: u256, _: u256) -> Result<u256, ReturnOrRevert> {
-      Ok(0)
-      }
-    fn h () -> Result<u256, ReturnOrRevert> {
-      Ok(0)
-      }
-fn to_bool(a: u256) -> Result<bool, ReturnOrRevert> {
+fn to_bool(a: U256) -> Result<bool, ReturnOrRevert> {
   Ok(!(a == 0))
 }
     |}
@@ -47,7 +43,7 @@ fn to_bool(a: u256) -> Result<bool, ReturnOrRevert> {
 (*     |} *)
 
 let literal = function
-  | NumberLiteral (n, _) -> n
+  | NumberLiteral (n, _) -> aspf {|"%s".parse().unwrap()|}n
   | StringLiteral (str, _) -> aspf "\"%s\"" str
   | TrueLiteral _ -> "true"
   | FalseLiteral _ -> "false"
@@ -63,12 +59,13 @@ let rec expr = function
       | "return" -> "return_evm"
       | _ -> id in
       (* FIXME: this is a test. *)
-      let id = match List.length args with
-      | 0 -> "h"
-      | 1 -> "f"
-      | 2 -> "g"
-      | _ -> id in
-      let args = List.map (expr ) args |> String.concat ", " in
+      (* let id = match List.length args with *)
+      (* | 0 -> "h" *)
+      (* | 1 -> "f" *)
+      (* | 2 -> "g" *)
+      (* | _ -> id in *)
+      let args = List.map (expr) args in
+      let args = memory_arg :: args |> String.concat ", " in
       aspf {|%s(%s)?|} id args
 
 let type_name_opt default_tyn = function
@@ -121,20 +118,24 @@ let rec statement ctx = function
   (* Convert to while if it's empty *)
   | ForLoop _ -> notimpl "forloop"
   | FunctionDefinition obj ->
+      let mem_param = "mem: &mut Memory" in
       let params = match obj.params with
-      | None -> ""
-      | Some l -> list typed_identifier_flat l ", " in
+      | None -> mem_param
+      | Some l ->
+          let params = List.rmap l
+            (fun ti -> aspf {|mut %s|} @@ typed_identifier_flat ti) in
+          mem_param :: params |> String.concat ", " in
       let ret_ids = match obj.returns with
       | None -> []
       | Some l -> List.map fst l in
-      (* Standard YUL only uses u256 *)
+      (* Standard YUL only uses U256 *)
       let ret_tys = match obj.returns with
       | None -> []
-      | Some l -> List.map (fun _ -> "u256") l in
+      | Some l -> List.map (fun _ -> "U256") l in
       (* build the return type def *)
       let ret_tys = match ret_tys with
       | [] -> "()"
-      | _::[] -> "u256"
+      | _::[] -> "U256"
       | l -> aspf "(%s)" @@ String.concat ", " l in
       let ret_ty =
         aspf "-> Result<%s, ReturnOrRevert>" ret_tys in
