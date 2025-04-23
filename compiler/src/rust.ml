@@ -27,12 +27,14 @@ let prelude =
 use alloy_primitives::U256;
 mod opcodes;
 use opcodes::*;
+mod dialect;
+use dialect::*;
 enum ReturnOrRevert {
       Return {start: U256, end: U256},
       Revert {start: U256, end: U256}
     }
 fn to_bool(a: U256) -> Result<bool, ReturnOrRevert> {
-  Ok(!(a == 0))
+  Ok(!U256::is_zero(&a))
 }
     |}
 (**)

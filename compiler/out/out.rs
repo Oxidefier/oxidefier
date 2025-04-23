@@ -2,9 +2,13 @@
 use alloy_primitives::U256;
 mod opcodes;
 use opcodes::*;
+mod dialect;
+use dialect::*;
+
 fn to_bool(a: U256) -> Result<bool, ReturnOrRevert> {
-  Ok(!(a == 0))
+    Ok(U256::is_zero(&a))
 }
+
 
 fn entrypoint(mem: &mut Memory) -> Result<(), ReturnOrRevert> {
   let _ = mstore(mem, "64".parse().unwrap(), memoryguard(mem, "128".parse().unwrap())?)?;

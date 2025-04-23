@@ -53,7 +53,7 @@ pub enum ReturnOrRevert {
     Revert { start: U256, length: U256 },
 }
 
-type YulOutput<A> = Result<A, ReturnOrRevert>;
+pub type YulOutput<A> = Result<A, ReturnOrRevert>;
 
 // Pure opcodes
 
