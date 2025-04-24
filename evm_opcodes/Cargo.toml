@@ -5,3 +5,7 @@ edition = "2021"
 
 [dependencies]
 alloy-primitives = { version = "1.0", default-features = false }
+
+[[bin]]
+name = "out"
+path = "src/out.rs"
