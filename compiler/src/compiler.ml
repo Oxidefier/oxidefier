@@ -1,3 +1,4 @@
+open! Ast 
 let _test_ast = 
   let open Ast in
   let zero_lit = NumberLiteral ("0", None) in
@@ -16,7 +17,10 @@ let () =
     exit 1
   );
   let filename = Sys.argv.(1) in
-  let _ast = Parser.load_yul_ast filename in
-  print_endline @@ Rust.main _ast
+  let ast = Parser.load_yul_ast filename in
+  (* let ast = Block [Expression (FunctionCall ("f", *)
+  (*   [FunctionCall ("g", [FunctionCall ("h", [])])]))] in *)
+  let ast = Flatten_calls.flatten_calls ast in
+  print_endline @@ Rust.main ast
   (* print_endline @@ Rust.statement test_ast *)
 
