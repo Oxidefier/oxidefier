@@ -5,21 +5,21 @@ mod i256;
 mod macros;
 
 #[derive(Debug)]
-struct Memory {
+pub struct Memory {
     inner: Vec<u8>,
 }
 
 impl Memory {
-    fn new() -> Self {
+    pub fn new() -> Self {
         Self { inner: Vec::new() }
     }
 
-    fn get_byte(&self, index: usize) -> u8 {
+    pub fn get_byte(&self, index: usize) -> u8 {
         // let index: usize = U256::try_into(index).unwrap();
         self.inner.get(index).cloned().unwrap_or_default()
     }
 
-    fn set_byte(&mut self, index: usize, value: u8) {
+    pub fn set_byte(&mut self, index: usize, value: u8) {
         // let index: usize = U256::try_into(index).unwrap();
         if index >= self.inner.len() {
             self.inner.resize(index + 1, 0);
@@ -27,7 +27,7 @@ impl Memory {
         self.inner[index] = value;
     }
 
-    fn load(&self, address: U256, length: U256) -> Vec<u8> {
+    pub fn load(&self, address: U256, length: U256) -> Vec<u8> {
         let address: usize = U256::try_into(address).unwrap();
         let length: usize = U256::try_into(length).unwrap();
         let mut result = Vec::new();
@@ -39,7 +39,7 @@ impl Memory {
         result
     }
 
-    fn store(&mut self, address: U256, value: Vec<u8>) {
+    pub fn store(&mut self, address: U256, value: Vec<u8>) {
         let address: usize = U256::try_into(address).unwrap();
         for (i, byte) in value.iter().enumerate() {
             self.set_byte(address + i, *byte);
@@ -48,28 +48,28 @@ impl Memory {
 }
 
 #[derive(Debug)]
-enum ReturnOrRevert {
+pub enum ReturnOrRevert {
     Return { start: U256, length: U256 },
     Revert { start: U256, length: U256 },
 }
 
-type YulOutput<A> = Result<A, ReturnOrRevert>;
+pub type YulOutput<A> = Result<A, ReturnOrRevert>;
 
 // Pure opcodes
 
-fn add(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn add(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(x.wrapping_add(y))
 }
 
-fn sub(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn sub(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(x.wrapping_sub(y))
 }
 
-fn mul(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn mul(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(x.wrapping_mul(y))
 }
 
-fn div(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn div(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(if y == U256::ZERO {
         U256::ZERO
     } else {
@@ -77,11 +77,11 @@ fn div(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     })
 }
 
-fn sdiv(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn sdiv(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(i256::i256_div(x, y))
 }
 
-fn mod_(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn mod_(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(if y == U256::ZERO {
         U256::ZERO
     } else {
@@ -89,55 +89,55 @@ fn mod_(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     })
 }
 
-fn smod(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn smod(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(i256::i256_mod(x, y))
 }
 
-fn exp(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn exp(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(x.pow(y))
 }
 
-fn not(_memory: &Memory, x: U256) -> YulOutput<U256> {
+pub fn not(_memory: &Memory, x: U256) -> YulOutput<U256> {
     Ok(!x)
 }
 
-fn lt(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn lt(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(U256::from(x < y))
 }
 
-fn gt(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn gt(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(U256::from(x > y))
 }
 
-fn slt(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn slt(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(U256::from(i256::i256_cmp(&x, &y) == Ordering::Less))
 }
 
-fn sgt(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn sgt(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(U256::from(i256::i256_cmp(&x, &y) == Ordering::Greater))
 }
 
-fn eq(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn eq(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(U256::from(x == y))
 }
 
-fn iszero(_memory: &Memory, x: U256) -> YulOutput<U256> {
+pub fn iszero(_memory: &Memory, x: U256) -> YulOutput<U256> {
     Ok(U256::from(x.is_zero()))
 }
 
-fn and(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn and(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(x & y)
 }
 
-fn or(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn or(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(x | y)
 }
 
-fn xor(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
+pub fn xor(_memory: &Memory, x: U256, y: U256) -> YulOutput<U256> {
     Ok(x ^ y)
 }
 
-fn byte(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
+pub fn byte(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
     let o1 = as_usize_saturated!(op1);
     if o1 < 32 {
         // `31 - o1` because `byte` returns LE, while we want BE
@@ -147,7 +147,7 @@ fn byte(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
     }
 }
 
-fn shl(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
+pub fn shl(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
     let shift = as_usize_saturated!(op1);
     if shift < 256 {
         Ok(op2 << shift)
@@ -156,7 +156,7 @@ fn shl(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
     }
 }
 
-fn shr(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
+pub fn shr(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
     let shift = as_usize_saturated!(op1);
     if shift < 256 {
         Ok(op2 >> shift)
@@ -165,7 +165,7 @@ fn shr(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
     }
 }
 
-fn sar(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
+pub fn sar(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
     let shift = as_usize_saturated!(op1);
     if shift < 256 {
         Ok(op2.arithmetic_shr(shift))
@@ -176,15 +176,15 @@ fn sar(_memory: &Memory, op1: U256, op2: U256) -> YulOutput<U256> {
     }
 }
 
-fn addmod(_memory: &Memory, op1: U256, op2: U256, op3: U256) -> YulOutput<U256> {
+pub fn addmod(_memory: &Memory, op1: U256, op2: U256, op3: U256) -> YulOutput<U256> {
     Ok(op1.add_mod(op2, op3))
 }
 
-fn mulmod(_memory: &Memory, op1: U256, op2: U256, op3: U256) -> YulOutput<U256> {
+pub fn mulmod(_memory: &Memory, op1: U256, op2: U256, op3: U256) -> YulOutput<U256> {
     Ok(op1.mul_mod(op2, op3))
 }
 
-fn signextend(_memory: &Memory, ext: U256, x: U256) -> YulOutput<U256> {
+pub fn signextend(_memory: &Memory, ext: U256, x: U256) -> YulOutput<U256> {
     // For 31 we also don't need to do anything.
     if ext < U256::from(31) {
         let ext = ext.as_limbs()[0];
@@ -203,26 +203,26 @@ fn signextend(_memory: &Memory, ext: U256, x: U256) -> YulOutput<U256> {
 
 // Memory opcodes
 
-fn mload(memory: &Memory, address: U256) -> YulOutput<U256> {
+pub fn mload(memory: &Memory, address: U256) -> YulOutput<U256> {
     let bytes: Vec<u8> = memory.load(address, U256::from(32));
     let bytes: [u8; 32] = bytes.try_into().unwrap();
     let bytes: FixedBytes<32> = bytes.into();
     Ok(U256::try_from(bytes).unwrap())
 }
 
-fn mstore(memory: &mut Memory, address: U256, value: U256) -> YulOutput<()> {
+pub fn mstore(memory: &mut Memory, address: U256, value: U256) -> YulOutput<()> {
     let bytes: [u8; 32] = value.to_be_bytes::<32>();
     memory.store(address, bytes.to_vec());
     Ok(())
 }
 
-fn mstore8(memory: &mut Memory, address: U256, value: U256) -> YulOutput<()> {
+pub fn mstore8(memory: &mut Memory, address: U256, value: U256) -> YulOutput<()> {
     memory.store(address, vec![value.byte(0)]);
     Ok(())
 }
 
 // Precompiles
-fn staticcall(
+pub fn staticcall(
     memory: &Memory,
     _gas: U256,
     address: U256,
@@ -235,6 +235,6 @@ fn staticcall(
     Ok(U256::ONE)
 }
 
-fn main() {
+pub fn main() {
     println!("Hello, world!");
 }
