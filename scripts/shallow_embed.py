@@ -7,7 +7,7 @@ from typing import Callable, Union
 
 # Indent each line of the block, except empty lines
 def indent(block: str) -> str:
-    indentation = "  "
+    indentation = "    "
     return "\n".join(
         line if line == "" else indentation + line
         for line in block.split("\n")
@@ -18,7 +18,7 @@ def paren(condition: bool, value: str) -> str:
     return f"({value})" if condition else value
 
 
-def name_to_coq(name: str) -> str:
+def name_to_rust(name: str) -> str:
     reserved_names = [
         "end",
         "mod",
@@ -33,17 +33,17 @@ def name_to_coq(name: str) -> str:
     return name.replace("usr$", "ᵤ").replace("$", "ₓ")
 
 
-def names_to_coq(as_pattern: bool, names: list[str]) -> str:
+def names_to_rust(as_pattern: bool, names: list[str]) -> str:
     if len(names) == 0:
-        return "'tt" if as_pattern else "tt"
+        return "()"
 
     if len(names) == 1:
-        return name_to_coq(names[0])
+        return name_to_rust(names[0])
 
     quote = "'" if as_pattern else ""
     return \
         quote + "(" + \
-        ', '.join(name_to_coq(name) for name in names) + \
+        ', '.join(name_to_rust(name) for name in names) + \
         ")"
 
 
@@ -51,242 +51,116 @@ def variable_name_to_name(variable_name) -> str:
     return variable_name.get('name')
 
 
-def variable_name_to_coq(variable_name) -> str:
-    return name_to_coq(variable_name_to_name(variable_name))
+def variable_name_to_rust(variable_name) -> str:
+    return name_to_rust(variable_name_to_name(variable_name))
 
 
-def variable_names_to_coq(as_pattern: bool, variable_names: list) -> str:
-    return names_to_coq(
+def variable_names_to_rust(as_pattern: bool, variable_names: list) -> str:
+    return names_to_rust(
         as_pattern,
         [variable_name_to_name(variable_name) for variable_name in variable_names]
     )
 
 
-def updated_vars_to_coq(as_pattern: bool, updated_vars: set[str]) -> str:
-    return names_to_coq(as_pattern, sorted(updated_vars))
+def updated_vars_to_rust(as_pattern: bool, updated_vars: set[str]) -> str:
+    return names_to_rust(as_pattern, sorted(updated_vars))
 
 
-def block_to_coq(
+def block_to_rust(
     return_variables: Union[None, list],
     node,
-) -> tuple[str, set[str]]:
+) -> str:
     node_type = node.get('nodeType')
 
     if node_type == 'YulBlock':
         nodes = node.get('statements', [])
-        statements: list[Callable[[set[str]], str]] = []
-        return_mode = "Tt"
-        declared_vars: set[str] = set()
-        updated_vars: set[str] = set()
-
-        if len(nodes) > 0:
-            last_node = nodes[-1]
-            if isinstance(last_node, dict):
-                last_node_type = last_node.get('nodeType')
-                if last_node_type == 'YulBreak':
-                    return_mode = "Break"
-                    nodes = nodes[:-1]
-                elif last_node_type == 'YulContinue':
-                    return_mode = "Continue"
-                    nodes = nodes[:-1]
-                elif last_node_type == 'YulLeave':
-                    return_mode = "Leave"
-                    nodes = nodes[:-1]
+        statements: list[str] = []
 
         for node in nodes:
             # We ignore the functions here as they are handled separately
             if node.get('nodeType') == 'YulFunctionDefinition':
                 continue
 
-            statement, statement_declared_vars, statement_updated_vars = \
-                statement_to_coq(node)
+            statement = statement_to_rust(node)
             statements += [statement]
-            declared_vars |= statement_declared_vars
-            updated_vars |= statement_updated_vars
-
-        updated_vars -= declared_vars
 
         if return_variables is not None:
-            suffix = "M.pure " + variable_names_to_coq(False, return_variables)
+            suffix = [variable_names_to_rust(False, return_variables)]
         else:
-            suffix = \
-                "M.pure (BlockUnit." + return_mode + ", " + \
-                updated_vars_to_coq(False, updated_vars) + ")"
+            suffix = []
 
-        return (
-            "\n".join(
-                [statement(updated_vars) for statement in statements] +
-                [suffix]
-            ),
-            updated_vars,
-        )
+        return "\n".join(statements + suffix)
 
-    return (
-        "(* Unsupported block node type: {node_type} *)",
-        set(),
-    )
+    return f"// Unsupported block node type: {node_type}"
 
 
 def is_pre_empty_block(node) -> bool:
     return node.get('nodeType') == 'YulBlock' and len(node.get('statements', [])) == 0
 
 
-def lift_state_update(
-    block: str,
-    local_updated_vars: set[str],
-    global_updated_vars: set[str]
-) -> str:
-    if local_updated_vars == global_updated_vars:
-        return block
-
-    return \
-        "Shallow.lift_state_update\n" + \
-        indent(
-            "(fun " + updated_vars_to_coq(True, local_updated_vars) + \
-            " => " + updated_vars_to_coq(False, global_updated_vars) + ")"
-        ) + "\n" + \
-        indent("(" + block + ")")
-
-
-def statement_to_coq(node) -> tuple[Callable[[set[str]], str], set[str], set[str]]:
+def statement_to_rust(node) -> str:
     node_type = node.get('nodeType')
 
     if node_type == 'YulBlock':
-        statement, statement_updated_vars = block_to_coq(None, node)
-        return (
-            lambda final_updated_vars:
-                "let_state~ " + \
-                updated_vars_to_coq(True, statement_updated_vars) + \
-                " :=\n" + \
-                indent(statement) + "\n" + \
-                "default~ " + updated_vars_to_coq(False, final_updated_vars) + " in",
-            set(),
-            statement_updated_vars,
-        )
+        return block_to_rust(None, node)
 
     elif node_type == 'YulFunctionDefinition':
         # We ignore this case because we only handle top-level function definitions
-        return (
-            lambda _:
-                "(* Function definition not expected at block level*)",
-            set(),
-            set(),
-        )
+        return "// Function definition not expected at block level"
 
     elif node_type == 'YulVariableDeclaration':
         variable_names = node.get('variables', [])
-        variables = variable_names_to_coq(True, variable_names)
+        variables = variable_names_to_rust(True, variable_names)
         value = \
-            expression_to_coq(node.get('value')) \
+            expression_to_rust(node.get('value')) \
             if node.get('value') is not None \
-            else "0"
-        return (
-            lambda _:
-                f"let~ {variables} := [[ {value} ]] in",
-            {
-                variable_name.get('name')
-                for variable_name in variable_names
-            },
-            set(),
-        )
+            else "U256::from(0)"
+        return f"let mut {variables} = {value};"
 
     elif node_type == 'YulAssignment':
         variable_names = node.get('variableNames', [])
-        variables = variable_names_to_coq(True, variable_names)
-        value = expression_to_coq(node.get('value'))
-        return (
-            lambda _:
-                f"let~ {variables} := [[ {value} ]] in",
-            set(),
-            {
-                variable_name.get('name')
-                for variable_name in variable_names
-            },
-        )
+        variables = variable_names_to_rust(True, variable_names)
+        value = expression_to_rust(node.get('value'))
+        return f"{variables} = {value};"
 
     elif node_type == 'YulExpressionStatement':
-        return (
-            lambda _:
-                "do~ [[ " + expression_to_coq(node.get('expression')) + " ]] in",
-            set(),
-            set(),
-        )
+        return expression_to_rust(node.get('expression')) + ";"
 
     elif node_type == 'YulIf':
-        condition = expression_to_coq(node.get('condition'))
-        then_body, then_updated_vars = block_to_coq(None, node.get('body'))
-        return (
-            lambda final_updated_vars:
-                "let_state~ " + \
-                updated_vars_to_coq(True, then_updated_vars) + \
-                " := [[\n" + \
-                indent(
-                    "Shallow.if_ (|\n" +
-                    indent(condition) + ",\n" +
-                    indent(then_body) + ",\n" +
-                    indent(updated_vars_to_coq(False, then_updated_vars)) + "\n" +
-                    "|)"
-                ) + "\n" + \
-                "]] default~ " + updated_vars_to_coq(False, final_updated_vars) + " in",
-            set(),
-            then_updated_vars,
-        )
+        condition = expression_to_rust(node.get('condition'))
+        then_body = block_to_rust(None, node.get('body'))
+        return \
+            "if " + condition + " != U256::from(0) {\n" + \
+            indent(then_body) + "\n" + \
+            "}"
 
     elif node_type == 'YulSwitch':
-        expression = expression_to_coq(node.get('expression'))
+        expression = expression_to_rust(node.get('expression'))
         cases = [
             (
-                expression_to_coq(case.get('value')),
-                block_to_coq(None, case.get('body')),
+                expression_to_rust(case.get('value')),
+                block_to_rust(None, case.get('body')),
             )
             for case in node.get('cases', [])
             # TODO: handle the default case in a switch
             if case.get('value') != "default"
         ]
-        commonly_updated_vars: set[str] = {
-            name
-            for _, (_, updated_vars) in cases
-            for name in updated_vars
-        }
-        return (
-            lambda final_updated_vars:
-                "let_state~ " + \
-                updated_vars_to_coq(True, final_updated_vars) + \
-                " := [[\n" + \
-                indent(
-                    "(* switch *)\n" + \
-                    f"let~ δ := [[ {expression} ]] in\n" + \
-                    "\nelse ".join(
-                        f"if δ =? {value} then\n" +
-                        indent(lift_state_update(
-                            body,
-                            updated_vars,
-                            commonly_updated_vars,
-                        ))
-                        for value, (body, updated_vars) in cases
-                    ) + "\n" + \
-                    "else\n" + \
-                    indent(
-                        "M.pure (BlockUnit.Tt, " + \
-                        updated_vars_to_coq(False, commonly_updated_vars) + ")"
-                    )
-                ) + "\n" + \
-                "]] default~ " + updated_vars_to_coq(False, final_updated_vars) + " in",
-            set(),
-            commonly_updated_vars,
-        )
+        return \
+            "// switch\n" + \
+            f"let δ = {expression};\n" + \
+            "\n} else ".join(
+                f"if δ == {value} {{\n" +
+                indent(body)
+                for value, body in cases
+            ) + "\n" + \
+            "}"
 
     elif node_type in ['YulLeave', 'YulBreak', 'YulContinue']:
-        return (
-            lambda _:
-                f"(* Unexpected statement node type: {node_type} *)",
-            set(),
-            set(),
-        )
+        return f"// Unexpected statement node type: {node_type}"
 
     elif node_type == 'YulForLoop':
         if not is_pre_empty_block(node.get('pre')):
-            return statement_to_coq({
+            return statement_to_rust({
                 'nodeType': 'YulBlock',
                 'statements':
                     node.get('pre').get('statements', []) + [{
@@ -301,130 +175,94 @@ def statement_to_coq(node) -> tuple[Callable[[set[str]], str], set[str], set[str
                     }]
             })
 
-        condition = expression_to_coq(node.get('condition'))
-        post, post_updated_vars = block_to_coq(None, node.get('post'))
-        body, body_updated_vars = block_to_coq(None, node.get('body'))
-        updated_vars = post_updated_vars | body_updated_vars
-
-        def fun_read_updated_vars(updated_vars: set[str]) -> str:
-            return "(fun " + updated_vars_to_coq(True, updated_vars) + " =>"
+        condition = expression_to_rust(node.get('condition'))
+        post = block_to_rust(None, node.get('post'))
+        body = block_to_rust(None, node.get('body'))
 
         return (
-            lambda final_updated_vars:
-                "let_state~ " + \
-                updated_vars_to_coq(True, updated_vars) + \
-                " :=\n" + \
+            "let_state~ :=\n" + \
+            indent(
+                "// for loop\n" + \
+                "Shallow.for_\n" + \
                 indent(
-                    "(* for loop *)\n" + \
-                    "Shallow.for_\n" + \
-                    indent(
-                        "(* init state *)\n" + \
-                        updated_vars_to_coq(False, updated_vars) + "\n" + \
-                        "(* condition *)\n" + \
-                        fun_read_updated_vars(updated_vars) + " [[\n" + \
-                        indent(condition) + "\n" + \
-                        "]])\n" + \
-                        "(* body *)\n" + \
-                        fun_read_updated_vars(updated_vars) + "\n" + \
-                        indent(lift_state_update(
-                            body,
-                            body_updated_vars,
-                            updated_vars,
-                        )) + ")\n" + \
-                        "(* post *)\n" + \
-                        fun_read_updated_vars(updated_vars) + "\n" + \
-                        indent(lift_state_update(
-                            post,
-                            post_updated_vars,
-                            updated_vars,
-                        )) + ")"
-                    )
-                ) + "\n" + \
-                "default~ " + updated_vars_to_coq(False, final_updated_vars) + " in",
-            set(),
-            updated_vars,
+                    "// condition\n" + \
+                    indent(condition) + "\n" + \
+                    "// body\n" + \
+                    indent(body) + "\n" + \
+                    "// post\n" + \
+                    indent(post)
+                )
+            ) + "\n"
         )
 
-    return (
-        lambda _:
-            f"(* Unsupported statement node type: {node_type} *)",
-        set(),
-        set(),
-    )
+    return f"// Unsupported statement node type: {node_type}"
 
 
-def expression_to_coq(node) -> str:
+def number_to_hex(number: str) -> str:
+    if number.startswith("0x"):
+        return number[2:]
+    else:
+        return hex(int(number))[2:]
+
+
+def expression_to_rust(node) -> str:
     node_type = node.get('nodeType')
 
     if node_type == 'YulFunctionCall':
-        func_name = variable_name_to_coq(node['functionName'])
-        args: list[str] = [expression_to_coq(arg) for arg in node.get('arguments', [])]
-        args_left = "~(|"
-        args_right = "|)"
-        return func_name + " " + \
-            (args_left + args_right \
-            if len(node.get('arguments', [])) == 0 \
-            else \
-                args_left + " " + \
-                ', '.join(args) + \
-                " " + args_right)
+        func_name = variable_name_to_rust(node['functionName'])
+        args: list[str] = [expression_to_rust(arg) for arg in node.get('arguments', [])]
+        return func_name + "(" + ", ".join(args + ["memory"]) + ")?"
 
     if node_type == 'YulIdentifier':
-        return variable_name_to_coq(node)
+        return variable_name_to_rust(node)
 
     if node_type == 'YulLiteral':
         if node['kind'] == 'string':
-            return \
-                "0x" + node['hexValue'].ljust(64, '0') + \
-                " (* " + node['value'] + " *)"
-        return node.get('value')
+            return "from_hex(\"" + node['hexValue'].ljust(64, '0') + "\")"
+        return "from_hex(\"" + number_to_hex(node.get('value')) + "\")"
 
-    return f"(* Unsupported expression node type: {node_type} *)"
+    return f"// Unsupported expression node type: {node_type}"
 
 
 def function_result_type(arity: int) -> str:
     if arity == 0:
-        return "unit"
+        return "()"
     elif arity == 1:
-        return "U256.t"
+        return "U256"
 
-    return "(" + " * ".join(["U256.t"] * arity) + ")"
+    return "(" + ", ".join(["U256"] * arity) + ")"
 
 
-def function_definition_to_coq(node) -> str:
-    name = variable_name_to_coq(node)
+def function_definition_to_rust(node) -> str:
+    name = variable_name_to_rust(node)
     param_names: list[str] = [
-        variable_name_to_coq(param)
+        variable_name_to_rust(param)
         for param in node.get('parameters', [])
     ]
-    params = ''.join([
-        " (" + name + " : U256.t)"
-        for name in param_names
-    ])
-    body, body_updated_vars = block_to_coq(None, node.get('body'))
+    params = ', '.join(
+        [name + ": U256" for name in param_names] +
+        ["memory: &mut Memory"]
+    )
+    body = block_to_rust(None, node.get('body'))
     returnVariables = node.get('returnVariables', [])
     return \
-        f"Definition {name}{params} : M.t " + \
-        function_result_type(len(returnVariables)) + " :=\n" + \
+        f"fn {name}({params}) -> YulOutput<" + \
+        function_result_type(len(returnVariables)) + "> {\n" + \
         indent(
-            "let~ '(_, " + updated_vars_to_coq(False, body_updated_vars) + ") :=" + \
-            "\n" + \
             (
-                indent(
-                    "let " + variable_names_to_coq(True, returnVariables) + " := " + \
-                    (
-                        "0"
-                        if len(returnVariables) == 1
-                        else "(" + ", ".join(["0"] * len(returnVariables)) + ")"
-                    ) + " in"
-                ) + "\n"
+                "let mut " + variable_names_to_rust(True, returnVariables) + " = " + \
+                (
+                    "U256::from(0)"
+                    if len(returnVariables) == 1
+                    else "(" + ", ".join(["U256::from(0)"] * len(returnVariables)) + ")"
+                ) + ";\n"
                 if len(returnVariables) != 0
                 else ""
             ) + \
-            indent(body) + "\n" + \
-            "in\n" + \
-            "M.pure " + variable_names_to_coq(False, returnVariables)
-        ) + "."
+            body + "\n" + \
+            "Ok(" + variable_names_to_rust(False, returnVariables) + ")"
+        ) + "\n" + \
+        "}"
 
 
 # Get the names of the functions called in a function.
@@ -501,7 +339,7 @@ def order_functions(ordered_names: list[str], function_nodes: list) -> list:
     return sorted(function_nodes, key=key_func)
 
 
-def top_level_to_coq(node) -> str:
+def top_level_to_rust(node) -> str:
     node_type = node.get('nodeType')
 
     if node_type == 'YulBlock':
@@ -515,45 +353,49 @@ def top_level_to_coq(node) -> str:
         ordered_functions = \
             order_functions(ordered_function_names, node.get('statements', []))
         functions = [
-            function_definition_to_coq(function)
+            function_definition_to_rust(function)
             for function in ordered_functions
             if function.get('nodeType') == 'YulFunctionDefinition'
         ]
         body = \
-            "Definition body : M.t unit :=\n" + \
+            "fn body(memory: &mut Memory) -> YulOutput<()> {\n" + \
             indent(
-                "let~ '(_, result) :=" + "\n" + \
-                indent(block_to_coq(None, node)[0]) + "\n" + \
-                "in\n" + \
-                "M.pure result"
-            ) + "."
+                block_to_rust(None, node) + "\n" + \
+                "Ok(())"
+            ) + "\n" + \
+            "}"
         return ("\n\n").join(functions + [body])
 
-    return f"(* Unsupported top-level node type: {node_type} *)"
+    return f"// Unsupported top-level node type: {node_type}"
 
 
-def object_to_coq(node) -> str:
+def object_to_rust(node) -> str:
     node_type = node.get('nodeType')
 
     if node_type == 'YulObject':
         return \
-            "Module " + node['name'] + ".\n" + \
-            indent(object_to_coq(node['code'])) + "\n" + \
-            "".join(
-                "\n" +
-                indent(object_to_coq(child)) + "\n"
-                for child in node.get('subObjects', [])
-                if child.get('nodeType') != 'YulData'
+            "mod " + node['name'].lower() + " {\n" + \
+            indent(
+                "use alloy_primitives::U256;" + "\n" + \
+                "use crate::opcode::*;" + "\n" + \
+                "\n" + \
+                object_to_rust(node['code']) + "\n" + \
+                "".join(
+                    "\n" +
+                    object_to_rust(child) + "\n"
+                    for child in node.get('subObjects', [])
+                    if child.get('nodeType') != 'YulData'
+                )
             ) + \
-            "End " + node['name'] + "."
+            "}"
 
     elif node_type == 'YulCode':
-        return top_level_to_coq(node['block'])
+        return top_level_to_rust(node['block'])
 
     elif node_type == 'YulData':
-        return "(* Data object not expected *)"
+        return "// Data object not expected"
 
-    return f"(* Unsupported object node type: {node_type} *)"
+    return f"// Unsupported object node type: {node_type}"
 
 
 def main():
@@ -561,14 +403,17 @@ def main():
     with open(sys.argv[1], 'r') as file:
         data = json.load(file)
 
-    coq_code = object_to_coq(data)
+    rust_code = object_to_rust(data)
 
-    print("(* Generated by " + Path(__file__).name + " *)")
-    print("Require Import CoqOfSolidity.CoqOfSolidity.")
-    print("Require Import CoqOfSolidity.simulations.CoqOfSolidity.")
-    print("Import Stdlib.")
+    print("// Generated by Oxidefier")
+    print("mod i256;")
+    print("#[macro_use]")
+    print("mod macros;")
+    print("mod opcode;")
     print()
-    print(coq_code)
+    print(rust_code)
+    print()
+    print("fn main() {}")
 
 
 if __name__ == "__main__":
