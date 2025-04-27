@@ -4,299 +4,1286 @@ mod i256;
 mod macros;
 mod opcode;
 
-mod erc20_403 {
+pub mod plonkverifier_482 {
     use alloy_primitives::U256;
     use crate::opcode::*;
 
-    fn checked_add_uint256(x: U256, memory: &mut Memory) -> YulOutput<U256> {
-        let mut sum = U256::from(0);
-        sum = add(x, from_hex("14"), memory)?;
-        if gt(x, sum, memory)? != U256::from(0) {
-            mstore(from_hex("0"), shl(from_hex("e0"), from_hex("4e487b71"), memory)?, memory)?;
-            mstore(from_hex("4"), from_hex("11"), memory)?;
-            revert(from_hex("0"), from_hex("24"), memory)?;
-        }
-        Ok(sum)
+    pub fn allocate_unbounded(memory: &mut Memory) -> YulOutput<U256> {
+        let mut memPtr = U256::ZERO;
+        memPtr = mload(U256::from(0x40u128), memory)?;
+        Ok(memPtr)
     }
 
-    fn body(memory: &mut Memory) -> YulOutput<()> {
-        let mut _1 = memoryguard(from_hex("80"), memory)?;
-        mstore(from_hex("40"), _1, memory)?;
-        if callvalue(memory)? != U256::from(0) {
-            revert(from_hex("0"), from_hex("0"), memory)?;
-        }
-        if iszero(caller(memory)?, memory)? != U256::from(0) {
-            mstore(_1, shl(from_hex("e5"), from_hex("461bcd"), memory)?, memory)?;
-            mstore(add(_1, from_hex("4"), memory)?, from_hex("20"), memory)?;
-            mstore(add(_1, from_hex("24"), memory)?, from_hex("1f"), memory)?;
-            mstore(add(_1, from_hex("44"), memory)?, from_hex("45726332303a206d696e7420746f20746865207a65726f206164647265737300"), memory)?;
-            revert(_1, from_hex("64"), memory)?;
-        }
-        sstore(from_hex("02"), checked_add_uint256(sload(from_hex("02"), memory)?, memory)?, memory)?;
-        mstore(from_hex("00"), caller(memory)?, memory)?;
-        mstore(from_hex("20"), from_hex("00"), memory)?;
-        let mut _2 = checked_add_uint256(sload(keccak256(from_hex("00"), from_hex("40"), memory)?, memory)?, memory)?;
-        mstore(from_hex("00"), caller(memory)?, memory)?;
-        mstore(from_hex("20"), from_hex("00"), memory)?;
-        sstore(keccak256(from_hex("00"), from_hex("40"), memory)?, _2, memory)?;
-        let mut _3 = mload(from_hex("40"), memory)?;
-        mstore(_3, from_hex("14"), memory)?;
-        log3(_3, from_hex("20"), from_hex("ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"), from_hex("00"), caller(memory)?, memory)?;
-        let mut _4 = mload(from_hex("40"), memory)?;
-        let mut _5 = datasize(from_hex("45726332305f3430335f6465706c6f7965640000000000000000000000000000"), memory)?;
-        codecopy(_4, dataoffset(from_hex("45726332305f3430335f6465706c6f7965640000000000000000000000000000"), memory)?, _5, memory)?;
-        return_(_4, _5, memory)?;
+    pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(memory: &mut Memory) -> YulOutput<()> {
+        revert(U256::from(0x0u128), U256::from(0x0u128), memory)?;
         Ok(())
     }
 
-    mod erc20_403_deployed {
+    pub fn body(memory: &mut Memory) -> YulOutput<()> {
+        mstore(U256::from(0x40u128), memoryguard(U256::from(0x80u128), memory)?, memory)?;
+        if callvalue(memory)? != U256::from(0) {
+            revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(memory)?;
+        }
+        let mut _1 = allocate_unbounded(memory)?;
+        codecopy(_1, dataoffset(from_hex("506c6f6e6b56657269666965725f3438325f6465706c6f796564000000000000"), memory)?, datasize(from_hex("506c6f6e6b56657269666965725f3438325f6465706c6f796564000000000000"), memory)?, memory)?;
+        return_(_1, datasize(from_hex("506c6f6e6b56657269666965725f3438325f6465706c6f796564000000000000"), memory)?, memory)?;
+        Ok(())
+    }
+
+    pub mod plonkverifier_482_deployed {
         use alloy_primitives::U256;
         use crate::opcode::*;
 
-        fn abi_decode_address(memory: &mut Memory) -> YulOutput<U256> {
-            let mut value = U256::from(0);
-            value = calldataload(from_hex("4"), memory)?;
-            if iszero(eq(value, and(value, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?, memory)?, memory)? != U256::from(0) {
-                revert(from_hex("0"), from_hex("0"), memory)?;
+        pub fn cleanup_uint256(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut cleaned = U256::ZERO;
+            cleaned = value;
+            Ok(cleaned)
+        }
+
+        pub fn validator_revert_uint256(mut value: U256, memory: &mut Memory) -> YulOutput<()> {
+            if iszero(eq(value, cleanup_uint256(value, memory)?, memory)?, memory)? != U256::from(0) {
+                revert(U256::from(0x0u128), U256::from(0x0u128), memory)?;
             }
+            Ok(())
+        }
+
+        pub fn abi_decode_uint256(mut offset: U256, mut end_: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut value = U256::ZERO;
+            value = calldataload(offset, memory)?;
+            validator_revert_uint256(value, memory)?;
             Ok(value)
         }
 
-        fn abi_decode_t_address(memory: &mut Memory) -> YulOutput<U256> {
-            let mut value = U256::from(0);
-            value = calldataload(from_hex("24"), memory)?;
-            if iszero(eq(value, and(value, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?, memory)?, memory)? != U256::from(0) {
-                revert(from_hex("0"), from_hex("0"), memory)?;
-            }
-            Ok(value)
+        pub fn allocate_unbounded(memory: &mut Memory) -> YulOutput<U256> {
+            let mut memPtr = U256::ZERO;
+            memPtr = mload(U256::from(0x40u128), memory)?;
+            Ok(memPtr)
         }
 
-        fn checked_add_uint256(x: U256, y: U256, memory: &mut Memory) -> YulOutput<U256> {
-            let mut sum = U256::from(0);
+        pub fn panic_error_0x41(memory: &mut Memory) -> YulOutput<()> {
+            mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), memory)?, memory)?;
+            mstore(U256::from(0x4u128), U256::from(0x41u128), memory)?;
+            revert(U256::from(0x0u128), U256::from(0x24u128), memory)?;
+            Ok(())
+        }
+
+        pub fn round_up_to_mul_of(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut result = U256::ZERO;
+            result = and(add(value, U256::from(0x1fu128), memory)?, not(U256::from(0x1fu128), memory)?, memory)?;
+            Ok(result)
+        }
+
+        pub fn finalize_allocation(mut memPtr: U256, mut size: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut newFreePtr = add(memPtr, round_up_to_mul_of(size, memory)?, memory)?;
+            if or(gt(newFreePtr, U256::from(0xffffffffffffffffu128), memory)?, lt(newFreePtr, memPtr, memory)?, memory)? != U256::from(0) {
+                panic_error_0x41(memory)?;
+            }
+            mstore(U256::from(0x40u128), newFreePtr, memory)?;
+            Ok(())
+        }
+
+        pub fn allocate_memory(mut size: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut memPtr = U256::ZERO;
+            memPtr = allocate_unbounded(memory)?;
+            finalize_allocation(memPtr, size, memory)?;
+            Ok(memPtr)
+        }
+
+        pub fn array_allocation_size_array_uint256_dyn(mut length: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut size = U256::ZERO;
+            if gt(length, U256::from(0xffffffffffffffffu128), memory)? != U256::from(0) {
+                panic_error_0x41(memory)?;
+            }
+            size = mul(length, U256::from(0x20u128), memory)?;
+            size = add(size, U256::from(0x20u128), memory)?;
+            Ok(size)
+        }
+
+        pub fn revert_error_81385d8c0b31fffe14be1da910c8bd3a80be4cfa248e04f42ec0faea3132a8ef(memory: &mut Memory) -> YulOutput<()> {
+            revert(U256::from(0x0u128), U256::from(0x0u128), memory)?;
+            Ok(())
+        }
+
+        pub fn abi_decode_available_length_array_uint256_dyn(mut offset: U256, mut length: U256, mut end_: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut array = U256::ZERO;
+            array = allocate_memory(array_allocation_size_array_uint256_dyn(length, memory)?, memory)?;
+            let mut dst = array;
+            mstore(array, length, memory)?;
+            dst = add(array, U256::from(0x20u128), memory)?;
+            let mut srcEnd = add(offset, mul(length, U256::from(0x20u128), memory)?, memory)?;
+            if gt(srcEnd, end_, memory)? != U256::from(0) {
+                revert_error_81385d8c0b31fffe14be1da910c8bd3a80be4cfa248e04f42ec0faea3132a8ef(memory)?;
+            }
+            let mut src = offset;
+            // for loop
+            while lt(src, srcEnd, memory)? != U256::from(0) {
+                // body
+                {
+                    mstore(dst, abi_decode_uint256(src, end_, memory)?, memory)?;
+                    dst = add(dst, U256::from(0x20u128), memory)?;
+                }
+                // post
+                {
+                    src = add(src, U256::from(0x20u128), memory)?;
+                }
+            }
+            Ok(array)
+        }
+
+        pub fn revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d(memory: &mut Memory) -> YulOutput<()> {
+            revert(U256::from(0x0u128), U256::from(0x0u128), memory)?;
+            Ok(())
+        }
+
+        pub fn abi_decode_array_uint256_dyn(mut offset: U256, mut end_: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut array = U256::ZERO;
+            if iszero(slt(add(offset, U256::from(0x1fu128), memory)?, end_, memory)?, memory)? != U256::from(0) {
+                revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d(memory)?;
+            }
+            array = abi_decode_available_length_array_uint256_dyn(add(offset, U256::from(0x20u128), memory)?, calldataload(offset, memory)?, end_, memory)?;
+            Ok(array)
+        }
+
+        pub fn array_allocation_size_bytes(mut length: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut size = U256::ZERO;
+            if gt(length, U256::from(0xffffffffffffffffu128), memory)? != U256::from(0) {
+                panic_error_0x41(memory)?;
+            }
+            size = round_up_to_mul_of(length, memory)?;
+            size = add(size, U256::from(0x20u128), memory)?;
+            Ok(size)
+        }
+
+        pub fn copy_calldata_to_memory_with_cleanup(mut src: U256, mut dst: U256, mut length: U256, memory: &mut Memory) -> YulOutput<()> {
+            calldatacopy(dst, src, length, memory)?;
+            mstore(add(dst, length, memory)?, U256::from(0x0u128), memory)?;
+            Ok(())
+        }
+
+        pub fn revert_error_987264b3b1d58a9c7f8255e93e81c77d86d6299019c33110a076957a3e06e2ae(memory: &mut Memory) -> YulOutput<()> {
+            revert(U256::from(0x0u128), U256::from(0x0u128), memory)?;
+            Ok(())
+        }
+
+        pub fn abi_decode_available_length_bytes(mut src: U256, mut length: U256, mut end_: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut array = U256::ZERO;
+            array = allocate_memory(array_allocation_size_bytes(length, memory)?, memory)?;
+            mstore(array, length, memory)?;
+            if gt(add(src, length, memory)?, end_, memory)? != U256::from(0) {
+                revert_error_987264b3b1d58a9c7f8255e93e81c77d86d6299019c33110a076957a3e06e2ae(memory)?;
+            }
+            copy_calldata_to_memory_with_cleanup(src, add(array, U256::from(0x20u128), memory)?, length, memory)?;
+            Ok(array)
+        }
+
+        pub fn abi_decode_bytes(mut offset: U256, mut end_: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut array = U256::ZERO;
+            if iszero(slt(add(offset, U256::from(0x1fu128), memory)?, end_, memory)?, memory)? != U256::from(0) {
+                revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d(memory)?;
+            }
+            array = abi_decode_available_length_bytes(add(offset, U256::from(0x20u128), memory)?, calldataload(offset, memory)?, end_, memory)?;
+            Ok(array)
+        }
+
+        pub fn revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db(memory: &mut Memory) -> YulOutput<()> {
+            revert(U256::from(0x0u128), U256::from(0x0u128), memory)?;
+            Ok(())
+        }
+
+        pub fn revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(memory: &mut Memory) -> YulOutput<()> {
+            revert(U256::from(0x0u128), U256::from(0x0u128), memory)?;
+            Ok(())
+        }
+
+        pub fn abi_decode_bytest_array_uint256_dyn(mut headStart: U256, mut dataEnd: U256, memory: &mut Memory) -> YulOutput<(U256, U256)> {
+            let mut value0 = U256::ZERO;
+            let mut value1 = U256::ZERO;
+            if slt(sub(dataEnd, headStart, memory)?, U256::from(0x40u128), memory)? != U256::from(0) {
+                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(memory)?;
+            }
+            let mut offset = calldataload(add(headStart, U256::from(0x0u128), memory)?, memory)?;
+            if gt(offset, U256::from(0xffffffffffffffffu128), memory)? != U256::from(0) {
+                revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db(memory)?;
+            }
+            value0 = abi_decode_bytes(add(headStart, offset, memory)?, dataEnd, memory)?;
+            let mut offset_1 = calldataload(add(headStart, U256::from(0x20u128), memory)?, memory)?;
+            if gt(offset_1, U256::from(0xffffffffffffffffu128), memory)? != U256::from(0) {
+                revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db(memory)?;
+            }
+            value1 = abi_decode_array_uint256_dyn(add(headStart, offset_1, memory)?, dataEnd, memory)?;
+            Ok((value0, value1))
+        }
+
+        pub fn cleanup_bool(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut cleaned = U256::ZERO;
+            cleaned = iszero(iszero(value, memory)?, memory)?;
+            Ok(cleaned)
+        }
+
+        pub fn abi_encode_bool_to_bool(mut value: U256, mut pos: U256, memory: &mut Memory) -> YulOutput<()> {
+            mstore(pos, cleanup_bool(value, memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn abi_encode_bool(mut headStart: U256, mut value0: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut tail = U256::ZERO;
+            tail = add(headStart, U256::from(0x20u128), memory)?;
+            abi_encode_bool_to_bool(value0, add(headStart, U256::from(0x0u128), memory)?, memory)?;
+            Ok(tail)
+        }
+
+        pub fn allocate_memory_array_array_uint256_dyn(mut length: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut memPtr = U256::ZERO;
+            let mut allocSize = array_allocation_size_array_uint256_dyn(length, memory)?;
+            memPtr = allocate_memory(allocSize, memory)?;
+            mstore(memPtr, length, memory)?;
+            Ok(memPtr)
+        }
+
+        pub fn zero_memory_chunk_uint256(mut dataStart: U256, mut dataSizeInBytes: U256, memory: &mut Memory) -> YulOutput<()> {
+            calldatacopy(dataStart, calldatasize(memory)?, dataSizeInBytes, memory)?;
+            Ok(())
+        }
+
+        pub fn allocate_and_zero_memory_array_array_uint256_dyn(mut length: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut memPtr = U256::ZERO;
+            memPtr = allocate_memory_array_array_uint256_dyn(length, memory)?;
+            let mut dataStart = memPtr;
+            let mut dataSize = array_allocation_size_array_uint256_dyn(length, memory)?;
+            dataStart = add(memPtr, U256::from(0x20u128), memory)?;
+            dataSize = sub(dataSize, U256::from(0x20u128), memory)?;
+            zero_memory_chunk_uint256(dataStart, dataSize, memory)?;
+            Ok(memPtr)
+        }
+
+        pub fn array_length_array_uint256_dyn(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut length = U256::ZERO;
+            length = mload(value, memory)?;
+            Ok(length)
+        }
+
+        pub fn panic_error_0x11(memory: &mut Memory) -> YulOutput<()> {
+            mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), memory)?, memory)?;
+            mstore(U256::from(0x4u128), U256::from(0x11u128), memory)?;
+            revert(U256::from(0x0u128), U256::from(0x24u128), memory)?;
+            Ok(())
+        }
+
+        pub fn checked_add_uint256(mut x: U256, mut y: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut sum = U256::ZERO;
+            x = cleanup_uint256(x, memory)?;
+            y = cleanup_uint256(y, memory)?;
             sum = add(x, y, memory)?;
             if gt(x, sum, memory)? != U256::from(0) {
-                mstore(from_hex("0"), shl(from_hex("e0"), from_hex("4e487b71"), memory)?, memory)?;
-                mstore(from_hex("4"), from_hex("11"), memory)?;
-                revert(from_hex("0"), from_hex("24"), memory)?;
+                panic_error_0x11(memory)?;
             }
             Ok(sum)
         }
 
-        fn checked_sub_uint256(x: U256, y: U256, memory: &mut Memory) -> YulOutput<U256> {
-            let mut diff = U256::from(0);
-            diff = sub(x, y, memory)?;
-            if gt(diff, x, memory)? != U256::from(0) {
-                mstore(from_hex("0"), shl(from_hex("e0"), from_hex("4e487b71"), memory)?, memory)?;
-                mstore(from_hex("4"), from_hex("11"), memory)?;
-                revert(from_hex("0"), from_hex("24"), memory)?;
+        pub fn checked_mul_uint256(mut x: U256, mut y: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut product = U256::ZERO;
+            x = cleanup_uint256(x, memory)?;
+            y = cleanup_uint256(y, memory)?;
+            product = cleanup_uint256(mul(x, y, memory)?, memory)?;
+            if iszero(or(iszero(x, memory)?, eq(y, div(product, x, memory)?, memory)?, memory)?, memory)? != U256::from(0) {
+                panic_error_0x11(memory)?;
             }
-            Ok(diff)
+            Ok(product)
         }
 
-        fn fun_approve(var_owner: U256, var_spender: U256, var_value: U256, memory: &mut Memory) -> YulOutput<()> {
-            let mut _1 = and(var_owner, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?;
-            if iszero(_1, memory)? != U256::from(0) {
-                let mut memPtr = mload(from_hex("40"), memory)?;
-                mstore(memPtr, shl(from_hex("e5"), from_hex("461bcd"), memory)?, memory)?;
-                mstore(add(memPtr, from_hex("4"), memory)?, from_hex("20"), memory)?;
-                mstore(add(memPtr, from_hex("24"), memory)?, from_hex("24"), memory)?;
-                mstore(add(memPtr, from_hex("44"), memory)?, from_hex("45726332303a20617070726f76652066726f6d20746865207a65726f20616464"), memory)?;
-                mstore(add(memPtr, from_hex("64"), memory)?, from_hex("7265737300000000000000000000000000000000000000000000000000000000"), memory)?;
-                revert(memPtr, from_hex("84"), memory)?;
-            }
-            let mut _2 = and(var_spender, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?;
-            if iszero(_2, memory)? != U256::from(0) {
-                let mut memPtr_1 = mload(from_hex("40"), memory)?;
-                mstore(memPtr_1, shl(from_hex("e5"), from_hex("461bcd"), memory)?, memory)?;
-                mstore(add(memPtr_1, from_hex("4"), memory)?, from_hex("20"), memory)?;
-                mstore(add(memPtr_1, from_hex("24"), memory)?, from_hex("22"), memory)?;
-                mstore(add(memPtr_1, from_hex("44"), memory)?, from_hex("45726332303a20617070726f766520746f20746865207a65726f206164647265"), memory)?;
-                mstore(add(memPtr_1, from_hex("64"), memory)?, from_hex("7373000000000000000000000000000000000000000000000000000000000000"), memory)?;
-                revert(memPtr_1, from_hex("84"), memory)?;
-            }
-            mstore(from_hex("00"), _1, memory)?;
-            mstore(from_hex("20"), from_hex("01"), memory)?;
-            let mut dataSlot = keccak256(from_hex("00"), from_hex("40"), memory)?;
-            let mut dataSlot_1 = from_hex("0");
-            mstore(from_hex("0"), _2, memory)?;
-            mstore(from_hex("20"), dataSlot, memory)?;
-            dataSlot_1 = keccak256(from_hex("0"), from_hex("40"), memory)?;
-            sstore(dataSlot_1, var_value, memory)?;
-            let mut _3 = mload(from_hex("40"), memory)?;
-            mstore(_3, var_value, memory)?;
-            log3(_3, from_hex("20"), from_hex("8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925"), _1, _2, memory)?;
+        pub fn cleanup_rational_by(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut cleaned = U256::ZERO;
+            cleaned = value;
+            Ok(cleaned)
+        }
+
+        pub fn cleanup_rational_by_1(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut cleaned = U256::ZERO;
+            cleaned = value;
+            Ok(cleaned)
+        }
+
+        pub fn cleanup_t_rational_by(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut cleaned = U256::ZERO;
+            cleaned = value;
+            Ok(cleaned)
+        }
+
+        pub fn identity(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut ret = U256::ZERO;
+            ret = value;
+            Ok(ret)
+        }
+
+        pub fn convert_rational_by_to_uint256(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut converted = U256::ZERO;
+            converted = cleanup_uint256(identity(cleanup_rational_by(value, memory)?, memory)?, memory)?;
+            Ok(converted)
+        }
+
+        pub fn constant_vk_nb_commitments_commit_api(memory: &mut Memory) -> YulOutput<U256> {
+            let mut ret = U256::ZERO;
+            let mut _1 = convert_rational_by_to_uint256(U256::from(0x1u128), memory)?;
+            ret = _1;
+            Ok(ret)
+        }
+
+        pub fn convert_rational_2_by_1_to_uint256(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut converted = U256::ZERO;
+            converted = cleanup_uint256(identity(cleanup_rational_by_1(value, memory)?, memory)?, memory)?;
+            Ok(converted)
+        }
+
+        pub fn convert_t_rational_by_to_t_uint256(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut converted = U256::ZERO;
+            converted = cleanup_uint256(identity(cleanup_t_rational_by(value, memory)?, memory)?, memory)?;
+            Ok(converted)
+        }
+
+        pub fn ᵤpow_local(mut ᵤx: U256, mut ᵤe: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut ᵤresult = U256::ZERO;
+            let mut ᵤmPtr = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤmPtr, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, ᵤx, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x80u128), memory)?, ᵤe, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xa0u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            pop(staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x5u128), ᵤmPtr, U256::from(0xc0u128), U256::from(0x0u128), U256::from(0x20u128), memory)?, memory)?;
+            ᵤresult = mload(U256::from(0x0u128), memory)?;
+            Ok(ᵤresult)
+        }
+
+        pub fn zero_value_for_split_uint256(memory: &mut Memory) -> YulOutput<U256> {
+            let mut ret = U256::ZERO;
+            ret = U256::from(0x0u128);
+            Ok(ret)
+        }
+
+        pub fn fun_compute_ith_lagrange_at_z(mut var_zeta: U256, mut var_i: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut var = U256::ZERO;
+            let mut zero_uint256 = zero_value_for_split_uint256(memory)?;
+            var = zero_uint256;
+            let mut var_res = U256::from(0);
+            var_res = zero_uint256;
+            let mut ᵤw = ᵤpow_local(U256::from_be_slice(&[0x2b, 0x33, 0x7d, 0xe1, 0xc8, 0xc1, 0x4f, 0x22, 0xec, 0x9b, 0x9e, 0x2f, 0x96, 0xaf, 0xef, 0x36, 0x52, 0x62, 0x73, 0x66, 0xf8, 0x17, 0x0a, 0x0a, 0x94, 0x8d, 0xad, 0x4a, 0xc1, 0xbd, 0x5e, 0x80]), var_i, memory)?;
+            var_i = addmod(var_zeta, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), ᵤw, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            var_zeta = ᵤpow_local(var_zeta, U256::from(0x8u128), memory)?;
+            var_zeta = addmod(var_zeta, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), U256::from(0x1u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤw = mulmod(ᵤw, U256::from_be_slice(&[0x2a, 0x57, 0xc4, 0xa4, 0x85, 0x0b, 0x6c, 0x24, 0x81, 0x46, 0x3c, 0xff, 0xb1, 0x51, 0x2d, 0x51, 0x83, 0x2d, 0x6b, 0x3f, 0x6a, 0x82, 0x42, 0x7f, 0x1b, 0x65, 0xb6, 0xe1, 0x72, 0x00, 0x00, 0x01]), U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            var_i = ᵤpow_local(var_i, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), U256::from(0x2u128), memory)?, memory)?;
+            ᵤw = mulmod(ᵤw, var_i, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            var_res = mulmod(ᵤw, var_zeta, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            var = var_res;
+            Ok(var)
+        }
+
+        pub fn ᵤerror_sha2(memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤptError = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤptError, shl(U256::from(0xe5u128), U256::from(0x461bcdu128), memory)?, memory)?;
+            mstore(add(ᵤptError, U256::from(0x4u128), memory)?, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤptError, U256::from(0x24u128), memory)?, U256::from(0x19u128), memory)?;
+            mstore(add(ᵤptError, U256::from(0x44u128), memory)?, from_hex("6572726f722073746174696363616c6c20736861322d32353600000000000000"), memory)?;
+            revert(ᵤptError, U256::from(0x64u128), memory)?;
             Ok(())
         }
 
-        fn fun_transfer(var_from: U256, var_to: U256, var_value: U256, memory: &mut Memory) -> YulOutput<()> {
-            let mut _1 = and(var_to, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?;
-            if iszero(_1, memory)? != U256::from(0) {
-                let mut memPtr = mload(from_hex("40"), memory)?;
-                mstore(memPtr, shl(from_hex("e5"), from_hex("461bcd"), memory)?, memory)?;
-                mstore(add(memPtr, from_hex("4"), memory)?, from_hex("20"), memory)?;
-                mstore(add(memPtr, from_hex("24"), memory)?, from_hex("23"), memory)?;
-                mstore(add(memPtr, from_hex("44"), memory)?, from_hex("45726332303a207472616e7366657220746f20746865207a65726f2061646472"), memory)?;
-                mstore(add(memPtr, from_hex("64"), memory)?, from_hex("6573730000000000000000000000000000000000000000000000000000000000"), memory)?;
-                revert(memPtr, from_hex("84"), memory)?;
+        pub fn fun_hash_fr(mut var_x: U256, mut var_y: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut var_res = U256::ZERO;
+            let mut zero_t_uint256 = zero_value_for_split_uint256(memory)?;
+            var_res = zero_t_uint256;
+            let mut ᵤmPtr = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤmPtr, U256::from(0x0u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from(0x0u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, var_x, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, var_y, memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x80u128), memory)?, U256::from(0x0u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x81u128), memory)?, U256::from(0x30u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x82u128), memory)?, U256::from(0x0u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x83u128), memory)?, U256::from(0x42u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x84u128), memory)?, U256::from(0x53u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x85u128), memory)?, U256::from(0x42u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x86u128), memory)?, U256::from(0x32u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x87u128), memory)?, U256::from(0x32u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x88u128), memory)?, U256::from(0x2du128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x89u128), memory)?, U256::from(0x50u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x8au128), memory)?, U256::from(0x6cu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x8bu128), memory)?, U256::from(0x6fu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x8cu128), memory)?, U256::from(0x6eu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x8du128), memory)?, U256::from(0x6bu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x8eu128), memory)?, U256::from(0xbu128), memory)?;
+            let mut ᵤsuccess = staticcall(gas(memory)?, U256::from(0x2u128), ᵤmPtr, U256::from(0x8fu128), ᵤmPtr, U256::from(0x20u128), memory)?;
+            if iszero(ᵤsuccess, memory)? != U256::from(0) {
+                ᵤerror_sha2(memory)?;
             }
-            let mut _2 = and(var_from, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?;
-            mstore(from_hex("00"), _2, memory)?;
-            mstore(from_hex("20"), from_hex("00"), memory)?;
-            let mut _3 = checked_sub_uint256(sload(keccak256(from_hex("00"), from_hex("40"), memory)?, memory)?, var_value, memory)?;
-            mstore(from_hex("00"), _2, memory)?;
-            mstore(from_hex("20"), from_hex("00"), memory)?;
-            sstore(keccak256(from_hex("00"), from_hex("40"), memory)?, _3, memory)?;
-            mstore(from_hex("00"), _1, memory)?;
-            mstore(from_hex("20"), from_hex("00"), memory)?;
-            let mut _4 = checked_add_uint256(sload(keccak256(from_hex("00"), from_hex("40"), memory)?, memory)?, var_value, memory)?;
-            mstore(from_hex("00"), _1, memory)?;
-            mstore(from_hex("20"), from_hex("00"), memory)?;
-            sstore(keccak256(from_hex("00"), from_hex("40"), memory)?, _4, memory)?;
-            let mut _5 = mload(from_hex("40"), memory)?;
-            mstore(_5, var_value, memory)?;
-            log3(_5, from_hex("20"), from_hex("ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"), _2, _1, memory)?;
-            Ok(())
-        }
-
-        fn body(memory: &mut Memory) -> YulOutput<()> {
-            mstore(from_hex("40"), memoryguard(from_hex("80"), memory)?, memory)?;
-            if iszero(lt(calldatasize(memory)?, from_hex("4"), memory)?, memory)? != U256::from(0) {
-                // switch
-                let δ = shr(from_hex("e0"), calldataload(from_hex("0"), memory)?, memory)?;
-                if δ == from_hex("095ea7b3") {
-                    if callvalue(memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    if slt(add(calldatasize(memory)?, not(from_hex("3"), memory)?, memory)?, from_hex("40"), memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    let mut value0 = abi_decode_address(memory)?;
-                    fun_approve(caller(memory)?, value0, calldataload(from_hex("24"), memory)?, memory)?;
-                    let mut memPos = mload(from_hex("40"), memory)?;
-                    mstore(memPos, from_hex("1"), memory)?;
-                    return_(memPos, from_hex("20"), memory)?;
-                } else if δ == from_hex("18160ddd") {
-                    if callvalue(memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    if slt(add(calldatasize(memory)?, not(from_hex("3"), memory)?, memory)?, from_hex("0"), memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    let mut _1 = sload(from_hex("02"), memory)?;
-                    let mut memPos_1 = mload(from_hex("40"), memory)?;
-                    mstore(memPos_1, _1, memory)?;
-                    return_(memPos_1, from_hex("20"), memory)?;
-                } else if δ == from_hex("23b872dd") {
-                    if callvalue(memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    if slt(add(calldatasize(memory)?, not(from_hex("3"), memory)?, memory)?, from_hex("60"), memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    let mut value0_1 = abi_decode_address(memory)?;
-                    let mut value1 = abi_decode_t_address(memory)?;
-                    let mut value = calldataload(from_hex("44"), memory)?;
-                    fun_transfer(value0_1, value1, value, memory)?;
-                    mstore(from_hex("0"), and(value0_1, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?, memory)?;
-                    mstore(from_hex("20"), from_hex("1"), memory)?;
-                    let mut dataSlot = keccak256(from_hex("0"), from_hex("40"), memory)?;
-                    let mut dataSlot_1 = from_hex("0");
-                    mstore(from_hex("0"), and(caller(memory)?, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?, memory)?;
-                    mstore(from_hex("20"), dataSlot, memory)?;
-                    dataSlot_1 = keccak256(from_hex("0"), from_hex("40"), memory)?;
-                    fun_approve(value0_1, caller(memory)?, checked_sub_uint256(sload(dataSlot_1, memory)?, value, memory)?, memory)?;
-                    let mut memPos_2 = mload(from_hex("40"), memory)?;
-                    mstore(memPos_2, from_hex("1"), memory)?;
-                    return_(memPos_2, from_hex("20"), memory)?;
-                } else if δ == from_hex("39509351") {
-                    if callvalue(memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    if slt(add(calldatasize(memory)?, not(from_hex("3"), memory)?, memory)?, from_hex("40"), memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    let mut value0_2 = abi_decode_address(memory)?;
-                    mstore(from_hex("0"), caller(memory)?, memory)?;
-                    mstore(from_hex("20"), from_hex("1"), memory)?;
-                    let mut dataSlot_2 = keccak256(from_hex("0"), from_hex("40"), memory)?;
-                    let mut dataSlot_3 = from_hex("0");
-                    mstore(from_hex("0"), and(value0_2, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?, memory)?;
-                    mstore(from_hex("20"), dataSlot_2, memory)?;
-                    dataSlot_3 = keccak256(from_hex("0"), from_hex("40"), memory)?;
-                    fun_approve(caller(memory)?, value0_2, checked_add_uint256(sload(dataSlot_3, memory)?, calldataload(from_hex("24"), memory)?, memory)?, memory)?;
-                    let mut memPos_3 = mload(from_hex("40"), memory)?;
-                    mstore(memPos_3, from_hex("1"), memory)?;
-                    return_(memPos_3, from_hex("20"), memory)?;
-                } else if δ == from_hex("70a08231") {
-                    if callvalue(memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    if slt(add(calldatasize(memory)?, not(from_hex("3"), memory)?, memory)?, from_hex("20"), memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    mstore(from_hex("0"), and(abi_decode_address(memory)?, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?, memory)?;
-                    mstore(from_hex("20"), from_hex("0"), memory)?;
-                    let mut _2 = sload(keccak256(from_hex("0"), from_hex("40"), memory)?, memory)?;
-                    let mut memPos_4 = mload(from_hex("40"), memory)?;
-                    mstore(memPos_4, _2, memory)?;
-                    return_(memPos_4, from_hex("20"), memory)?;
-                } else if δ == from_hex("a457c2d7") {
-                    if callvalue(memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    if slt(add(calldatasize(memory)?, not(from_hex("3"), memory)?, memory)?, from_hex("40"), memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    let mut value0_3 = abi_decode_address(memory)?;
-                    mstore(from_hex("0"), caller(memory)?, memory)?;
-                    mstore(from_hex("20"), from_hex("1"), memory)?;
-                    let mut dataSlot_4 = keccak256(from_hex("0"), from_hex("40"), memory)?;
-                    let mut dataSlot_5 = from_hex("0");
-                    mstore(from_hex("0"), and(value0_3, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?, memory)?;
-                    mstore(from_hex("20"), dataSlot_4, memory)?;
-                    dataSlot_5 = keccak256(from_hex("0"), from_hex("40"), memory)?;
-                    fun_approve(caller(memory)?, value0_3, checked_sub_uint256(sload(dataSlot_5, memory)?, calldataload(from_hex("24"), memory)?, memory)?, memory)?;
-                    let mut memPos_5 = mload(from_hex("40"), memory)?;
-                    mstore(memPos_5, from_hex("1"), memory)?;
-                    return_(memPos_5, from_hex("20"), memory)?;
-                } else if δ == from_hex("a9059cbb") {
-                    if callvalue(memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    if slt(add(calldatasize(memory)?, not(from_hex("3"), memory)?, memory)?, from_hex("40"), memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    let mut value0_4 = abi_decode_address(memory)?;
-                    fun_transfer(caller(memory)?, value0_4, calldataload(from_hex("24"), memory)?, memory)?;
-                    let mut memPos_6 = mload(from_hex("40"), memory)?;
-                    mstore(memPos_6, from_hex("1"), memory)?;
-                    return_(memPos_6, from_hex("20"), memory)?;
-                } else if δ == from_hex("dd62ed3e") {
-                    if callvalue(memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    if slt(add(calldatasize(memory)?, not(from_hex("3"), memory)?, memory)?, from_hex("40"), memory)? != U256::from(0) {
-                        revert(from_hex("0"), from_hex("0"), memory)?;
-                    }
-                    let mut value0_5 = abi_decode_address(memory)?;
-                    let mut value1_1 = abi_decode_t_address(memory)?;
-                    mstore(from_hex("0"), and(value0_5, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?, memory)?;
-                    mstore(from_hex("20"), from_hex("01"), memory)?;
-                    let mut dataSlot_6 = keccak256(from_hex("0"), from_hex("40"), memory)?;
-                    let mut dataSlot_7 = from_hex("0");
-                    mstore(from_hex("0"), and(value1_1, sub(shl(from_hex("a0"), from_hex("1"), memory)?, from_hex("1"), memory)?, memory)?, memory)?;
-                    mstore(from_hex("20"), dataSlot_6, memory)?;
-                    dataSlot_7 = keccak256(from_hex("0"), from_hex("40"), memory)?;
-                    let mut _3 = sload(dataSlot_7, memory)?;
-                    let mut memPos_7 = mload(from_hex("40"), memory)?;
-                    mstore(memPos_7, _3, memory)?;
-                    return_(memPos_7, from_hex("20"), memory)?;
+            let mut ᵤb0 = mload(ᵤmPtr, memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from(0x1u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x21u128), memory)?, U256::from(0x42u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x22u128), memory)?, U256::from(0x53u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x23u128), memory)?, U256::from(0x42u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x24u128), memory)?, U256::from(0x32u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x25u128), memory)?, U256::from(0x32u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x26u128), memory)?, U256::from(0x2du128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x27u128), memory)?, U256::from(0x50u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x28u128), memory)?, U256::from(0x6cu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x29u128), memory)?, U256::from(0x6fu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x2au128), memory)?, U256::from(0x6eu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x2bu128), memory)?, U256::from(0x6bu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x2cu128), memory)?, U256::from(0xbu128), memory)?;
+            ᵤsuccess = staticcall(gas(memory)?, U256::from(0x2u128), ᵤmPtr, U256::from(0x2du128), ᵤmPtr, U256::from(0x20u128), memory)?;
+            if iszero(ᵤsuccess, memory)? != U256::from(0) {
+                ᵤerror_sha2(memory)?;
+            }
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, xor(mload(ᵤmPtr, memory)?, ᵤb0, memory)?, memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x40u128), memory)?, U256::from(0x2u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x41u128), memory)?, U256::from(0x42u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x42u128), memory)?, U256::from(0x53u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x43u128), memory)?, U256::from(0x42u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x44u128), memory)?, U256::from(0x32u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x45u128), memory)?, U256::from(0x32u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x46u128), memory)?, U256::from(0x2du128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x47u128), memory)?, U256::from(0x50u128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x48u128), memory)?, U256::from(0x6cu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x49u128), memory)?, U256::from(0x6fu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x4au128), memory)?, U256::from(0x6eu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x4bu128), memory)?, U256::from(0x6bu128), memory)?;
+            mstore8(add(ᵤmPtr, U256::from(0x4cu128), memory)?, U256::from(0xbu128), memory)?;
+            let mut ᵤoffset = add(ᵤmPtr, U256::from(0x20u128), memory)?;
+            ᵤsuccess = staticcall(gas(memory)?, U256::from(0x2u128), ᵤoffset, U256::from(0x2du128), ᵤoffset, U256::from(0x20u128), memory)?;
+            if iszero(ᵤsuccess, memory)? != U256::from(0) {
+                ᵤerror_sha2(memory)?;
+            }
+            var_res = mulmod(mload(ᵤmPtr, memory)?, shl(U256::from(0x80u128), U256::from(0x1u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤoffset = add(ᵤmPtr, U256::from(0x10u128), memory)?;
+            let mut ᵤi = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi, U256::from(0x10u128), memory)? != U256::from(0) {
+                // body
+                {
+                    mstore8(ᵤoffset, U256::from(0x0u128), memory)?;
+                    ᵤoffset = add(ᵤoffset, U256::from(0x1u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi = add(ᵤi, U256::from(0x1u128), memory)?;
                 }
             }
-            revert(from_hex("0"), from_hex("0"), memory)?;
+            let mut ᵤb1 = mload(add(ᵤmPtr, U256::from(0x10u128), memory)?, memory)?;
+            var_res = addmod(var_res, ᵤb1, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            Ok(var_res)
+        }
+
+        pub fn fun_load_vk_commitments_indices_commit_api(mut var_v_mpos: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut usr_v = add(var_v_mpos, U256::from(0x20u128), memory)?;
+            mstore(usr_v, U256::from(0x5u128), memory)?;
+            usr_v = add(usr_v, U256::from(0x20u128), memory)?;
+            Ok(())
+        }
+
+        pub fn fun_load_wire_commitments_commit_api(mut var_wire_commitments_mpos: U256, mut var_proof_302_mpos: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤw = add(var_wire_commitments_mpos, U256::from(0x20u128), memory)?;
+            let mut ᵤp = add(var_proof_302_mpos, U256::from(0x360u128), memory)?;
+            ᵤp = add(ᵤp, mul(U256::from(0x1u128), U256::from(0x20u128), memory)?, memory)?;
+            let mut ᵤi = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi, mul(U256::from(0x1u128), U256::from(0x2u128), memory)?, memory)? != U256::from(0) {
+                // body
+                {
+                    mstore(ᵤw, mload(ᵤp, memory)?, memory)?;
+                    ᵤw = add(ᵤw, U256::from(0x20u128), memory)?;
+                    ᵤp = add(ᵤp, U256::from(0x20u128), memory)?;
+                    mstore(ᵤw, mload(ᵤp, memory)?, memory)?;
+                    ᵤw = add(ᵤw, U256::from(0x20u128), memory)?;
+                    ᵤp = add(ᵤp, U256::from(0x20u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi = add(ᵤi, U256::from(0x1u128), memory)?;
+                }
+            }
+            Ok(())
+        }
+
+        pub fn increment_wrapping_uint256(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut ret = U256::ZERO;
+            ret = cleanup_uint256(add(value, U256::from(0x1u128), memory)?, memory)?;
+            Ok(ret)
+        }
+
+        pub fn panic_error_0x32(memory: &mut Memory) -> YulOutput<()> {
+            mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), memory)?, memory)?;
+            mstore(U256::from(0x4u128), U256::from(0x32u128), memory)?;
+            revert(U256::from(0x0u128), U256::from(0x24u128), memory)?;
+            Ok(())
+        }
+
+        pub fn memory_array_index_access_uint256_dyn(mut baseRef: U256, mut index: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut addr = U256::ZERO;
+            if iszero(lt(index, array_length_array_uint256_dyn(baseRef, memory)?, memory)?, memory)? != U256::from(0) {
+                panic_error_0x32(memory)?;
+            }
+            let mut offset = mul(index, U256::from(0x20u128), memory)?;
+            offset = add(offset, U256::from(0x20u128), memory)?;
+            addr = add(baseRef, offset, memory)?;
+            Ok(addr)
+        }
+
+        pub fn read_from_memoryt_uint256(mut ptr: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut returnValue = U256::ZERO;
+            let mut value = cleanup_uint256(mload(ptr, memory)?, memory)?;
+            returnValue = value;
+            Ok(returnValue)
+        }
+
+        pub fn ᵤpow_130(mut ᵤx: U256, mut ᵤe: U256, mut ᵤmPtr: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut ᵤres = U256::ZERO;
+            mstore(ᵤmPtr, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, ᵤx, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x80u128), memory)?, ᵤe, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xa0u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            pop(staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x5u128), ᵤmPtr, U256::from(0xc0u128), ᵤmPtr, U256::from(0x20u128), memory)?, memory)?;
+            ᵤres = mload(ᵤmPtr, memory)?;
+            Ok(ᵤres)
+        }
+
+        pub fn ᵤbatch_invert(mut ᵤins: U256, mut ᵤnb_ins: U256, mut ᵤmPtr: U256, memory: &mut Memory) -> YulOutput<()> {
+            mstore(ᵤmPtr, U256::from(0x1u128), memory)?;
+            let mut ᵤoffset = U256::from(0x0u128);
+            let mut ᵤi = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi, ᵤnb_ins, memory)? != U256::from(0) {
+                // body
+                {
+                    let mut ᵤprev = mload(add(ᵤmPtr, ᵤoffset, memory)?, memory)?;
+                    let mut ᵤcur = mload(add(ᵤins, ᵤoffset, memory)?, memory)?;
+                    ᵤcur = mulmod(ᵤprev, ᵤcur, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                    ᵤoffset = add(ᵤoffset, U256::from(0x20u128), memory)?;
+                    mstore(add(ᵤmPtr, ᵤoffset, memory)?, ᵤcur, memory)?;
+                }
+                // post
+                {
+                    ᵤi = add(ᵤi, U256::from(0x1u128), memory)?;
+                }
+            }
+            ᵤins = add(ᵤins, sub(ᵤoffset, U256::from(0x20u128), memory)?, memory)?;
+            ᵤmPtr = add(ᵤmPtr, ᵤoffset, memory)?;
+            let mut ᵤinv = ᵤpow_130(mload(ᵤmPtr, memory)?, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), U256::from(0x2u128), memory)?, add(ᵤmPtr, U256::from(0x20u128), memory)?, memory)?;
+            let mut ᵤi_1 = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi_1, ᵤnb_ins, memory)? != U256::from(0) {
+                // body
+                {
+                    ᵤmPtr = sub(ᵤmPtr, U256::from(0x20u128), memory)?;
+                    let mut ᵤtmp = mload(ᵤins, memory)?;
+                    let mut ᵤcur_1 = mulmod(ᵤinv, mload(ᵤmPtr, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                    mstore(ᵤins, ᵤcur_1, memory)?;
+                    ᵤinv = mulmod(ᵤinv, ᵤtmp, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                    ᵤins = sub(ᵤins, U256::from(0x20u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi_1 = add(ᵤi_1, U256::from(0x1u128), memory)?;
+                }
+            }
+            Ok(())
+        }
+
+        pub fn ᵤbatch_compute_lagranges_at_z(mut ᵤz: U256, mut ᵤn: U256, mut ᵤmPtr: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤzn = addmod(ᵤpow_130(ᵤz, U256::from(0x8u128), ᵤmPtr, memory)?, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), U256::from(0x1u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤzn = mulmod(ᵤzn, U256::from_be_slice(&[0x2a, 0x57, 0xc4, 0xa4, 0x85, 0x0b, 0x6c, 0x24, 0x81, 0x46, 0x3c, 0xff, 0xb1, 0x51, 0x2d, 0x51, 0x83, 0x2d, 0x6b, 0x3f, 0x6a, 0x82, 0x42, 0x7f, 0x1b, 0x65, 0xb6, 0xe1, 0x72, 0x00, 0x00, 0x01]), U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            let mut usr_w = U256::from(0x1u128);
+            let mut usr_mPtr = ᵤmPtr;
+            let mut ᵤi = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi, ᵤn, memory)? != U256::from(0) {
+                // body
+                {
+                    mstore(usr_mPtr, addmod(ᵤz, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), usr_w, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+                    usr_w = mulmod(usr_w, U256::from_be_slice(&[0x2b, 0x33, 0x7d, 0xe1, 0xc8, 0xc1, 0x4f, 0x22, 0xec, 0x9b, 0x9e, 0x2f, 0x96, 0xaf, 0xef, 0x36, 0x52, 0x62, 0x73, 0x66, 0xf8, 0x17, 0x0a, 0x0a, 0x94, 0x8d, 0xad, 0x4a, 0xc1, 0xbd, 0x5e, 0x80]), U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                    usr_mPtr = add(usr_mPtr, U256::from(0x20u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi = add(ᵤi, U256::from(0x1u128), memory)?;
+                }
+            }
+            ᵤbatch_invert(ᵤmPtr, ᵤn, usr_mPtr, memory)?;
+            usr_mPtr = ᵤmPtr;
+            usr_w = U256::from(0x1u128);
+            let mut ᵤi_1 = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi_1, ᵤn, memory)? != U256::from(0) {
+                // body
+                {
+                    mstore(usr_mPtr, mulmod(mulmod(mload(usr_mPtr, memory)?, ᵤzn, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, usr_w, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+                    usr_mPtr = add(usr_mPtr, U256::from(0x20u128), memory)?;
+                    usr_w = mulmod(usr_w, U256::from_be_slice(&[0x2b, 0x33, 0x7d, 0xe1, 0xc8, 0xc1, 0x4f, 0x22, 0xec, 0x9b, 0x9e, 0x2f, 0x96, 0xaf, 0xef, 0x36, 0x52, 0x62, 0x73, 0x66, 0xf8, 0x17, 0x0a, 0x0a, 0x94, 0x8d, 0xad, 0x4a, 0xc1, 0xbd, 0x5e, 0x80]), U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                }
+                // post
+                {
+                    ᵤi_1 = add(ᵤi_1, U256::from(0x1u128), memory)?;
+                }
+            }
+            Ok(())
+        }
+
+        pub fn ᵤsum_pi_wo_api_commit(mut ᵤins: U256, mut ᵤn: U256, mut ᵤz: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤli = mload(U256::from(0x40u128), memory)?;
+            ᵤbatch_compute_lagranges_at_z(ᵤz, ᵤn, ᵤli, memory)?;
+            let mut ᵤres = U256::from(0x0u128);
+            let mut ᵤtmp = U256::from(0x0u128);
+            let mut ᵤi = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi, ᵤn, memory)? != U256::from(0) {
+                // body
+                {
+                    ᵤtmp = mulmod(mload(ᵤli, memory)?, mload(ᵤins, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                    ᵤres = addmod(ᵤres, ᵤtmp, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                    ᵤli = add(ᵤli, U256::from(0x20u128), memory)?;
+                    ᵤins = add(ᵤins, U256::from(0x20u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi = add(ᵤi, U256::from(0x1u128), memory)?;
+                }
+            }
+            mstore(mload(U256::from(0x40u128), memory)?, ᵤres, memory)?;
+            Ok(())
+        }
+
+        pub fn zero_value_for_split_array_uint256_dyn(memory: &mut Memory) -> YulOutput<U256> {
+            let mut ret = U256::ZERO;
+            ret = U256::from(0x60u128);
+            Ok(ret)
+        }
+
+        pub fn fun_compute_pi(mut var_proof_325_mpos: U256, mut var_public_inputs_328_mpos: U256, mut var_zeta: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut var = U256::ZERO;
+            let mut zero_uint256 = zero_value_for_split_uint256(memory)?;
+            var = zero_uint256;
+            let mut var_zeta_power_n_minus_one = U256::from(0);
+            var_zeta_power_n_minus_one = zero_uint256;
+            let mut var_pi = U256::from(0);
+            var_pi = zero_uint256;
+            ᵤsum_pi_wo_api_commit(add(var_public_inputs_328_mpos, U256::from(0x20u128), memory)?, mload(var_public_inputs_328_mpos, memory)?, var_zeta, memory)?;
+            var_pi = mload(mload(U256::from(0x40u128), memory)?, memory)?;
+            var_zeta_power_n_minus_one = ᵤpow_130(var_zeta, U256::from(0x8u128), mload(U256::from(0x40u128), memory)?, memory)?;
+            var_zeta_power_n_minus_one = addmod(var_zeta_power_n_minus_one, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), U256::from(0x1u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            let mut expr = constant_vk_nb_commitments_commit_api(memory)?;
+            let mut expr_351_mpos = allocate_and_zero_memory_array_array_uint256_dyn(expr, memory)?;
+            fun_load_vk_commitments_indices_commit_api(expr_351_mpos, memory)?;
+            let mut expr_1 = gt(cleanup_uint256(expr, memory)?, convert_t_rational_by_to_t_uint256(U256::from(0x0u128), memory)?, memory)?;
+            if expr_1 != U256::from(0) {
+                let mut var_wire_committed_commitments_mpos = U256::from(0);
+                let mut zero_array_uint256_dyn_mpos = zero_value_for_split_array_uint256_dyn(memory)?;
+                var_wire_committed_commitments_mpos = zero_array_uint256_dyn_mpos;
+                let mut expr_2 = U256::from(0x2u128);
+                let mut expr_3 = checked_mul_uint256(convert_rational_2_by_1_to_uint256(U256::from(0x2u128), memory)?, expr, memory)?;
+                let mut expr_mpos = allocate_and_zero_memory_array_array_uint256_dyn(expr_3, memory)?;
+                var_wire_committed_commitments_mpos = expr_mpos;
+                fun_load_wire_commitments_commit_api(expr_mpos, var_proof_325_mpos, memory)?;
+                let mut var_i = convert_t_rational_by_to_t_uint256(U256::from(0x0u128), memory)?;
+                // for loop
+                while U256::from(0x1u128) != U256::from(0) {
+                    // body
+                    {
+                        let mut expr_4 = lt(cleanup_uint256(var_i, memory)?, cleanup_uint256(expr, memory)?, memory)?;
+                        if iszero(expr_4, memory)? != U256::from(0) {
+                            break;
+                        }
+                        let mut expr_5 = checked_mul_uint256(convert_rational_2_by_1_to_uint256(expr_2, memory)?, var_i, memory)?;
+                        let mut _2 = read_from_memoryt_uint256(memory_array_index_access_uint256_dyn(expr_mpos, expr_5, memory)?, memory)?;
+                        let mut expr_6 = checked_mul_uint256(convert_rational_2_by_1_to_uint256(expr_2, memory)?, var_i, memory)?;
+                        let mut expr_7 = checked_add_uint256(expr_6, convert_rational_by_to_uint256(U256::from(0x1u128), memory)?, memory)?;
+                        let mut _3 = read_from_memoryt_uint256(memory_array_index_access_uint256_dyn(expr_mpos, expr_7, memory)?, memory)?;
+                        let mut expr_8 = fun_hash_fr(_2, _3, memory)?;
+                        let mut _4 = read_from_memoryt_uint256(memory_array_index_access_uint256_dyn(expr_351_mpos, var_i, memory)?, memory)?;
+                        let mut expr_9 = array_length_array_uint256_dyn(var_public_inputs_328_mpos, memory)?;
+                        let mut expr_10 = checked_add_uint256(_4, expr_9, memory)?;
+                        let mut expr_11 = fun_compute_ith_lagrange_at_z(var_zeta, expr_10, memory)?;
+                        let mut var_a = expr_11;
+                        var_a = mulmod(expr_8, expr_11, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                        var_pi = addmod(var_pi, var_a, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                    }
+                    // post
+                    {
+                        let mut _1 = increment_wrapping_uint256(var_i, memory)?;
+                        var_i = _1;
+                    }
+                }
+            }
+            var = var_pi;
+            Ok(var)
+        }
+
+        pub fn ᵤderive_alpha(mut ᵤaproof: U256, mut ᵤprev_challenge: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤmPtr = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤmPtr, U256::from(0x616c706861u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, ᵤprev_challenge, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, mload(add(ᵤaproof, U256::from(0x240u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, mload(add(ᵤaproof, U256::from(0x260u128), memory)?, memory)?, memory)?;
+            pop(staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x2u128), add(ᵤmPtr, U256::from(0x1bu128), memory)?, U256::from(0x65u128), ᵤmPtr, U256::from(0x20u128), memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤderive_beta(mut ᵤaproof: U256, mut ᵤprev_challenge: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤmPtr = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤmPtr, U256::from(0x62657461u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, ᵤprev_challenge, memory)?;
+            pop(staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x2u128), add(ᵤmPtr, U256::from(0x1cu128), memory)?, U256::from(0x24u128), ᵤmPtr, U256::from(0x20u128), memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤderive_gamma(mut ᵤaproof: U256, mut ᵤpub_inputs: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤmPtr = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤmPtr, U256::from(0x67616d6d61u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from_be_slice(&[0x1d, 0x54, 0x08, 0xc4, 0x3c, 0x22, 0xcc, 0x34, 0x43, 0x44, 0x88, 0xa0, 0xcb, 0x4f, 0xa2, 0x74, 0x5c, 0x3f, 0x42, 0x2b, 0x0f, 0xb1, 0x95, 0x72, 0x4e, 0x3f, 0x11, 0x43, 0xdd, 0xdc, 0x62, 0x2c]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, U256::from_be_slice(&[0x16, 0x90, 0xd5, 0x73, 0xab, 0xd0, 0x18, 0x44, 0xec, 0x52, 0x82, 0x69, 0xbe, 0x78, 0x98, 0xe2, 0x59, 0xc9, 0xf1, 0xc7, 0x3c, 0x3c, 0x23, 0xa3, 0x65, 0xaf, 0xa5, 0x12, 0xc3, 0x45, 0x60, 0xe0]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, U256::from_be_slice(&[0x02, 0xa5, 0xa3, 0xc7, 0x70, 0xa8, 0xe8, 0x59, 0x5b, 0xff, 0x76, 0x35, 0x8e, 0xf9, 0x82, 0xe8, 0xab, 0xf9, 0x5b, 0x08, 0xbf, 0x74, 0xf5, 0xc8, 0x70, 0x9b, 0xc3, 0x4d, 0x28, 0x48, 0x4b, 0x01]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x80u128), memory)?, U256::from_be_slice(&[0x01, 0x24, 0xc0, 0x5f, 0x06, 0xc5, 0xd4, 0x67, 0x26, 0xe8, 0x9a, 0x1a, 0xcc, 0xcf, 0x22, 0xf6, 0x4f, 0x8c, 0xe5, 0x35, 0x69, 0x9c, 0x27, 0xa6, 0x2a, 0x6a, 0x6a, 0x60, 0x45, 0xca, 0x36, 0x3e]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xa0u128), memory)?, U256::from_be_slice(&[0x0f, 0x8e, 0xc3, 0xf3, 0x86, 0x11, 0x51, 0x4a, 0xad, 0xfd, 0x2b, 0x6f, 0xcc, 0x3b, 0x6c, 0x29, 0x5b, 0xad, 0xd9, 0x8f, 0xfc, 0xe4, 0xb6, 0x5a, 0x9e, 0xa6, 0x71, 0x83, 0x28, 0xba, 0x18, 0x1f]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xc0u128), memory)?, U256::from_be_slice(&[0x00, 0xf6, 0x42, 0xac, 0x5b, 0xe0, 0xd8, 0x22, 0xc5, 0xa5, 0x35, 0x31, 0x2d, 0x58, 0x9b, 0x55, 0x57, 0xa8, 0xdb, 0x31, 0x83, 0xe4, 0x08, 0xfb, 0x78, 0xff, 0x8f, 0x1c, 0x8b, 0x7b, 0x20, 0x46]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xe0u128), memory)?, U256::from_be_slice(&[0x1c, 0x1b, 0x52, 0x5d, 0xf0, 0xb1, 0x85, 0x54, 0xd4, 0xdd, 0x82, 0x8f, 0x8b, 0x2e, 0x60, 0x73, 0x57, 0xf8, 0x25, 0x31, 0x37, 0x24, 0x2d, 0x14, 0xbc, 0x67, 0x38, 0x61, 0xdc, 0x34, 0xe1, 0x1a]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x100u128), memory)?, U256::from_be_slice(&[0x26, 0x48, 0xb5, 0xfd, 0xaf, 0xc7, 0x00, 0x00, 0x40, 0x29, 0xfc, 0x59, 0xff, 0x01, 0x40, 0x5c, 0x41, 0x0b, 0xb9, 0x1c, 0xdd, 0xc1, 0xb0, 0x7a, 0x79, 0x34, 0x2d, 0xb6, 0x0c, 0x64, 0xdf, 0x9e]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x120u128), memory)?, U256::from_be_slice(&[0x0c, 0x85, 0x03, 0x37, 0x81, 0x2a, 0xd8, 0xff, 0xa6, 0xd2, 0x93, 0x49, 0x04, 0x23, 0xf4, 0x91, 0xc4, 0x2e, 0x9b, 0xef, 0xa8, 0x8e, 0x42, 0xd9, 0xaa, 0x47, 0x6e, 0x19, 0x0f, 0x25, 0x07, 0xee]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x140u128), memory)?, U256::from_be_slice(&[0x0e, 0x1c, 0x89, 0x48, 0xd9, 0x1d, 0xab, 0x2e, 0x9f, 0xdc, 0xe3, 0x37, 0xe0, 0xa3, 0x45, 0xa1, 0xa7, 0xf1, 0xa2, 0x63, 0xa2, 0xda, 0xca, 0x60, 0x12, 0x12, 0x83, 0x20, 0xe5, 0xe8, 0x14, 0x69]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x160u128), memory)?, U256::from_be_slice(&[0x0b, 0x7b, 0x83, 0x7f, 0xbc, 0x61, 0x14, 0xcf, 0x48, 0x7b, 0x04, 0xa0, 0x5b, 0x3a, 0xeb, 0x8e, 0xac, 0x5d, 0xcf, 0x63, 0x02, 0x84, 0xd3, 0x20, 0x8d, 0x3e, 0x07, 0x2b, 0x2c, 0x37, 0x84, 0x36]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x180u128), memory)?, U256::from_be_slice(&[0x15, 0x62, 0xcf, 0x4b, 0x10, 0x44, 0xda, 0x21, 0xe7, 0x9e, 0xd8, 0xa6, 0xed, 0x7c, 0x39, 0x42, 0x9e, 0xbd, 0x00, 0x84, 0x97, 0x3c, 0x8d, 0x9e, 0x25, 0x26, 0x8f, 0xad, 0x26, 0xbe, 0x29, 0x1b]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x1a0u128), memory)?, U256::from_be_slice(&[0x0b, 0x7b, 0x83, 0x7f, 0xbc, 0x61, 0x14, 0xcf, 0x48, 0x7b, 0x04, 0xa0, 0x5b, 0x3a, 0xeb, 0x8e, 0xac, 0x5d, 0xcf, 0x63, 0x02, 0x84, 0xd3, 0x20, 0x8d, 0x3e, 0x07, 0x2b, 0x2c, 0x37, 0x84, 0x36]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x1c0u128), memory)?, U256::from_be_slice(&[0x1b, 0x01, 0x7f, 0x27, 0xd0, 0xec, 0xc6, 0x07, 0xd0, 0xb1, 0x6d, 0x0f, 0x94, 0x05, 0x1f, 0x1a, 0xf8, 0xc4, 0x6a, 0x0c, 0xd1, 0x35, 0x3c, 0xef, 0x16, 0xf9, 0xfc, 0x69, 0xb1, 0xbe, 0xd4, 0x2c]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x1e0u128), memory)?, U256::from(0x0u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x200u128), memory)?, U256::from(0x0u128), memory)?;
+            let mut ᵤpi = add(ᵤpub_inputs, U256::from(0x20u128), memory)?;
+            let mut usr_mPtr = add(ᵤmPtr, U256::from(0x220u128), memory)?;
+            let mut ᵤi = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi, mload(ᵤpub_inputs, memory)?, memory)? != U256::from(0) {
+                // body
+                {
+                    mstore(usr_mPtr, mload(ᵤpi, memory)?, memory)?;
+                    ᵤpi = add(ᵤpi, U256::from(0x20u128), memory)?;
+                    usr_mPtr = add(usr_mPtr, U256::from(0x20u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi = add(ᵤi, U256::from(0x1u128), memory)?;
+                }
+            }
+            let mut usr_proof = add(ᵤaproof, U256::from(0x360u128), memory)?;
+            usr_proof = add(usr_proof, mul(U256::from(0x1u128), U256::from(0x20u128), memory)?, memory)?;
+            let mut ᵤi_1 = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi_1, U256::from(0x1u128), memory)? != U256::from(0) {
+                // body
+                {
+                    mstore(usr_mPtr, mload(usr_proof, memory)?, memory)?;
+                    mstore(add(usr_mPtr, U256::from(0x20u128), memory)?, mload(add(usr_proof, U256::from(0x20u128), memory)?, memory)?, memory)?;
+                    usr_mPtr = add(usr_mPtr, U256::from(0x40u128), memory)?;
+                    usr_proof = add(usr_proof, U256::from(0x40u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi_1 = add(ᵤi_1, U256::from(0x1u128), memory)?;
+                }
+            }
+            mstore(usr_mPtr, mload(add(ᵤaproof, U256::from(0x20u128), memory)?, memory)?, memory)?;
+            mstore(add(usr_mPtr, U256::from(0x20u128), memory)?, mload(add(ᵤaproof, U256::from(0x40u128), memory)?, memory)?, memory)?;
+            mstore(add(usr_mPtr, U256::from(0x40u128), memory)?, mload(add(ᵤaproof, U256::from(0x60u128), memory)?, memory)?, memory)?;
+            mstore(add(usr_mPtr, U256::from(0x60u128), memory)?, mload(add(ᵤaproof, U256::from(0x80u128), memory)?, memory)?, memory)?;
+            mstore(add(usr_mPtr, U256::from(0x80u128), memory)?, mload(add(ᵤaproof, U256::from(0xa0u128), memory)?, memory)?, memory)?;
+            mstore(add(usr_mPtr, U256::from(0xa0u128), memory)?, mload(add(ᵤaproof, U256::from(0xc0u128), memory)?, memory)?, memory)?;
+            let mut ᵤsize = add(U256::from(0x2c5u128), mul(mload(ᵤpub_inputs, memory)?, U256::from(0x20u128), memory)?, memory)?;
+            ᵤsize = add(ᵤsize, mul(U256::from(0x1u128), U256::from(0x40u128), memory)?, memory)?;
+            pop(staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x2u128), add(ᵤmPtr, U256::from(0x1bu128), memory)?, ᵤsize, ᵤmPtr, U256::from(0x20u128), memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤderive_zeta(mut ᵤaproof: U256, mut ᵤprev_challenge: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤmPtr = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤmPtr, U256::from(0x7a657461u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, ᵤprev_challenge, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, mload(add(ᵤaproof, U256::from(0xe0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, mload(add(ᵤaproof, U256::from(0x100u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x80u128), memory)?, mload(add(ᵤaproof, U256::from(0x120u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xa0u128), memory)?, mload(add(ᵤaproof, U256::from(0x140u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xc0u128), memory)?, mload(add(ᵤaproof, U256::from(0x160u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xe0u128), memory)?, mload(add(ᵤaproof, U256::from(0x180u128), memory)?, memory)?, memory)?;
+            pop(staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x2u128), add(ᵤmPtr, U256::from(0x1cu128), memory)?, U256::from(0xe4u128), ᵤmPtr, U256::from(0x20u128), memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn fun_derive_gamma_beta_alpha_zeta(mut var_proof_mpos: U256, mut var_public_inputs_266_mpos: U256, memory: &mut Memory) -> YulOutput<(U256, U256, U256, U256)> {
+            let mut var = U256::ZERO;
+            let mut var_1 = U256::ZERO;
+            let mut var_2 = U256::ZERO;
+            let mut var_ = U256::ZERO;
+            let mut zero_uint256 = zero_value_for_split_uint256(memory)?;
+            var = zero_uint256;
+            var_1 = zero_uint256;
+            var_2 = zero_uint256;
+            var_ = zero_uint256;
+            let mut var_gamma = U256::from(0);
+            var_gamma = zero_uint256;
+            let mut var_beta = U256::from(0);
+            var_beta = zero_uint256;
+            let mut var_alpha = U256::from(0);
+            var_alpha = zero_uint256;
+            let mut var_zeta = U256::from(0);
+            var_zeta = zero_uint256;
+            let mut ᵤmem = mload(U256::from(0x40u128), memory)?;
+            ᵤderive_gamma(var_proof_mpos, var_public_inputs_266_mpos, memory)?;
+            var_gamma = mload(ᵤmem, memory)?;
+            ᵤderive_beta(var_proof_mpos, var_gamma, memory)?;
+            var_beta = mload(ᵤmem, memory)?;
+            ᵤderive_alpha(var_proof_mpos, var_beta, memory)?;
+            var_alpha = mload(ᵤmem, memory)?;
+            ᵤderive_zeta(var_proof_mpos, var_alpha, memory)?;
+            var_zeta = mload(ᵤmem, memory)?;
+            var_gamma = mod_(var_gamma, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            var_beta = mod_(var_beta, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            var_alpha = mod_(var_alpha, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            var_zeta = mod_(var_zeta, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            var = var_gamma;
+            var_1 = var_beta;
+            var_2 = var_alpha;
+            var_ = var_zeta;
+            Ok((var, var_1, var_2, var_))
+        }
+
+        pub fn ᵤfr_acc_mul(mut ᵤdst: U256, mut ᵤsrc: U256, mut ᵤs: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤtmp = mulmod(mload(ᵤsrc, memory)?, ᵤs, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            mstore(ᵤdst, addmod(mload(ᵤdst, memory)?, ᵤtmp, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤpoint_acc_mul(mut ᵤdst: U256, mut ᵤsrc: U256, mut ᵤs: U256, mut ᵤmPtr: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤmPtr, mload(ᵤsrc, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, mload(add(ᵤsrc, U256::from(0x20u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, ᵤs, memory)?;
+            let mut ᵤl_success = staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x7u128), ᵤmPtr, U256::from(0x60u128), ᵤmPtr, U256::from(0x40u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, mload(ᵤdst, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, mload(add(ᵤdst, U256::from(0x20u128), memory)?, memory)?, memory)?;
+            ᵤl_success = and(ᵤl_success, staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x6u128), ᵤmPtr, U256::from(0x80u128), ᵤdst, U256::from(0x40u128), memory)?, memory)?;
+            mstore(add(ᵤstate, U256::from(0x240u128), memory)?, and(ᵤl_success, mload(add(ᵤstate, U256::from(0x240u128), memory)?, memory)?, memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤpoint_add(mut ᵤdst: U256, mut ᵤp: U256, mut ᵤq: U256, mut ᵤmPtr: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤmPtr, mload(ᵤp, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, mload(add(ᵤp, U256::from(0x20u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, mload(ᵤq, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, mload(add(ᵤq, U256::from(0x20u128), memory)?, memory)?, memory)?;
+            let mut ᵤl_success = staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x6u128), ᵤmPtr, U256::from(0x80u128), ᵤdst, U256::from(0x40u128), memory)?;
+            mstore(add(ᵤstate, U256::from(0x240u128), memory)?, and(ᵤl_success, mload(add(ᵤstate, U256::from(0x240u128), memory)?, memory)?, memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤpoint_mul(mut ᵤdst: U256, mut ᵤsrc: U256, mut ᵤs: U256, mut ᵤmPtr: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            mstore(ᵤmPtr, mload(ᵤsrc, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, mload(add(ᵤsrc, U256::from(0x20u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, ᵤs, memory)?;
+            let mut ᵤl_success = staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x7u128), ᵤmPtr, U256::from(0x60u128), ᵤdst, U256::from(0x40u128), memory)?;
+            mstore(add(ᵤstate, U256::from(0x240u128), memory)?, and(ᵤl_success, mload(add(ᵤstate, U256::from(0x240u128), memory)?, memory)?, memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤbatch_verify_multi_points(mut ᵤaproof: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            let mut ᵤmPtr = add(ᵤstate, U256::from(0x280u128), memory)?;
+            let mut ᵤrandom = mod_(keccak256(ᵤstate, U256::from(0x20u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            let mut ᵤfolded_quotients = ᵤmPtr;
+            ᵤmPtr = add(ᵤmPtr, U256::from(0x40u128), memory)?;
+            mstore(ᵤfolded_quotients, mload(add(ᵤaproof, U256::from(0x2e0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤfolded_quotients, U256::from(0x20u128), memory)?, mload(add(ᵤaproof, U256::from(0x300u128), memory)?, memory)?, memory)?;
+            ᵤpoint_acc_mul(ᵤfolded_quotients, add(ᵤaproof, U256::from(0x320u128), memory)?, ᵤrandom, ᵤmPtr, memory)?;
+            let mut ᵤfolded_digests = add(ᵤstate, U256::from(0x180u128), memory)?;
+            ᵤpoint_acc_mul(ᵤfolded_digests, add(ᵤaproof, U256::from(0x240u128), memory)?, ᵤrandom, ᵤmPtr, memory)?;
+            let mut ᵤfolded_evals = add(ᵤstate, U256::from(0x160u128), memory)?;
+            ᵤfr_acc_mul(ᵤfolded_evals, add(ᵤaproof, U256::from(0x280u128), memory)?, ᵤrandom, memory)?;
+            let mut ᵤfolded_evals_commit = ᵤmPtr;
+            ᵤmPtr = add(ᵤmPtr, U256::from(0x40u128), memory)?;
+            mstore(ᵤfolded_evals_commit, U256::from(0x1u128), memory)?;
+            mstore(add(ᵤfolded_evals_commit, U256::from(0x20u128), memory)?, U256::from(0x2u128), memory)?;
+            mstore(add(ᵤfolded_evals_commit, U256::from(0x40u128), memory)?, mload(ᵤfolded_evals, memory)?, memory)?;
+            pop(staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x7u128), ᵤfolded_evals_commit, U256::from(0x60u128), ᵤfolded_evals_commit, U256::from(0x40u128), memory)?, memory)?;
+            let mut ᵤfolded_evals_commit_y = add(ᵤfolded_evals_commit, U256::from(0x20u128), memory)?;
+            mstore(ᵤfolded_evals_commit_y, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x97, 0x81, 0x6a, 0x91, 0x68, 0x71, 0xca, 0x8d, 0x3c, 0x20, 0x8c, 0x16, 0xd8, 0x7c, 0xfd, 0x47]), mload(ᵤfolded_evals_commit_y, memory)?, memory)?, memory)?;
+            ᵤpoint_add(ᵤfolded_digests, ᵤfolded_digests, ᵤfolded_evals_commit, ᵤmPtr, memory)?;
+            let mut ᵤfolded_points_quotients = ᵤmPtr;
+            ᵤmPtr = add(ᵤmPtr, U256::from(0x40u128), memory)?;
+            ᵤpoint_mul(ᵤfolded_points_quotients, add(ᵤaproof, U256::from(0x2e0u128), memory)?, mload(add(ᵤstate, U256::from(0x60u128), memory)?, memory)?, ᵤmPtr, memory)?;
+            let mut ᵤzeta_omega = mulmod(mload(add(ᵤstate, U256::from(0x60u128), memory)?, memory)?, U256::from_be_slice(&[0x2b, 0x33, 0x7d, 0xe1, 0xc8, 0xc1, 0x4f, 0x22, 0xec, 0x9b, 0x9e, 0x2f, 0x96, 0xaf, 0xef, 0x36, 0x52, 0x62, 0x73, 0x66, 0xf8, 0x17, 0x0a, 0x0a, 0x94, 0x8d, 0xad, 0x4a, 0xc1, 0xbd, 0x5e, 0x80]), U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤrandom = mulmod(ᵤrandom, ᵤzeta_omega, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤpoint_acc_mul(ᵤfolded_points_quotients, add(ᵤaproof, U256::from(0x320u128), memory)?, ᵤrandom, ᵤmPtr, memory)?;
+            ᵤpoint_add(ᵤfolded_digests, ᵤfolded_digests, ᵤfolded_points_quotients, ᵤmPtr, memory)?;
+            let mut ᵤfolded_quotients_y = add(ᵤfolded_quotients, U256::from(0x20u128), memory)?;
+            mstore(ᵤfolded_quotients_y, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x97, 0x81, 0x6a, 0x91, 0x68, 0x71, 0xca, 0x8d, 0x3c, 0x20, 0x8c, 0x16, 0xd8, 0x7c, 0xfd, 0x47]), mload(ᵤfolded_quotients_y, memory)?, memory)?, memory)?;
+            mstore(add(ᵤstate, U256::from(0x260u128), memory)?, mload(ᵤfolded_quotients_y, memory)?, memory)?;
+            mstore(ᵤmPtr, mload(ᵤfolded_digests, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, mload(add(ᵤfolded_digests, U256::from(0x20u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, U256::from_be_slice(&[0x19, 0x8e, 0x93, 0x93, 0x92, 0x0d, 0x48, 0x3a, 0x72, 0x60, 0xbf, 0xb7, 0x31, 0xfb, 0x5d, 0x25, 0xf1, 0xaa, 0x49, 0x33, 0x35, 0xa9, 0xe7, 0x12, 0x97, 0xe4, 0x85, 0xb7, 0xae, 0xf3, 0x12, 0xc2]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, U256::from_be_slice(&[0x18, 0x00, 0xde, 0xef, 0x12, 0x1f, 0x1e, 0x76, 0x42, 0x6a, 0x00, 0x66, 0x5e, 0x5c, 0x44, 0x79, 0x67, 0x43, 0x22, 0xd4, 0xf7, 0x5e, 0xda, 0xdd, 0x46, 0xde, 0xbd, 0x5c, 0xd9, 0x92, 0xf6, 0xed]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x80u128), memory)?, U256::from_be_slice(&[0x09, 0x06, 0x89, 0xd0, 0x58, 0x5f, 0xf0, 0x75, 0xec, 0x9e, 0x99, 0xad, 0x69, 0x0c, 0x33, 0x95, 0xbc, 0x4b, 0x31, 0x33, 0x70, 0xb3, 0x8e, 0xf3, 0x55, 0xac, 0xda, 0xdc, 0xd1, 0x22, 0x97, 0x5b]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xa0u128), memory)?, U256::from_be_slice(&[0x12, 0xc8, 0x5e, 0xa5, 0xdb, 0x8c, 0x6d, 0xeb, 0x4a, 0xab, 0x71, 0x80, 0x8d, 0xcb, 0x40, 0x8f, 0xe3, 0xd1, 0xe7, 0x69, 0x0c, 0x43, 0xd3, 0x7b, 0x4c, 0xe6, 0xcc, 0x01, 0x66, 0xfa, 0x7d, 0xaa]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xc0u128), memory)?, mload(ᵤfolded_quotients, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xe0u128), memory)?, mload(ᵤfolded_quotients_y, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x100u128), memory)?, U256::from_be_slice(&[0x12, 0x74, 0x09, 0x34, 0xba, 0x96, 0x15, 0xb7, 0x7b, 0x6a, 0x49, 0xb0, 0x6f, 0xcc, 0xe8, 0x3c, 0xe9, 0x0d, 0x67, 0xb1, 0xd0, 0xe2, 0xa5, 0x30, 0x06, 0x9e, 0x3a, 0x73, 0x06, 0x56, 0x9a, 0x91]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x120u128), memory)?, U256::from_be_slice(&[0x11, 0x6d, 0xa8, 0xc8, 0x9a, 0x0d, 0x09, 0x0f, 0x3d, 0x86, 0x44, 0xad, 0xa3, 0x3a, 0x5f, 0x1c, 0x80, 0x13, 0xba, 0x72, 0x04, 0xae, 0xca, 0x62, 0xd6, 0x6d, 0x93, 0x1b, 0x99, 0xaf, 0xe6, 0xe7]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x140u128), memory)?, U256::from_be_slice(&[0x25, 0x22, 0x2d, 0x98, 0x16, 0xe5, 0xf8, 0x6b, 0x4a, 0x7d, 0xed, 0xd0, 0x0d, 0x04, 0xac, 0xc5, 0xc9, 0x79, 0xc1, 0x8b, 0xd2, 0x2b, 0x83, 0x4e, 0xa8, 0xc6, 0xd0, 0x7c, 0x0b, 0xa4, 0x41, 0xdb]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x160u128), memory)?, U256::from_be_slice(&[0x07, 0x64, 0x41, 0x04, 0x2e, 0x77, 0xb6, 0x30, 0x96, 0x44, 0xb5, 0x62, 0x51, 0xf0, 0x59, 0xcf, 0x14, 0xbe, 0xfc, 0x72, 0xac, 0x8a, 0x61, 0x57, 0xd3, 0x09, 0x24, 0xe5, 0x8d, 0xc4, 0xc1, 0x72]), memory)?;
+            let mut ᵤl_success = staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x8u128), ᵤmPtr, U256::from(0x180u128), U256::from(0x0u128), U256::from(0x20u128), memory)?;
+            mstore(add(ᵤstate, U256::from(0x240u128), memory)?, and(ᵤl_success, mload(add(ᵤstate, U256::from(0x240u128), memory)?, memory)?, memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤpow(mut ᵤx: U256, mut ᵤe: U256, mut ᵤmPtr: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut ᵤres = U256::ZERO;
+            mstore(ᵤmPtr, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, U256::from(0x20u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, ᵤx, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x80u128), memory)?, ᵤe, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xa0u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            pop(staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x5u128), ᵤmPtr, U256::from(0xc0u128), ᵤmPtr, U256::from(0x20u128), memory)?, memory)?;
+            ᵤres = mload(ᵤmPtr, memory)?;
+            Ok(ᵤres)
+        }
+
+        pub fn ᵤcompute_alpha_square_lagrange(memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            let mut ᵤmPtr = add(mload(U256::from(0x40u128), memory)?, U256::from(0x280u128), memory)?;
+            let mut ᵤres = ᵤpow(mload(add(ᵤstate, U256::from(0x60u128), memory)?, memory)?, U256::from(0x8u128), ᵤmPtr, memory)?;
+            ᵤres = addmod(ᵤres, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), U256::from(0x1u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            mstore(add(ᵤstate, U256::from(0x1e0u128), memory)?, ᵤres, memory)?;
+            let mut ᵤden = addmod(mload(add(ᵤstate, U256::from(0x60u128), memory)?, memory)?, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), U256::from(0x1u128), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤden = ᵤpow(ᵤden, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), U256::from(0x2u128), memory)?, ᵤmPtr, memory)?;
+            ᵤden = mulmod(ᵤden, U256::from_be_slice(&[0x2a, 0x57, 0xc4, 0xa4, 0x85, 0x0b, 0x6c, 0x24, 0x81, 0x46, 0x3c, 0xff, 0xb1, 0x51, 0x2d, 0x51, 0x83, 0x2d, 0x6b, 0x3f, 0x6a, 0x82, 0x42, 0x7f, 0x1b, 0x65, 0xb6, 0xe1, 0x72, 0x00, 0x00, 0x01]), U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤres = mulmod(ᵤden, ᵤres, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            let mut ᵤl_alpha = mload(add(ᵤstate, U256::from(0x0u128), memory)?, memory)?;
+            ᵤres = mulmod(ᵤres, ᵤl_alpha, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤres = mulmod(ᵤres, ᵤl_alpha, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            mstore(add(ᵤstate, U256::from(0xc0u128), memory)?, ᵤres, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤcompute_commitment_linearised_polynomial_ec(mut ᵤaproof: U256, mut ᵤs1: U256, mut ᵤs2: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            let mut ᵤmPtr = add(mload(U256::from(0x40u128), memory)?, U256::from(0x280u128), memory)?;
+            mstore(ᵤmPtr, U256::from_be_slice(&[0x1c, 0x1b, 0x52, 0x5d, 0xf0, 0xb1, 0x85, 0x54, 0xd4, 0xdd, 0x82, 0x8f, 0x8b, 0x2e, 0x60, 0x73, 0x57, 0xf8, 0x25, 0x31, 0x37, 0x24, 0x2d, 0x14, 0xbc, 0x67, 0x38, 0x61, 0xdc, 0x34, 0xe1, 0x1a]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from_be_slice(&[0x26, 0x48, 0xb5, 0xfd, 0xaf, 0xc7, 0x00, 0x00, 0x40, 0x29, 0xfc, 0x59, 0xff, 0x01, 0x40, 0x5c, 0x41, 0x0b, 0xb9, 0x1c, 0xdd, 0xc1, 0xb0, 0x7a, 0x79, 0x34, 0x2d, 0xb6, 0x0c, 0x64, 0xdf, 0x9e]), memory)?;
+            ᵤpoint_mul(add(ᵤstate, U256::from(0x120u128), memory)?, ᵤmPtr, mload(add(ᵤaproof, U256::from(0x1a0u128), memory)?, memory)?, add(ᵤmPtr, U256::from(0x40u128), memory)?, memory)?;
+            mstore(ᵤmPtr, U256::from_be_slice(&[0x0c, 0x85, 0x03, 0x37, 0x81, 0x2a, 0xd8, 0xff, 0xa6, 0xd2, 0x93, 0x49, 0x04, 0x23, 0xf4, 0x91, 0xc4, 0x2e, 0x9b, 0xef, 0xa8, 0x8e, 0x42, 0xd9, 0xaa, 0x47, 0x6e, 0x19, 0x0f, 0x25, 0x07, 0xee]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from_be_slice(&[0x0e, 0x1c, 0x89, 0x48, 0xd9, 0x1d, 0xab, 0x2e, 0x9f, 0xdc, 0xe3, 0x37, 0xe0, 0xa3, 0x45, 0xa1, 0xa7, 0xf1, 0xa2, 0x63, 0xa2, 0xda, 0xca, 0x60, 0x12, 0x12, 0x83, 0x20, 0xe5, 0xe8, 0x14, 0x69]), memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x120u128), memory)?, ᵤmPtr, mload(add(ᵤaproof, U256::from(0x1c0u128), memory)?, memory)?, add(ᵤmPtr, U256::from(0x40u128), memory)?, memory)?;
+            let mut ᵤrl = mulmod(mload(add(ᵤaproof, U256::from(0x1a0u128), memory)?, memory)?, mload(add(ᵤaproof, U256::from(0x1c0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            mstore(ᵤmPtr, U256::from_be_slice(&[0x0b, 0x7b, 0x83, 0x7f, 0xbc, 0x61, 0x14, 0xcf, 0x48, 0x7b, 0x04, 0xa0, 0x5b, 0x3a, 0xeb, 0x8e, 0xac, 0x5d, 0xcf, 0x63, 0x02, 0x84, 0xd3, 0x20, 0x8d, 0x3e, 0x07, 0x2b, 0x2c, 0x37, 0x84, 0x36]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from_be_slice(&[0x15, 0x62, 0xcf, 0x4b, 0x10, 0x44, 0xda, 0x21, 0xe7, 0x9e, 0xd8, 0xa6, 0xed, 0x7c, 0x39, 0x42, 0x9e, 0xbd, 0x00, 0x84, 0x97, 0x3c, 0x8d, 0x9e, 0x25, 0x26, 0x8f, 0xad, 0x26, 0xbe, 0x29, 0x1b]), memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x120u128), memory)?, ᵤmPtr, ᵤrl, add(ᵤmPtr, U256::from(0x40u128), memory)?, memory)?;
+            mstore(ᵤmPtr, U256::from_be_slice(&[0x0b, 0x7b, 0x83, 0x7f, 0xbc, 0x61, 0x14, 0xcf, 0x48, 0x7b, 0x04, 0xa0, 0x5b, 0x3a, 0xeb, 0x8e, 0xac, 0x5d, 0xcf, 0x63, 0x02, 0x84, 0xd3, 0x20, 0x8d, 0x3e, 0x07, 0x2b, 0x2c, 0x37, 0x84, 0x36]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from_be_slice(&[0x1b, 0x01, 0x7f, 0x27, 0xd0, 0xec, 0xc6, 0x07, 0xd0, 0xb1, 0x6d, 0x0f, 0x94, 0x05, 0x1f, 0x1a, 0xf8, 0xc4, 0x6a, 0x0c, 0xd1, 0x35, 0x3c, 0xef, 0x16, 0xf9, 0xfc, 0x69, 0xb1, 0xbe, 0xd4, 0x2c]), memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x120u128), memory)?, ᵤmPtr, mload(add(ᵤaproof, U256::from(0x1e0u128), memory)?, memory)?, add(ᵤmPtr, U256::from(0x40u128), memory)?, memory)?;
+            mstore(ᵤmPtr, U256::from(0x0u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from(0x0u128), memory)?;
+            ᵤpoint_add(add(ᵤstate, U256::from(0x120u128), memory)?, add(ᵤstate, U256::from(0x120u128), memory)?, ᵤmPtr, add(ᵤmPtr, U256::from(0x40u128), memory)?, memory)?;
+            let mut ᵤcommits_api_at_zeta = add(ᵤaproof, U256::from(0x360u128), memory)?;
+            let mut ᵤcommits_api = add(ᵤaproof, add(U256::from(0x360u128), mul(U256::from(0x1u128), U256::from(0x20u128), memory)?, memory)?, memory)?;
+            let mut ᵤi = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi, U256::from(0x1u128), memory)? != U256::from(0) {
+                // body
+                {
+                    mstore(ᵤmPtr, mload(ᵤcommits_api, memory)?, memory)?;
+                    mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, mload(add(ᵤcommits_api, U256::from(0x20u128), memory)?, memory)?, memory)?;
+                    ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x120u128), memory)?, ᵤmPtr, mload(ᵤcommits_api_at_zeta, memory)?, add(ᵤmPtr, U256::from(0x40u128), memory)?, memory)?;
+                    ᵤcommits_api_at_zeta = add(ᵤcommits_api_at_zeta, U256::from(0x20u128), memory)?;
+                    ᵤcommits_api = add(ᵤcommits_api, U256::from(0x40u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi = add(ᵤi, U256::from(0x1u128), memory)?;
+                }
+            }
+            mstore(ᵤmPtr, U256::from_be_slice(&[0x0f, 0x8e, 0xc3, 0xf3, 0x86, 0x11, 0x51, 0x4a, 0xad, 0xfd, 0x2b, 0x6f, 0xcc, 0x3b, 0x6c, 0x29, 0x5b, 0xad, 0xd9, 0x8f, 0xfc, 0xe4, 0xb6, 0x5a, 0x9e, 0xa6, 0x71, 0x83, 0x28, 0xba, 0x18, 0x1f]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, U256::from_be_slice(&[0x00, 0xf6, 0x42, 0xac, 0x5b, 0xe0, 0xd8, 0x22, 0xc5, 0xa5, 0x35, 0x31, 0x2d, 0x58, 0x9b, 0x55, 0x57, 0xa8, 0xdb, 0x31, 0x83, 0xe4, 0x08, 0xfb, 0x78, 0xff, 0x8f, 0x1c, 0x8b, 0x7b, 0x20, 0x46]), memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x120u128), memory)?, ᵤmPtr, ᵤs1, add(ᵤmPtr, U256::from(0x40u128), memory)?, memory)?;
+            mstore(ᵤmPtr, mload(add(ᵤaproof, U256::from(0x240u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, mload(add(ᵤaproof, U256::from(0x260u128), memory)?, memory)?, memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x120u128), memory)?, ᵤmPtr, ᵤs2, add(ᵤmPtr, U256::from(0x40u128), memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤcompute_commitment_linearised_polynomial(mut ᵤaproof: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            let mut ᵤl_beta = mload(add(ᵤstate, U256::from(0x20u128), memory)?, memory)?;
+            let mut ᵤl_gamma = mload(add(ᵤstate, U256::from(0x40u128), memory)?, memory)?;
+            let mut ᵤl_zeta = mload(add(ᵤstate, U256::from(0x60u128), memory)?, memory)?;
+            let mut ᵤl_alpha = mload(add(ᵤstate, U256::from(0x0u128), memory)?, memory)?;
+            let mut ᵤu = mulmod(mload(add(ᵤaproof, U256::from(0x280u128), memory)?, memory)?, ᵤl_beta, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            let mut ᵤv = mulmod(ᵤl_beta, mload(add(ᵤaproof, U256::from(0x200u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤv = addmod(ᵤv, mload(add(ᵤaproof, U256::from(0x1a0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤv = addmod(ᵤv, ᵤl_gamma, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            let mut ᵤw = mulmod(ᵤl_beta, mload(add(ᵤaproof, U256::from(0x220u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤw = addmod(ᵤw, mload(add(ᵤaproof, U256::from(0x1c0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤw = addmod(ᵤw, ᵤl_gamma, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            let mut ᵤs1 = mulmod(ᵤu, ᵤv, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤs1 = mulmod(ᵤs1, ᵤw, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤs1 = mulmod(ᵤs1, ᵤl_alpha, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            let mut ᵤbetazeta = mulmod(ᵤl_beta, ᵤl_zeta, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤu = addmod(ᵤbetazeta, mload(add(ᵤaproof, U256::from(0x1a0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤu = addmod(ᵤu, ᵤl_gamma, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤv = mulmod(ᵤbetazeta, U256::from(0x5u128), U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤv = addmod(ᵤv, mload(add(ᵤaproof, U256::from(0x1c0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤv = addmod(ᵤv, ᵤl_gamma, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤw = mulmod(ᵤbetazeta, mulmod(U256::from(0x5u128), U256::from(0x5u128), U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤw = addmod(ᵤw, mload(add(ᵤaproof, U256::from(0x1e0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤw = addmod(ᵤw, ᵤl_gamma, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            let mut ᵤs2 = mulmod(ᵤu, ᵤv, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤs2 = mulmod(ᵤs2, ᵤw, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤs2 = sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), ᵤs2, memory)?;
+            ᵤs2 = mulmod(ᵤs2, ᵤl_alpha, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤs2 = addmod(ᵤs2, mload(add(ᵤstate, U256::from(0xc0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤcompute_commitment_linearised_polynomial_ec(ᵤaproof, ᵤs1, ᵤs2, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤcompute_gamma_kzg(mut ᵤaproof: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            let mut ᵤmPtr = add(mload(U256::from(0x40u128), memory)?, U256::from(0x280u128), memory)?;
+            mstore(ᵤmPtr, U256::from(0x67616d6d61u128), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x20u128), memory)?, mload(add(ᵤstate, U256::from(0x60u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x40u128), memory)?, mload(add(ᵤstate, U256::from(0xe0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x60u128), memory)?, mload(add(ᵤstate, U256::from(0x100u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x80u128), memory)?, mload(add(ᵤstate, U256::from(0x120u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xa0u128), memory)?, mload(add(ᵤstate, U256::from(0x140u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xc0u128), memory)?, mload(add(ᵤaproof, U256::from(0x20u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0xe0u128), memory)?, mload(add(ᵤaproof, U256::from(0x40u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x100u128), memory)?, mload(add(ᵤaproof, U256::from(0x60u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x120u128), memory)?, mload(add(ᵤaproof, U256::from(0x80u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x140u128), memory)?, mload(add(ᵤaproof, U256::from(0xa0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x160u128), memory)?, mload(add(ᵤaproof, U256::from(0xc0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x180u128), memory)?, U256::from_be_slice(&[0x1d, 0x54, 0x08, 0xc4, 0x3c, 0x22, 0xcc, 0x34, 0x43, 0x44, 0x88, 0xa0, 0xcb, 0x4f, 0xa2, 0x74, 0x5c, 0x3f, 0x42, 0x2b, 0x0f, 0xb1, 0x95, 0x72, 0x4e, 0x3f, 0x11, 0x43, 0xdd, 0xdc, 0x62, 0x2c]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x1a0u128), memory)?, U256::from_be_slice(&[0x16, 0x90, 0xd5, 0x73, 0xab, 0xd0, 0x18, 0x44, 0xec, 0x52, 0x82, 0x69, 0xbe, 0x78, 0x98, 0xe2, 0x59, 0xc9, 0xf1, 0xc7, 0x3c, 0x3c, 0x23, 0xa3, 0x65, 0xaf, 0xa5, 0x12, 0xc3, 0x45, 0x60, 0xe0]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x1c0u128), memory)?, U256::from_be_slice(&[0x02, 0xa5, 0xa3, 0xc7, 0x70, 0xa8, 0xe8, 0x59, 0x5b, 0xff, 0x76, 0x35, 0x8e, 0xf9, 0x82, 0xe8, 0xab, 0xf9, 0x5b, 0x08, 0xbf, 0x74, 0xf5, 0xc8, 0x70, 0x9b, 0xc3, 0x4d, 0x28, 0x48, 0x4b, 0x01]), memory)?;
+            mstore(add(ᵤmPtr, U256::from(0x1e0u128), memory)?, U256::from_be_slice(&[0x01, 0x24, 0xc0, 0x5f, 0x06, 0xc5, 0xd4, 0x67, 0x26, 0xe8, 0x9a, 0x1a, 0xcc, 0xcf, 0x22, 0xf6, 0x4f, 0x8c, 0xe5, 0x35, 0x69, 0x9c, 0x27, 0xa6, 0x2a, 0x6a, 0x6a, 0x60, 0x45, 0xca, 0x36, 0x3e]), memory)?;
+            let mut ᵤoffset = U256::from(0x200u128);
+            mstore(add(ᵤmPtr, ᵤoffset, memory)?, U256::from_be_slice(&[0x24, 0xa0, 0xb9, 0xcf, 0x26, 0x5f, 0x92, 0x6f, 0x25, 0x76, 0xbe, 0xbe, 0x81, 0xea, 0xf4, 0x48, 0x58, 0x74, 0xc5, 0xd0, 0xd4, 0x07, 0x86, 0xec, 0x77, 0x18, 0x59, 0x79, 0x38, 0xb1, 0x95, 0x0f]), memory)?;
+            mstore(add(ᵤmPtr, add(ᵤoffset, U256::from(0x20u128), memory)?, memory)?, U256::from_be_slice(&[0x07, 0xfc, 0x8d, 0xbc, 0x51, 0x0e, 0x83, 0xa4, 0x16, 0xaa, 0x31, 0xf4, 0x0f, 0xa1, 0x0c, 0x5c, 0x48, 0x63, 0xb7, 0x09, 0xbc, 0x74, 0x2c, 0xba, 0x06, 0x47, 0xbf, 0xc9, 0xe1, 0x1e, 0x51, 0x04]), memory)?;
+            ᵤoffset = add(ᵤoffset, U256::from(0x40u128), memory)?;
+            mstore(add(ᵤmPtr, ᵤoffset, memory)?, mload(add(ᵤaproof, U256::from(0x2a0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, add(ᵤoffset, U256::from(0x20u128), memory)?, memory)?, mload(add(ᵤaproof, U256::from(0x2c0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, add(ᵤoffset, U256::from(0x40u128), memory)?, memory)?, mload(add(ᵤaproof, U256::from(0x1a0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, add(ᵤoffset, U256::from(0x60u128), memory)?, memory)?, mload(add(ᵤaproof, U256::from(0x1c0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, add(ᵤoffset, U256::from(0x80u128), memory)?, memory)?, mload(add(ᵤaproof, U256::from(0x1e0u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, add(ᵤoffset, U256::from(0xa0u128), memory)?, memory)?, mload(add(ᵤaproof, U256::from(0x200u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤmPtr, add(ᵤoffset, U256::from(0xc0u128), memory)?, memory)?, mload(add(ᵤaproof, U256::from(0x220u128), memory)?, memory)?, memory)?;
+            let mut ᵤ_mPtr = add(ᵤmPtr, add(ᵤoffset, U256::from(0xe0u128), memory)?, memory)?;
+            let mut usr_poscaz = add(ᵤaproof, U256::from(0x360u128), memory)?;
+            let mut ᵤi = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi, U256::from(0x1u128), memory)? != U256::from(0) {
+                // body
+                {
+                    mstore(ᵤ_mPtr, mload(usr_poscaz, memory)?, memory)?;
+                    usr_poscaz = add(usr_poscaz, U256::from(0x20u128), memory)?;
+                    ᵤ_mPtr = add(ᵤ_mPtr, U256::from(0x20u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi = add(ᵤi, U256::from(0x1u128), memory)?;
+                }
+            }
+            let mut ᵤsize_input = add(U256::from(0x16u128), mul(U256::from(0x1u128), U256::from(0x3u128), memory)?, memory)?;
+            ᵤsize_input = add(U256::from(0x5u128), mul(ᵤsize_input, U256::from(0x20u128), memory)?, memory)?;
+            pop(staticcall(sub(gas(memory)?, U256::from(0x7d0u128), memory)?, U256::from(0x2u128), add(ᵤmPtr, U256::from(0x1bu128), memory)?, ᵤsize_input, add(ᵤstate, U256::from(0x220u128), memory)?, U256::from(0x20u128), memory)?, memory)?;
+            mstore(add(ᵤstate, U256::from(0x220u128), memory)?, mod_(mload(add(ᵤstate, U256::from(0x220u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤfold_h(mut ᵤaproof: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            let mut ᵤmPtr = add(mload(U256::from(0x40u128), memory)?, U256::from(0x280u128), memory)?;
+            let mut ᵤzeta_power_n_plus_two = ᵤpow(mload(add(ᵤstate, U256::from(0x60u128), memory)?, memory)?, add(U256::from(0x8u128), U256::from(0x2u128), memory)?, ᵤmPtr, memory)?;
+            ᵤpoint_mul(add(ᵤstate, U256::from(0xe0u128), memory)?, add(ᵤaproof, U256::from(0x160u128), memory)?, ᵤzeta_power_n_plus_two, ᵤmPtr, memory)?;
+            ᵤpoint_add(add(ᵤstate, U256::from(0xe0u128), memory)?, add(ᵤstate, U256::from(0xe0u128), memory)?, add(ᵤaproof, U256::from(0x120u128), memory)?, ᵤmPtr, memory)?;
+            ᵤpoint_mul(add(ᵤstate, U256::from(0xe0u128), memory)?, add(ᵤstate, U256::from(0xe0u128), memory)?, ᵤzeta_power_n_plus_two, ᵤmPtr, memory)?;
+            ᵤpoint_add(add(ᵤstate, U256::from(0xe0u128), memory)?, add(ᵤstate, U256::from(0xe0u128), memory)?, add(ᵤaproof, U256::from(0xe0u128), memory)?, ᵤmPtr, memory)?;
+            Ok(())
+        }
+
+        pub fn ᵤfold_state(mut ᵤaproof: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            let mut ᵤmPtr = add(mload(U256::from(0x40u128), memory)?, U256::from(0x280u128), memory)?;
+            let mut ᵤl_gamma_kzg = mload(add(ᵤstate, U256::from(0x220u128), memory)?, memory)?;
+            let mut ᵤacc_gamma = ᵤl_gamma_kzg;
+            let mut ᵤmPtrOffset = add(ᵤmPtr, add(U256::from(0x200u128), mul(U256::from(0x1u128), U256::from(0x40u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤstate, U256::from(0x180u128), memory)?, mload(add(ᵤmPtr, U256::from(0x40u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤstate, U256::from(0x1a0u128), memory)?, mload(add(ᵤmPtr, U256::from(0x60u128), memory)?, memory)?, memory)?;
+            mstore(add(ᵤstate, U256::from(0x160u128), memory)?, mload(add(ᵤaproof, U256::from(0x2a0u128), memory)?, memory)?, memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x180u128), memory)?, add(ᵤmPtr, U256::from(0x80u128), memory)?, ᵤl_gamma_kzg, ᵤmPtrOffset, memory)?;
+            ᵤfr_acc_mul(add(ᵤstate, U256::from(0x160u128), memory)?, add(ᵤaproof, U256::from(0x2c0u128), memory)?, ᵤl_gamma_kzg, memory)?;
+            mstore(add(ᵤstate, U256::from(0x260u128), memory)?, ᵤl_gamma_kzg, memory)?;
+            ᵤacc_gamma = mulmod(ᵤl_gamma_kzg, ᵤl_gamma_kzg, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x180u128), memory)?, add(ᵤmPtr, U256::from(0xc0u128), memory)?, ᵤacc_gamma, ᵤmPtrOffset, memory)?;
+            ᵤfr_acc_mul(add(ᵤstate, U256::from(0x160u128), memory)?, add(ᵤaproof, U256::from(0x1a0u128), memory)?, ᵤacc_gamma, memory)?;
+            ᵤacc_gamma = mulmod(ᵤacc_gamma, ᵤl_gamma_kzg, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x180u128), memory)?, add(ᵤmPtr, U256::from(0x100u128), memory)?, ᵤacc_gamma, ᵤmPtrOffset, memory)?;
+            ᵤfr_acc_mul(add(ᵤstate, U256::from(0x160u128), memory)?, add(ᵤaproof, U256::from(0x1c0u128), memory)?, ᵤacc_gamma, memory)?;
+            ᵤacc_gamma = mulmod(ᵤacc_gamma, ᵤl_gamma_kzg, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x180u128), memory)?, add(ᵤmPtr, U256::from(0x140u128), memory)?, ᵤacc_gamma, ᵤmPtrOffset, memory)?;
+            ᵤfr_acc_mul(add(ᵤstate, U256::from(0x160u128), memory)?, add(ᵤaproof, U256::from(0x1e0u128), memory)?, ᵤacc_gamma, memory)?;
+            ᵤacc_gamma = mulmod(ᵤacc_gamma, ᵤl_gamma_kzg, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x180u128), memory)?, add(ᵤmPtr, U256::from(0x180u128), memory)?, ᵤacc_gamma, ᵤmPtrOffset, memory)?;
+            ᵤfr_acc_mul(add(ᵤstate, U256::from(0x160u128), memory)?, add(ᵤaproof, U256::from(0x200u128), memory)?, ᵤacc_gamma, memory)?;
+            ᵤacc_gamma = mulmod(ᵤacc_gamma, ᵤl_gamma_kzg, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+            ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x180u128), memory)?, add(ᵤmPtr, U256::from(0x1c0u128), memory)?, ᵤacc_gamma, ᵤmPtrOffset, memory)?;
+            ᵤfr_acc_mul(add(ᵤstate, U256::from(0x160u128), memory)?, add(ᵤaproof, U256::from(0x220u128), memory)?, ᵤacc_gamma, memory)?;
+            let mut ᵤposcaz = add(ᵤaproof, U256::from(0x360u128), memory)?;
+            let mut ᵤopca = add(ᵤmPtr, U256::from(0x200u128), memory)?;
+            let mut ᵤi = U256::from(0x0u128);
+            // for loop
+            while lt(ᵤi, U256::from(0x1u128), memory)? != U256::from(0) {
+                // body
+                {
+                    ᵤacc_gamma = mulmod(ᵤacc_gamma, ᵤl_gamma_kzg, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?;
+                    ᵤpoint_acc_mul(add(ᵤstate, U256::from(0x180u128), memory)?, ᵤopca, ᵤacc_gamma, ᵤmPtrOffset, memory)?;
+                    ᵤfr_acc_mul(add(ᵤstate, U256::from(0x160u128), memory)?, ᵤposcaz, ᵤacc_gamma, memory)?;
+                    ᵤposcaz = add(ᵤposcaz, U256::from(0x20u128), memory)?;
+                    ᵤopca = add(ᵤopca, U256::from(0x40u128), memory)?;
+                }
+                // post
+                {
+                    ᵤi = add(ᵤi, U256::from(0x1u128), memory)?;
+                }
+            }
+            Ok(())
+        }
+
+        pub fn ᵤverify_quotient_poly_eval_at_zeta(mut ᵤaproof: U256, memory: &mut Memory) -> YulOutput<()> {
+            let mut ᵤstate = mload(U256::from(0x40u128), memory)?;
+            let mut ᵤs1 = add(mload(U256::from(0x40u128), memory)?, U256::from(0x280u128), memory)?;
+            mstore(ᵤs1, mulmod(mload(add(ᵤaproof, U256::from(0x200u128), memory)?, memory)?, mload(add(ᵤstate, U256::from(0x20u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤs1, addmod(mload(ᵤs1, memory)?, mload(add(ᵤstate, U256::from(0x40u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤs1, addmod(mload(ᵤs1, memory)?, mload(add(ᵤaproof, U256::from(0x1a0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            let mut ᵤs2 = add(ᵤs1, U256::from(0x20u128), memory)?;
+            mstore(ᵤs2, mulmod(mload(add(ᵤaproof, U256::from(0x220u128), memory)?, memory)?, mload(add(ᵤstate, U256::from(0x20u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤs2, addmod(mload(ᵤs2, memory)?, mload(add(ᵤstate, U256::from(0x40u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤs2, addmod(mload(ᵤs2, memory)?, mload(add(ᵤaproof, U256::from(0x1c0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            let mut ᵤo = add(ᵤs1, U256::from(0x40u128), memory)?;
+            mstore(ᵤo, addmod(mload(add(ᵤaproof, U256::from(0x1e0u128), memory)?, memory)?, mload(add(ᵤstate, U256::from(0x40u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤs1, mulmod(mload(ᵤs1, memory)?, mload(ᵤs2, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤs1, mulmod(mload(ᵤs1, memory)?, mload(ᵤo, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤs1, mulmod(mload(ᵤs1, memory)?, mload(add(ᵤstate, U256::from(0x0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤs1, mulmod(mload(ᵤs1, memory)?, mload(add(ᵤaproof, U256::from(0x280u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            let mut ᵤcomputed_quotient = add(ᵤs1, U256::from(0x60u128), memory)?;
+            mstore(ᵤcomputed_quotient, addmod(mload(add(ᵤaproof, U256::from(0x2c0u128), memory)?, memory)?, mload(add(ᵤstate, U256::from(0x1c0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤcomputed_quotient, addmod(mload(ᵤcomputed_quotient, memory)?, mload(ᵤs1, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤcomputed_quotient, addmod(mload(ᵤcomputed_quotient, memory)?, sub(U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), mload(add(ᵤstate, U256::from(0xc0u128), memory)?, memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(ᵤs2, mulmod(mload(add(ᵤaproof, U256::from(0x2a0u128), memory)?, memory)?, mload(add(ᵤstate, U256::from(0x1e0u128), memory)?, memory)?, U256::from_be_slice(&[0x30, 0x64, 0x4e, 0x72, 0xe1, 0x31, 0xa0, 0x29, 0xb8, 0x50, 0x45, 0xb6, 0x81, 0x81, 0x58, 0x5d, 0x28, 0x33, 0xe8, 0x48, 0x79, 0xb9, 0x70, 0x91, 0x43, 0xe1, 0xf5, 0x93, 0xf0, 0x00, 0x00, 0x01]), memory)?, memory)?;
+            mstore(add(ᵤstate, U256::from(0x240u128), memory)?, mload(ᵤcomputed_quotient, memory)?, memory)?;
+            mstore(add(ᵤstate, U256::from(0x240u128), memory)?, eq(mload(ᵤcomputed_quotient, memory)?, mload(ᵤs2, memory)?, memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn zero_value_for_split_bool(memory: &mut Memory) -> YulOutput<U256> {
+            let mut ret = U256::ZERO;
+            ret = U256::from(0x0u128);
+            Ok(ret)
+        }
+
+        pub fn fun_Verify(mut var_proof_431_mpos: U256, mut var_public_inputs_mpos: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut var = U256::ZERO;
+            let mut zero_bool = zero_value_for_split_bool(memory)?;
+            var = zero_bool;
+            let mut var_gamma = U256::from(0);
+            let mut zero_uint256 = zero_value_for_split_uint256(memory)?;
+            var_gamma = zero_uint256;
+            let mut var_beta = U256::from(0);
+            var_beta = zero_uint256;
+            let mut var_alpha = U256::from(0);
+            var_alpha = zero_uint256;
+            let mut var_zeta = U256::from(0);
+            var_zeta = zero_uint256;
+            let (expr_component, expr_component_1, expr_component_2, expr_component_3) = fun_derive_gamma_beta_alpha_zeta(var_proof_431_mpos, var_public_inputs_mpos, memory)?;
+            var_zeta = expr_component_3;
+            var_alpha = expr_component_2;
+            var_beta = expr_component_1;
+            var_gamma = expr_component;
+            let mut expr = fun_compute_pi(var_proof_431_mpos, var_public_inputs_mpos, expr_component_3, memory)?;
+            let mut var_check = U256::from(0);
+            var_check = zero_uint256;
+            let mut var_success = U256::from(0x0u128);
+            let mut ᵤmem = mload(U256::from(0x40u128), memory)?;
+            mstore(add(ᵤmem, U256::from(0x0u128), memory)?, expr_component_2, memory)?;
+            mstore(add(ᵤmem, U256::from(0x40u128), memory)?, expr_component, memory)?;
+            mstore(add(ᵤmem, U256::from(0x60u128), memory)?, expr_component_3, memory)?;
+            mstore(add(ᵤmem, U256::from(0x20u128), memory)?, expr_component_1, memory)?;
+            mstore(add(ᵤmem, U256::from(0x1c0u128), memory)?, expr, memory)?;
+            ᵤcompute_alpha_square_lagrange(memory)?;
+            ᵤverify_quotient_poly_eval_at_zeta(var_proof_431_mpos, memory)?;
+            ᵤfold_h(var_proof_431_mpos, memory)?;
+            ᵤcompute_commitment_linearised_polynomial(var_proof_431_mpos, memory)?;
+            ᵤcompute_gamma_kzg(var_proof_431_mpos, memory)?;
+            ᵤfold_state(var_proof_431_mpos, memory)?;
+            ᵤbatch_verify_multi_points(var_proof_431_mpos, memory)?;
+            var_success = mload(add(ᵤmem, U256::from(0x240u128), memory)?, memory)?;
+            var_check = mload(add(ᵤmem, U256::from(0x260u128), memory)?, memory)?;
+            var = var_success;
+            Ok(var)
+        }
+
+        pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(memory: &mut Memory) -> YulOutput<()> {
+            revert(U256::from(0x0u128), U256::from(0x0u128), memory)?;
+            Ok(())
+        }
+
+        pub fn external_fun_Verify(memory: &mut Memory) -> YulOutput<()> {
+            if callvalue(memory)? != U256::from(0) {
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(memory)?;
+            }
+            let (param, param_1) = abi_decode_bytest_array_uint256_dyn(U256::from(0x4u128), calldatasize(memory)?, memory)?;
+            let mut ret = fun_Verify(param, param_1, memory)?;
+            let mut memPos = allocate_unbounded(memory)?;
+            let mut memEnd = abi_encode_bool(memPos, ret, memory)?;
+            return_(memPos, sub(memEnd, memPos, memory)?, memory)?;
+            Ok(())
+        }
+
+        pub fn revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74(memory: &mut Memory) -> YulOutput<()> {
+            revert(U256::from(0x0u128), U256::from(0x0u128), memory)?;
+            Ok(())
+        }
+
+        pub fn shift_right_unsigned(mut value: U256, memory: &mut Memory) -> YulOutput<U256> {
+            let mut newValue = U256::ZERO;
+            newValue = shr(U256::from(0xe0u128), value, memory)?;
+            Ok(newValue)
+        }
+
+        pub fn body(memory: &mut Memory) -> YulOutput<()> {
+            mstore(U256::from(0x40u128), U256::from(0x80u128), memory)?;
+            if iszero(lt(calldatasize(memory)?, U256::from(0x4u128), memory)?, memory)? != U256::from(0) {
+                let mut selector = shift_right_unsigned(calldataload(U256::from(0x0u128), memory)?, memory)?;
+                if eq(U256::from(0x7e4f7a8au128), selector, memory)? != U256::from(0) {
+                    external_fun_Verify(memory)?;
+                }
+            }
+            revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74(memory)?;
             Ok(())
         }
     }
 }
 
-fn main() {}
+use alloy_primitives::U256;
+
+fn main() {
+    let mut memory = opcode::Memory::new();
+    let result = plonkverifier_482::plonkverifier_482_deployed::fun_Verify(U256::ZERO, U256::ZERO, &mut memory);
+    println!("result: {:#?}", result);
+    println!("memory: {:#?}", memory);
+}
+

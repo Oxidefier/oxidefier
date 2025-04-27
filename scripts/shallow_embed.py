@@ -33,18 +33,14 @@ def name_to_rust(name: str) -> str:
     return name.replace("usr$", "ᵤ").replace("$", "ₓ")
 
 
-def names_to_rust(as_pattern: bool, names: list[str]) -> str:
+def names_to_rust(names: list[str]) -> str:
     if len(names) == 0:
         return "()"
 
     if len(names) == 1:
         return name_to_rust(names[0])
 
-    quote = "'" if as_pattern else ""
-    return \
-        quote + "(" + \
-        ', '.join(name_to_rust(name) for name in names) + \
-        ")"
+    return "(" + ', '.join(name_to_rust(name) for name in names) + ")"
 
 
 def variable_name_to_name(variable_name) -> str:
@@ -55,15 +51,10 @@ def variable_name_to_rust(variable_name) -> str:
     return name_to_rust(variable_name_to_name(variable_name))
 
 
-def variable_names_to_rust(as_pattern: bool, variable_names: list) -> str:
+def variable_names_to_rust(variable_names: list) -> str:
     return names_to_rust(
-        as_pattern,
         [variable_name_to_name(variable_name) for variable_name in variable_names]
     )
-
-
-def updated_vars_to_rust(as_pattern: bool, updated_vars: set[str]) -> str:
-    return names_to_rust(as_pattern, sorted(updated_vars))
 
 
 def block_to_rust(
@@ -85,7 +76,7 @@ def block_to_rust(
             statements += [statement]
 
         if return_variables is not None:
-            suffix = [variable_names_to_rust(False, return_variables)]
+            suffix = [variable_names_to_rust(return_variables)]
         else:
             suffix = []
 
@@ -110,16 +101,17 @@ def statement_to_rust(node) -> str:
 
     elif node_type == 'YulVariableDeclaration':
         variable_names = node.get('variables', [])
-        variables = variable_names_to_rust(True, variable_names)
+        variables = variable_names_to_rust(variable_names)
         value = \
             expression_to_rust(node.get('value')) \
             if node.get('value') is not None \
             else "U256::from(0)"
-        return f"let mut {variables} = {value};"
+        mut_flag = " mut" if len(variable_names) == 1 else ""
+        return f"let{mut_flag} {variables} = {value};"
 
     elif node_type == 'YulAssignment':
         variable_names = node.get('variableNames', [])
-        variables = variable_names_to_rust(True, variable_names)
+        variables = variable_names_to_rust(variable_names)
         value = expression_to_rust(node.get('value'))
         return f"{variables} = {value};"
 
@@ -155,8 +147,14 @@ def statement_to_rust(node) -> str:
             ) + "\n" + \
             "}"
 
-    elif node_type in ['YulLeave', 'YulBreak', 'YulContinue']:
-        return f"// Unexpected statement node type: {node_type}"
+    elif node_type == 'YulBreak':
+        return "break;"
+
+    elif node_type == 'YulContinue':
+        return "continue;"
+
+    elif node_type == 'YulLeave':
+        return "return;"
 
     elif node_type == 'YulForLoop':
         if not is_pre_empty_block(node.get('pre')):
@@ -180,29 +178,38 @@ def statement_to_rust(node) -> str:
         body = block_to_rust(None, node.get('body'))
 
         return (
-            "let_state~ :=\n" + \
+            "// for loop\n" + \
+            "while " + condition + " != U256::from(0) {\n" + \
             indent(
-                "// for loop\n" + \
-                "Shallow.for_\n" + \
-                indent(
-                    "// condition\n" + \
-                    indent(condition) + "\n" + \
-                    "// body\n" + \
-                    indent(body) + "\n" + \
-                    "// post\n" + \
-                    indent(post)
-                )
-            ) + "\n"
+                "// body\n" + \
+                "{\n" + \
+                indent(body) + "\n" + \
+                "}\n" + \
+                "// post\n" + \
+                "{\n" + \
+                indent(post) + "\n" + \
+                "}"
+            ) + "\n" + \
+            "}"
         )
 
     return f"// Unsupported statement node type: {node_type}"
 
 
-def number_to_hex(number: str) -> str:
-    if number.startswith("0x"):
-        return number[2:]
+def number_to_u256(number: str) -> str:
+    if number.startswith('0x'):
+        number = int(number, 16)  # Hex string (e.g., "0x1a" → 26)
     else:
-        return hex(int(number))[2:]
+        number = int(number)
+
+    if number < 2**128:
+        # Fits in u128, use U256::from with hex notation
+        return f"U256::from(0x{number:x}u128)"
+    else:
+        # Requires byte array conversion (32 bytes, big-endian)
+        hex_bytes = number.to_bytes(32, byteorder='big')
+        hex_str = ', '.join(f'0x{b:02x}' for b in hex_bytes)
+        return f"U256::from_be_slice(&[{hex_str}])"
 
 
 def expression_to_rust(node) -> str:
@@ -219,7 +226,7 @@ def expression_to_rust(node) -> str:
     if node_type == 'YulLiteral':
         if node['kind'] == 'string':
             return "from_hex(\"" + node['hexValue'].ljust(64, '0') + "\")"
-        return "from_hex(\"" + number_to_hex(node.get('value')) + "\")"
+        return number_to_u256(node.get('value'))
 
     return f"// Unsupported expression node type: {node_type}"
 
@@ -240,27 +247,21 @@ def function_definition_to_rust(node) -> str:
         for param in node.get('parameters', [])
     ]
     params = ', '.join(
-        [name + ": U256" for name in param_names] +
+        ["mut " + name + ": U256" for name in param_names] +
         ["memory: &mut Memory"]
     )
     body = block_to_rust(None, node.get('body'))
     returnVariables = node.get('returnVariables', [])
     return \
-        f"fn {name}({params}) -> YulOutput<" + \
+        f"pub fn {name}({params}) -> YulOutput<" + \
         function_result_type(len(returnVariables)) + "> {\n" + \
         indent(
-            (
-                "let mut " + variable_names_to_rust(True, returnVariables) + " = " + \
-                (
-                    "U256::from(0)"
-                    if len(returnVariables) == 1
-                    else "(" + ", ".join(["U256::from(0)"] * len(returnVariables)) + ")"
-                ) + ";\n"
-                if len(returnVariables) != 0
-                else ""
+            "".join(
+                "let mut " + variable_name_to_rust(returnVariable) + " = U256::ZERO;\n"
+                for returnVariable in returnVariables
             ) + \
             body + "\n" + \
-            "Ok(" + variable_names_to_rust(False, returnVariables) + ")"
+            "Ok(" + variable_names_to_rust(returnVariables) + ")"
         ) + "\n" + \
         "}"
 
@@ -358,7 +359,7 @@ def top_level_to_rust(node) -> str:
             if function.get('nodeType') == 'YulFunctionDefinition'
         ]
         body = \
-            "fn body(memory: &mut Memory) -> YulOutput<()> {\n" + \
+            "pub fn body(memory: &mut Memory) -> YulOutput<()> {\n" + \
             indent(
                 block_to_rust(None, node) + "\n" + \
                 "Ok(())"
@@ -374,7 +375,7 @@ def object_to_rust(node) -> str:
 
     if node_type == 'YulObject':
         return \
-            "mod " + node['name'].lower() + " {\n" + \
+            "pub mod " + node['name'].lower() + " {\n" + \
             indent(
                 "use alloy_primitives::U256;" + "\n" + \
                 "use crate::opcode::*;" + "\n" + \
@@ -413,7 +414,15 @@ def main():
     print()
     print(rust_code)
     print()
-    print("fn main() {}")
+    print("""use alloy_primitives::U256;
+
+fn main() {
+    let mut memory = opcode::Memory::new();
+    let result = plonkverifier_482::plonkverifier_482_deployed::fun_Verify(U256::ZERO, U256::ZERO, &mut memory);
+    println!("result: {:#?}", result);
+    println!("memory: {:#?}", memory);
+}
+""")
 
 
 if __name__ == "__main__":

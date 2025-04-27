@@ -14,8 +14,11 @@ pub struct Memory {
 }
 
 impl Memory {
-    fn new() -> Self {
-        Self { inner: Vec::new() }
+    pub fn new() -> Self {
+        let mut memory = Self { inner: Vec::new() };
+        // Initialize the free memory pointer
+        memory.set_byte(0x40 + 0x20 - 1, 0x80);
+        memory
     }
 
     fn get_byte(&self, index: usize) -> u8 {
@@ -209,6 +212,10 @@ pub fn keccak256(_p: U256, _n: U256, _memory: &Memory) -> YulOutput<U256> {
     unimplemented!()
 }
 
+pub fn pop(_x : U256, _memory: &Memory) -> YulOutput<()> {
+    Ok(())
+}
+
 // Memory opcodes
 
 pub fn mload(address: U256, memory: &Memory) -> YulOutput<U256> {
@@ -250,7 +257,7 @@ pub fn msize(_memory: &Memory) -> YulOutput<U256> {
 }
 
 pub fn gas(_memory: &Memory) -> YulOutput<U256> {
-    unimplemented!()
+    Ok(U256::from(100 * 1000))
 }
 
 pub fn address(_memory: &Memory) -> YulOutput<U256> {
