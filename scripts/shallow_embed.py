@@ -105,7 +105,7 @@ def statement_to_rust(node) -> str:
         value = \
             expression_to_rust(node.get('value')) \
             if node.get('value') is not None \
-            else "U256::from(0)"
+            else "U256::ZERO"
         mut_flag = " mut" if len(variable_names) == 1 else ""
         return f"let{mut_flag} {variables} = {value};"
 
@@ -122,7 +122,7 @@ def statement_to_rust(node) -> str:
         condition = expression_to_rust(node.get('condition'))
         then_body = block_to_rust(None, node.get('body'))
         return \
-            "if " + condition + " != U256::from(0) {\n" + \
+            "if " + condition + " != U256::ZERO {\n" + \
             indent(then_body) + "\n" + \
             "}"
 
@@ -179,7 +179,7 @@ def statement_to_rust(node) -> str:
 
         return (
             "// for loop\n" + \
-            "while " + condition + " != U256::from(0) {\n" + \
+            "while " + condition + " != U256::ZERO {\n" + \
             indent(
                 "// body\n" + \
                 "{\n" + \
@@ -218,7 +218,7 @@ def expression_to_rust(node) -> str:
     if node_type == 'YulFunctionCall':
         func_name = variable_name_to_rust(node['functionName'])
         args: list[str] = [expression_to_rust(arg) for arg in node.get('arguments', [])]
-        return func_name + "(" + ", ".join(args + ["memory"]) + ")?"
+        return func_name + "(" + ", ".join(args + ["context"]) + ")?"
 
     if node_type == 'YulIdentifier':
         return variable_name_to_rust(node)
@@ -248,7 +248,7 @@ def function_definition_to_rust(node) -> str:
     ]
     params = ', '.join(
         ["mut " + name + ": U256" for name in param_names] +
-        ["memory: &mut Memory"]
+        ["context: &mut Context"]
     )
     body = block_to_rust(None, node.get('body'))
     returnVariables = node.get('returnVariables', [])
@@ -359,7 +359,7 @@ def top_level_to_rust(node) -> str:
             if function.get('nodeType') == 'YulFunctionDefinition'
         ]
         body = \
-            "pub fn body(memory: &mut Memory) -> YulOutput<()> {\n" + \
+            "pub fn body(context: &mut Context) -> YulOutput<()> {\n" + \
             indent(
                 block_to_rust(None, node) + "\n" + \
                 "Ok(())"
@@ -417,10 +417,18 @@ def main():
     print("""use alloy_primitives::U256;
 
 fn main() {
-    let mut memory = opcode::Memory::new();
-    let result = plonkverifier_482::plonkverifier_482_deployed::fun_Verify(U256::ZERO, U256::ZERO, &mut memory);
+    let mut context = opcode::Context {
+        memory: opcode::Memory::new(),
+        gas: U256::from(100 * 1000),
+        calldata: vec![],
+    };
+    let result = plonkverifier_482::plonkverifier_482_deployed::fun_Verify(
+        U256::ZERO,
+        U256::ZERO,
+        &mut context
+    );
     println!("result: {:#?}", result);
-    println!("memory: {:#?}", memory);
+    println!("context: {:#?}", context);
 }
 """)
 

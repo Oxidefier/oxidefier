@@ -46,13 +46,21 @@ impl Memory {
         result
     }
 
-    fn store(&mut self, address: U256, value: Vec<u8>) {
+    fn store(&mut self, address: U256, value: &[u8]) {
         let address: usize = U256::try_into(address).unwrap();
         for (i, byte) in value.iter().enumerate() {
             self.set_byte(address + i, *byte);
         }
     }
 }
+
+#[derive(Debug)]
+pub struct Context {
+    pub memory: Memory,
+    pub gas: U256,
+    pub calldata: Vec<u8>,
+}
+
 
 #[derive(Debug)]
 pub enum ReturnOrRevert {
@@ -64,19 +72,19 @@ pub type YulOutput<A> = Result<A, ReturnOrRevert>;
 
 // Pure opcodes
 
-pub fn add(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn add(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(x.wrapping_add(y))
 }
 
-pub fn sub(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn sub(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(x.wrapping_sub(y))
 }
 
-pub fn mul(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn mul(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(x.wrapping_mul(y))
 }
 
-pub fn div(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn div(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(if y == U256::ZERO {
         U256::ZERO
     } else {
@@ -84,11 +92,11 @@ pub fn div(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
     })
 }
 
-pub fn sdiv(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn sdiv(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(i256::i256_div(x, y))
 }
 
-pub fn mod_(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn mod_(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(if y == U256::ZERO {
         U256::ZERO
     } else {
@@ -96,55 +104,55 @@ pub fn mod_(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
     })
 }
 
-pub fn smod(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn smod(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(i256::i256_mod(x, y))
 }
 
-pub fn exp(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn exp(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(x.pow(y))
 }
 
-pub fn not(x: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn not(x: U256, _context: &Context) -> YulOutput<U256> {
     Ok(!x)
 }
 
-pub fn lt(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn lt(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(U256::from(x < y))
 }
 
-pub fn gt(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn gt(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(U256::from(x > y))
 }
 
-pub fn slt(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn slt(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(U256::from(i256::i256_cmp(&x, &y) == Ordering::Less))
 }
 
-pub fn sgt(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn sgt(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(U256::from(i256::i256_cmp(&x, &y) == Ordering::Greater))
 }
 
-pub fn eq(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn eq(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(U256::from(x == y))
 }
 
-pub fn iszero(x: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn iszero(x: U256, _context: &Context) -> YulOutput<U256> {
     Ok(U256::from(x.is_zero()))
 }
 
-pub fn and(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn and(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(x & y)
 }
 
-pub fn or(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn or(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(x | y)
 }
 
-pub fn xor(x: U256, y: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn xor(x: U256, y: U256, _context: &Context) -> YulOutput<U256> {
     Ok(x ^ y)
 }
 
-pub fn byte(op1: U256, op2: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn byte(op1: U256, op2: U256, _context: &Context) -> YulOutput<U256> {
     let o1 = as_usize_saturated!(op1);
     if o1 < 32 {
         // `31 - o1` because `byte` returns LE, while we want BE
@@ -154,7 +162,7 @@ pub fn byte(op1: U256, op2: U256, _memory: &Memory) -> YulOutput<U256> {
     }
 }
 
-pub fn shl(op1: U256, op2: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn shl(op1: U256, op2: U256, _context: &Context) -> YulOutput<U256> {
     let shift = as_usize_saturated!(op1);
     if shift < 256 {
         Ok(op2 << shift)
@@ -163,7 +171,7 @@ pub fn shl(op1: U256, op2: U256, _memory: &Memory) -> YulOutput<U256> {
     }
 }
 
-pub fn shr(op1: U256, op2: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn shr(op1: U256, op2: U256, _context: &Context) -> YulOutput<U256> {
     let shift = as_usize_saturated!(op1);
     if shift < 256 {
         Ok(op2 >> shift)
@@ -172,7 +180,7 @@ pub fn shr(op1: U256, op2: U256, _memory: &Memory) -> YulOutput<U256> {
     }
 }
 
-pub fn sar(op1: U256, op2: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn sar(op1: U256, op2: U256, _context: &Context) -> YulOutput<U256> {
     let shift = as_usize_saturated!(op1);
     if shift < 256 {
         Ok(op2.arithmetic_shr(shift))
@@ -183,15 +191,15 @@ pub fn sar(op1: U256, op2: U256, _memory: &Memory) -> YulOutput<U256> {
     }
 }
 
-pub fn addmod(op1: U256, op2: U256, op3: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn addmod(op1: U256, op2: U256, op3: U256, _context: &Context) -> YulOutput<U256> {
     Ok(op1.add_mod(op2, op3))
 }
 
-pub fn mulmod(op1: U256, op2: U256, op3: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn mulmod(op1: U256, op2: U256, op3: U256, _context: &Context) -> YulOutput<U256> {
     Ok(op1.mul_mod(op2, op3))
 }
 
-pub fn signextend(ext: U256, x: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn signextend(ext: U256, x: U256, _context: &Context) -> YulOutput<U256> {
     // For 31 we also don't need to do anything.
     if ext < U256::from(31) {
         let ext = ext.as_limbs()[0];
@@ -208,127 +216,142 @@ pub fn signextend(ext: U256, x: U256, _memory: &Memory) -> YulOutput<U256> {
     }
 }
 
-pub fn keccak256(_p: U256, _n: U256, _memory: &Memory) -> YulOutput<U256> {
-    unimplemented!()
+pub fn keccak256(p: U256, n: U256, _context: &Context) -> YulOutput<U256> {
+    let slice = _context.memory.load(p, n);
+    let mut hasher = Keccak::new_keccak256();
+    hasher.update(&slice);
+    let hash = hasher.finalize();
+    Ok(U256::from_big_endian(hash))
 }
 
-pub fn pop(_x : U256, _memory: &Memory) -> YulOutput<()> {
+pub fn pop(_x : U256, _context: &Context) -> YulOutput<()> {
     Ok(())
 }
 
 // Memory opcodes
 
-pub fn mload(address: U256, memory: &Memory) -> YulOutput<U256> {
-    let bytes: Vec<u8> = memory.load(address, U256::from(32));
+pub fn mload(address: U256, context: &Context) -> YulOutput<U256> {
+    let bytes: Vec<u8> = context.memory.load(address, U256::from(32));
     let bytes: [u8; 32] = bytes.try_into().unwrap();
     let bytes: FixedBytes<32> = bytes.into();
     Ok(U256::try_from(bytes).unwrap())
 }
 
-pub fn mstore(address: U256, value: U256, memory: &mut Memory) -> YulOutput<()> {
+pub fn mstore(address: U256, value: U256, context: &mut Context) -> YulOutput<()> {
     let bytes: [u8; 32] = value.to_be_bytes::<32>();
-    memory.store(address, bytes.to_vec());
+    context.memory.store(address, &bytes);
     Ok(())
 }
 
-pub fn mstore8(address: U256, value: U256, memory: &mut Memory) -> YulOutput<()> {
-    memory.store(address, vec![value.byte(0)]);
+pub fn mstore8(address: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+    context.memory.store(address, &[value.byte(0)]);
     Ok(())
 }
 
-pub fn sload(_p: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn sload(_p: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn sstore(_p: U256, _v: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn sstore(_p: U256, _v: U256, _context: &mut Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn tload(_p: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn tload(_p: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn tstore(_p: U256, _v: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn tstore(_p: U256, _v: U256, _context: &mut Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn msize(_memory: &Memory) -> YulOutput<U256> {
+pub fn msize(_context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn gas(_memory: &Memory) -> YulOutput<U256> {
-    Ok(U256::from(100 * 1000))
+pub fn gas(_context: &Context) -> YulOutput<U256> {
+    Ok(_context.gas)
 }
 
-pub fn address(_memory: &Memory) -> YulOutput<U256> {
+pub fn address(_context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn balance(_memory: &Memory, _address: U256) -> YulOutput<U256> {
+pub fn balance(_address: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn selfbalance(_memory: &Memory) -> YulOutput<U256> {
+pub fn selfbalance(_context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn caller(_memory: &Memory) -> YulOutput<U256> {
+pub fn caller(_context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn callvalue(_memory: &Memory) -> YulOutput<U256> {
+pub fn callvalue(_context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn calldataload(_p: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn calldataload(p: U256, context: &Context) -> YulOutput<U256> {
+    let p: usize = U256::try_into(p).unwrap();
+    Ok(U256::from(context.calldata[p]))
+}
+
+pub fn calldatasize(context: &Context) -> YulOutput<U256> {
+    Ok(U256::from(context.calldata.len()))
+}
+
+pub fn calldatacopy(t: U256, f: U256, s: U256, context: &mut Context) -> YulOutput<()> {
+    let f: usize = U256::try_into(f).unwrap();
+    let s: usize = U256::try_into(s).unwrap();
+    let t: usize = U256::try_into(t).unwrap();
+    for i in 0..s {
+        if f + i < context.calldata.len() {
+            context.memory.set_byte(t + i, context.calldata[f + i]);
+        } else {
+            context.memory.set_byte(t + i, 0);
+        }
+    }
+    Ok(())
+}
+
+pub fn codesize(_context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn calldatasize(_memory: &Memory) -> YulOutput<U256> {
+pub fn codecopy(_t: U256, _f: U256, _s: U256, _context: &Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn calldatacopy(_t: U256, _f: U256, _s: U256, _memory: &Memory) -> YulOutput<()> {
+pub fn extcodesize(_a: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn codesize(_memory: &Memory) -> YulOutput<U256> {
+pub fn extcodecopy(_a: U256, _t: U256, _f: U256, _s: U256, _context: &Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn codecopy(_t: U256, _f: U256, _s: U256, _memory: &Memory) -> YulOutput<()> {
+pub fn returndatasize(_context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn extcodesize(_a: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn returndatacopy(_t: U256, _f: U256, _s: U256, _context: &Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn extcodecopy(_a: U256, _t: U256, _f: U256, _s: U256, _memory: &Memory) -> YulOutput<()> {
+pub fn mcopy(_t: U256, _f: U256, _s: U256, _context: &Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn returndatasize(_memory: &Memory) -> YulOutput<U256> {
+pub fn extcodehash(_a: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn returndatacopy(_t: U256, _f: U256, _s: U256, _memory: &Memory) -> YulOutput<()> {
+pub fn create(_v: U256, _p: U256, _n: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn mcopy(_t: U256, _f: U256, _s: U256, _memory: &Memory) -> YulOutput<()> {
-    unimplemented!()
-}
-
-pub fn extcodehash(_a: U256, _memory: &Memory) -> YulOutput<U256> {
-    unimplemented!()
-}
-
-pub fn create(_v: U256, _p: U256, _n: U256, _memory: &Memory) -> YulOutput<U256> {
-    unimplemented!()
-}
-
-pub fn create2(_v: U256, _p: U256, _n: U256, _s: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn create2(_v: U256, _p: U256, _n: U256, _s: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
@@ -340,7 +363,7 @@ pub fn call(
     _insize: U256,
     _out: U256,
     _outsize: U256,
-    _memory: &Memory,
+    _context: &Context,
 ) -> YulOutput<U256> {
     unimplemented!()
 }
@@ -353,7 +376,7 @@ pub fn callcode(
     _insize: U256,
     _out: U256,
     _outsize: U256,
-    _memory: &Memory,
+    _context: &Context,
 ) -> YulOutput<U256> {
     unimplemented!()
 }
@@ -365,7 +388,7 @@ pub fn delegatecall(
     _insize: U256,
     _out: U256,
     _outsize: U256,
-    _memory: &Memory,
+    _context: &Context,
 ) -> YulOutput<U256> {
     unimplemented!()
 }
@@ -377,27 +400,27 @@ pub fn staticcall(
     _args_size: U256,
     _ret_offset: U256,
     _ret_size: U256,
-    _memory: &Memory,
+    _context: &Context,
 ) -> YulOutput<U256> {
     // Pre-compiles for the ZK verifier: 2, 5, 6, 7, 8
     Ok(U256::ONE)
 }
 
-pub fn return_(offset: U256, size: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn return_(offset: U256, size: U256, _context: &mut Context) -> YulOutput<()> {
     Err(ReturnOrRevert::Return {
         start: offset,
         length: size,
     })
 }
 
-pub fn revert(offset: U256, size: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn revert(offset: U256, size: U256, _context: &mut Context) -> YulOutput<()> {
     Err(ReturnOrRevert::Revert {
         start: offset,
         length: size,
     })
 }
 
-pub fn selfdestruct(_a: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn selfdestruct(_a: U256, _context: &mut Context) -> YulOutput<()> {
     unimplemented!()
 }
 
@@ -405,23 +428,23 @@ pub fn invalid() -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn log0(_p: U256, _s: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn log0(_p: U256, _s: U256, _context: &mut Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn log1(_p: U256, _s: U256, _t1: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn log1(_p: U256, _s: U256, _t1: U256, _context: &mut Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn log2(_p: U256, _s: U256, _t1: U256, _t2: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn log2(_p: U256, _s: U256, _t1: U256, _t2: U256, _context: &mut Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn log3(_p: U256, _s: U256, _t1: U256, _t2: U256, _t3: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn log3(_p: U256, _s: U256, _t1: U256, _t2: U256, _t3: U256, _context: &mut Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn log4(_p: U256, _s: U256, _t1: U256, _t2: U256, _t3: U256, _t4: U256, _memory: &mut Memory) -> YulOutput<()> {
+pub fn log4(_p: U256, _s: U256, _t1: U256, _t2: U256, _t3: U256, _t4: U256, _context: &mut Context) -> YulOutput<()> {
     unimplemented!()
 }
 
@@ -445,11 +468,11 @@ pub fn gasprice() -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn blockhash(_memory: &Memory, _b: U256) -> YulOutput<U256> {
+pub fn blockhash(_b: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn blobhash(_memory: &Memory, _i: U256) -> YulOutput<U256> {
+pub fn blobhash(_i: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
@@ -479,18 +502,18 @@ pub fn gaslimit() -> YulOutput<U256> {
 
 // Special opcodes
 
-pub fn memoryguard(size: U256, _memory: &mut Memory) -> YulOutput<U256> {
+pub fn memoryguard(size: U256, _context: &mut Context) -> YulOutput<U256> {
     Ok(size)
 }
 
-pub fn datasize(_x: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn datasize(_x: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn dataoffset(_x: U256, _memory: &Memory) -> YulOutput<U256> {
+pub fn dataoffset(_x: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn datacopy(t: U256, f: U256, s: U256, _memory: &Memory) -> YulOutput<()> {
-    codecopy(t, f, s, _memory)
+pub fn datacopy(t: U256, f: U256, s: U256, _context: &Context) -> YulOutput<()> {
+    codecopy(t, f, s, _context)
 }
