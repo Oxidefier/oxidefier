@@ -1,7 +1,10 @@
-use crate::i256;
 use alloy_primitives::{FixedBytes, U256};
 use core::cmp::Ordering;
 use alloy_primitives::hex::FromHex;
+
+mod i256;
+#[macro_use]
+mod macros;
 
 pub fn from_hex(hex: &str) -> U256 {
     let bytes: FixedBytes<32> = FixedBytes::from_hex(hex).unwrap();
@@ -24,6 +27,10 @@ impl Memory {
     fn get_byte(&self, index: usize) -> u8 {
         // let index: usize = U256::try_into(index).unwrap();
         self.inner.get(index).cloned().unwrap_or_default()
+    }
+
+    fn slice_len(&self, from: usize, length: usize) -> &[u8] {
+        &self.inner[from..from + length]
     }
 
     fn set_byte(&mut self, index: usize, value: u8) {
@@ -217,11 +224,10 @@ pub fn signextend(ext: U256, x: U256, _context: &Context) -> YulOutput<U256> {
 }
 
 pub fn keccak256(p: U256, n: U256, _context: &Context) -> YulOutput<U256> {
-    let slice = _context.memory.load(p, n);
-    let mut hasher = Keccak::new_keccak256();
-    hasher.update(&slice);
-    let hash = hasher.finalize();
-    Ok(U256::from_big_endian(hash))
+    let p: usize = U256::try_into(p).unwrap();
+    let n: usize = U256::try_into(n).unwrap();
+    let slice = _context.memory.slice_len(p, n);
+    Ok(alloy_primitives::keccak256(slice).into())
 }
 
 pub fn pop(_x : U256, _context: &Context) -> YulOutput<()> {

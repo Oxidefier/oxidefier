@@ -31,12 +31,10 @@ jobs:
             sudo chown -R $(whoami) .
           endGroup
           startGroup "Translate"
-            python scripts/shallow_embed.py sol_contracts/erc20.json >evm_opcodes/src/main.rs
+            python scripts/shallow_embed.py contracts/erc20/erc20.json src20
           endGroup
           startGroup "Build"
-            cd evm_opcodes
             cargo check
-            cd ..
           endGroup
           startGroup "Check that the diff is empty (excluding submodules)"
             git -c color.ui=always diff --exit-code --ignore-submodules=dirty

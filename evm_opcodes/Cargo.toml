@@ -1,7 +1,0 @@
-[package]
-name = "evm_opcodes"
-version = "0.1.0"
-edition = "2021"
-
-[dependencies]
-alloy-primitives = { version = "1.0", default-features = false }
