@@ -1258,6 +1258,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "test_opcodes"
+version = "0.1.0"
+dependencies = [
+ "alloy-primitives",
+ "evm_opcodes",
+]
+
+[[package]]
 name = "thiserror"
 version = "2.0.12"
 source = "registry+https://github.com/rust-lang/crates.io-index"
