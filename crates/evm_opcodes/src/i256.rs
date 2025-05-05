@@ -11,13 +11,6 @@ pub enum Sign {
     Plus = 1,
 }
 
-pub const MAX_POSITIVE_VALUE: U256 = U256::from_limbs([
-    0xffffffffffffffff,
-    0xffffffffffffffff,
-    0xffffffffffffffff,
-    0x7fffffffffffffff,
-]);
-
 pub const MIN_NEGATIVE_VALUE: U256 = U256::from_limbs([
     0x0000000000000000,
     0x0000000000000000,

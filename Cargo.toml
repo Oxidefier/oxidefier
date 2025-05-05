@@ -3,6 +3,7 @@ members = [
     "crates/evm_opcodes",
     "output/*",
 ]
+resolver = "2"
 
 [workspace.package]
 homepage = "https://github.com/Oxidefier"
