@@ -1,0 +1,15 @@
+[workspace]
+members = [
+    "crates/evm_opcodes",
+    "output/*",
+]
+resolver = "2"
+
+[workspace.package]
+homepage = "https://github.com/Oxidefier"
+edition = "2021"
+
+[workspace.dependencies]
+evm_opcodes = { path = "crates/evm_opcodes" }
+
+alloy-primitives = { version = "1.0" }

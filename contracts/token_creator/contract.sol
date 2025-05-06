@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0
 pragma solidity >=0.4.22 <0.9.0;
+
 contract OwnedToken {
     // `TokenCreator` is a contract type that is defined below.
     // It is fine to reference it as long as it is not used
