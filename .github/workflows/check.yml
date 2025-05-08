@@ -31,7 +31,7 @@ jobs:
             sudo chown -R $(whoami) .
           endGroup
           startGroup "Translate"
-            python scripts/shallow_embed.py contracts/erc20/erc20.json src20
+            python scripts/shallow_embed.py contracts/erc20/erc20.json erc20
           endGroup
           startGroup "Build"
             cargo check
