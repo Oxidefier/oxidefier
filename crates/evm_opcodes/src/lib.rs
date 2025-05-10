@@ -1,6 +1,7 @@
 use alloy_primitives::{FixedBytes, U256};
-use core::cmp::Ordering;
 use alloy_primitives::hex::FromHex;
+use core::cmp::Ordering;
+use std::collections::HashMap;
 
 mod i256;
 #[macro_use]
@@ -64,9 +65,14 @@ impl Memory {
 #[derive(Debug)]
 pub struct Context {
     pub memory: Memory,
+    pub immutables: HashMap<U256, U256>,
+    pub address: U256,
+    pub caller: U256,
+    pub callvalue: U256,
     pub gas: U256,
     pub timestamp: U256,
     pub calldata: Vec<u8>,
+    pub balances: HashMap<U256, U256>,
 }
 
 
@@ -263,40 +269,28 @@ pub fn sstore(_p: U256, _v: U256, _context: &mut Context) -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn tload(_p: U256, _context: &Context) -> YulOutput<U256> {
-    unimplemented!()
-}
-
-pub fn tstore(_p: U256, _v: U256, _context: &mut Context) -> YulOutput<()> {
-    unimplemented!()
-}
-
-pub fn msize(_context: &Context) -> YulOutput<U256> {
-    unimplemented!()
-}
-
 pub fn gas(_context: &Context) -> YulOutput<U256> {
     Ok(_context.gas)
 }
 
-pub fn address(_context: &Context) -> YulOutput<U256> {
-    unimplemented!()
+pub fn address(context: &Context) -> YulOutput<U256> {
+    Ok(context.address)
 }
 
-pub fn balance(_address: U256, _context: &Context) -> YulOutput<U256> {
-    unimplemented!()
+pub fn balance(address: U256, context: &Context) -> YulOutput<U256> {
+    Ok(context.balances.get(&address).cloned().unwrap_or(U256::ZERO))
 }
 
-pub fn selfbalance(_context: &Context) -> YulOutput<U256> {
-    unimplemented!()
+pub fn selfbalance(context: &Context) -> YulOutput<U256> {
+    balance(address(context)?, context)
 }
 
-pub fn caller(_context: &Context) -> YulOutput<U256> {
-    unimplemented!()
+pub fn caller(context: &Context) -> YulOutput<U256> {
+    Ok(context.caller)
 }
 
-pub fn callvalue(_context: &Context) -> YulOutput<U256> {
-    unimplemented!()
+pub fn callvalue(context: &Context) -> YulOutput<U256> {
+    Ok(context.callvalue)
 }
 
 pub fn calldataload(p: U256, context: &Context) -> YulOutput<U256> {
@@ -351,14 +345,6 @@ pub fn mcopy(_t: U256, _f: U256, _s: U256, _context: &Context) -> YulOutput<()> 
 }
 
 pub fn extcodehash(_a: U256, _context: &Context) -> YulOutput<U256> {
-    unimplemented!()
-}
-
-pub fn create(_v: U256, _p: U256, _n: U256, _context: &Context) -> YulOutput<U256> {
-    unimplemented!()
-}
-
-pub fn create2(_v: U256, _p: U256, _n: U256, _s: U256, _context: &Context) -> YulOutput<U256> {
     unimplemented!()
 }
 
@@ -523,4 +509,13 @@ pub fn dataoffset(_x: U256, _context: &Context) -> YulOutput<U256> {
 
 pub fn datacopy(t: U256, f: U256, s: U256, _context: &Context) -> YulOutput<()> {
     codecopy(t, f, s, _context)
+}
+
+pub fn setimmutable(_offset: U256, name: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+    context.immutables.insert(name, value);
+    Ok(())
+}
+
+pub fn loadimmutable(name: U256, context: &Context) -> YulOutput<U256> {
+    Ok(context.immutables.get(&name).cloned().unwrap_or(U256::ZERO))
 }
