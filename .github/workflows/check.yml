@@ -29,6 +29,11 @@ jobs:
             cargo --version
             sudo ln -s `which python3` /usr/bin/python
             sudo chown -R $(whoami) .
+            sudo apt-get update
+            sudo apt-get install -y software-properties-common python3-launchpadlib
+            sudo add-apt-repository ppa:ethereum/ethereum
+            sudo apt-get update
+            sudo apt-get install -y solc-bin
           endGroup
           startGroup "Translate"
             python scripts/shallow_embed.py contracts/erc20/erc20.json erc20

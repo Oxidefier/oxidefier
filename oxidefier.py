@@ -426,7 +426,7 @@ def object_to_rust(node) -> str:
 
 
 def main():
-    """python scripts/shallow_embed.py <path_to_yul_json_file> <contract_name>"""
+    """python oxidefier.py <path_to_yul_json_file> <contract_name>"""
     with open(sys.argv[1], 'r') as file:
         data = json.load(file)
     contract_name = sys.argv[2]
