@@ -18,38 +18,31 @@ jobs:
     - uses: actions/checkout@v3
     - name: Download Git submodules
       run: git submodule update --init --recursive
-    - uses: coq-community/docker-coq-action@v1
-      with:
-        custom_image: coqorg/coq:8.20-ocaml-4.14-flambda
-        custom_script: |
-          startGroup "Install dependencies"
-            curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
-            source "$HOME/.cargo/env"
-            rustup toolchain install nightly-2024-12-07-x86_64-unknown-linux-gnu
-            cargo --version
-            sudo ln -s `which python3` /usr/bin/python
-            sudo chown -R $(whoami) .
-            sudo apt-get update
-            sudo apt-get install -y software-properties-common python3-launchpadlib
-            sudo add-apt-repository ppa:ethereum/ethereum
-            sudo apt-get update
-            sudo apt-get install -y solc
-          endGroup
-          startGroup "Translate to Yul JSON"
-            for dir in contracts/*; do
-              solc --ir-optimized-ast-json --optimize --yul-optimizations hg $dir/contract.sol \
-                | tail -1 \
-                > $dir/contract.json
-            done
-          endGroup
-          startGroup "Translate to Rust"
-            for dir in contracts/*; do
-              python oxidefier.py $dir/contract.json ${dir##*/}
-            done
-          endGroup
-          startGroup "Build"
-            cargo check
-          endGroup
-          startGroup "Check that the diff is empty (excluding submodules)"
-            git -c color.ui=always diff --exit-code --ignore-submodules=dirty
-          endGroup
+    - name: Install Solidity
+      run: |
+        sudo add-apt-repository ppa:ethereum/ethereum
+        sudo apt-get update
+        sudo apt-get install -y solc
+    - name: Install Rust
+      run: |
+        curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
+        source "$HOME/.cargo/env"
+        rustup toolchain install nightly-2024-12-07-x86_64-unknown-linux-gnu
+        cargo --version
+        sudo chown -R $(whoami) .
+    - name: Translate to Yul JSON
+      run: |
+        for dir in contracts/*; do
+          solc --ir-optimized-ast-json --optimize --yul-optimizations hg $dir/contract.sol \
+            | tail -1 \
+            > $dir/contract.json
+        done
+    - name: Translate to Rust
+      run: |
+        for dir in contracts/*; do
+          python oxidefier.py $dir/contract.json ${dir##*/}
+        done
+    - name: Build
+      run: cargo check
+    - name: Check that the diff is empty (excluding submodules)
+      run: git -c color.ui=always diff --exit-code --ignore-submodules=dirty
