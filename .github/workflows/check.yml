@@ -33,6 +33,7 @@ jobs:
             sudo apt-get install -y software-properties-common python3-launchpadlib
             sudo add-apt-repository ppa:ethereum/ethereum
             sudo apt-get update
+            apt-cache search solc
             sudo apt-get install -y solc-bin
           endGroup
           startGroup "Translate"
