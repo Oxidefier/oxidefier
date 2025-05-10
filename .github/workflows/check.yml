@@ -35,8 +35,17 @@ jobs:
             sudo apt-get update
             sudo apt-get install -y solc
           endGroup
-          startGroup "Translate"
-            python oxidefier.py contracts/erc20/erc20.json erc20
+          startGroup "Translate to Yul JSON"
+            for dir in contracts/*; do
+              solc --ir-optimized-ast-json --optimize --yul-optimizations hg $dir/contract.sol \
+                | tail -1 \
+                > $dir/contract.json
+            done
+          endGroup
+          startGroup "Translate to Rust"
+            for dir in contracts/*; do
+              python oxidefier.py $dir/contract.json ${dir##*/}
+            done
           endGroup
           startGroup "Build"
             cargo check
