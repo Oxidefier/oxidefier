@@ -40,6 +40,7 @@ jobs:
     - name: Translate to Rust
       run: |
         for dir in contracts/*; do
+          echo "Translating $dir"
           python oxidefier.py $dir/contract.json ${dir##*/}
         done
     - name: Build

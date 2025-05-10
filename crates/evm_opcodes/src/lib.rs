@@ -65,6 +65,7 @@ impl Memory {
 pub struct Context {
     pub memory: Memory,
     pub gas: U256,
+    pub timestamp: U256,
     pub calldata: Vec<u8>,
 }
 
@@ -486,8 +487,8 @@ pub fn coinbase() -> YulOutput<U256> {
     unimplemented!()
 }
 
-pub fn timestamp() -> YulOutput<U256> {
-    unimplemented!()
+pub fn timestamp(context: &Context) -> YulOutput<U256> {
+    Ok(context.timestamp)
 }
 
 pub fn number() -> YulOutput<U256> {

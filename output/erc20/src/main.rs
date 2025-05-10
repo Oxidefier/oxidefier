@@ -308,12 +308,9 @@ fn main() {
         gas: U256::from(100 * 1000),
         calldata: vec![],
     };
-    let result = erc20_403::erc20_403_deployed::fun_transfer(
-        U256::ZERO,
-        U256::ZERO,
-        U256::ZERO,
+    let result = erc20_403::erc20_403_deployed::fun_runTests(
         &mut context
     );
     println!("result: {:#?}", result);
-    println!("context: {:#?}", context);
+    // println!("context: {:#?}", context);
 }
