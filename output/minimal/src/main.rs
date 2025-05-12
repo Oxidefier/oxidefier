@@ -22,14 +22,6 @@ pub mod minimal {
         Ok(memPtr)
     }
 
-    pub fn constructor_Minimal_14<CI>(context: &mut Context<CI>) -> YulOutput<()>
-    where
-        Context<CI>: ContractInteractions,
-    {
-
-        Ok(())
-    }
-
     pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb<CI>(context: &mut Context<CI>) -> YulOutput<()>
     where
         Context<CI>: ContractInteractions,
@@ -46,7 +38,6 @@ pub mod minimal {
         if callvalue(context)? != U256::ZERO {
             revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
         }
-        constructor_Minimal_14(context)?;
         let _1 = allocate_unbounded(context)?;
         codecopy(_1, dataoffset(from_hex("4d696e696d616c5f31345f6465706c6f79656400000000000000000000000000"), context)?, datasize(from_hex("4d696e696d616c5f31345f6465706c6f79656400000000000000000000000000"), context)?, context)?;
         return_(_1, datasize(from_hex("4d696e696d616c5f31345f6465706c6f79656400000000000000000000000000"), context)?, context)?;
@@ -57,7 +48,7 @@ pub mod minimal {
         use alloy_primitives::U256;
         use evm_opcodes::*;
 
-        pub fn cleanup_t_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn cleanup_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -66,23 +57,23 @@ pub mod minimal {
             Ok(cleaned)
         }
 
-        pub fn validator_revert_t_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn validator_revert_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
-            if iszero(eq(value, cleanup_t_uint256(value, context)?, context)?, context)? != U256::ZERO {
+            if iszero(eq(value, cleanup_uint256(value, context)?, context)?, context)? != U256::ZERO {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(())
         }
 
-        pub fn abi_decode_t_uint256<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn abi_decode_uint256<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
             value = calldataload(offset, context)?;
-            validator_revert_t_uint256(value, context)?;
+            validator_revert_uint256(value, context)?;
             Ok(value)
         }
 
@@ -94,7 +85,7 @@ pub mod minimal {
             Ok(())
         }
 
-        pub fn abi_decode_tuple_t_uint256<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn abi_decode_tuple_uint256<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -102,26 +93,25 @@ pub mod minimal {
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
                 revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
             }
-            let offset = U256::from(0x0u128);
-            value0 = abi_decode_t_uint256(add(headStart, offset, context)?, dataEnd, context)?;
+            value0 = abi_decode_uint256(add(headStart, U256::from(0x0u128), context)?, dataEnd, context)?;
             Ok(value0)
         }
 
-        pub fn abi_encode_t_uint256_to_t_uint256_fromStack<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn abi_encode_uint256_to_uint256<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
-            mstore(pos, cleanup_t_uint256(value, context)?, context)?;
+            mstore(pos, cleanup_uint256(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_tuple_t_uint256__to_t_uint256__fromStack<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn abi_encode_uint256<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
-            abi_encode_t_uint256_to_t_uint256_fromStack(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
+            abi_encode_uint256_to_uint256(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
             Ok(tail)
         }
 
@@ -138,19 +128,19 @@ pub mod minimal {
         where
             Context<CI>: ContractInteractions,
         {
-            mstore(U256::from(0x0u128), U256::from_be_slice(&[0x4e, 0x48, 0x7b, 0x71, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]), context)?;
+            mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
             mstore(U256::from(0x4u128), U256::from(0x11u128), context)?;
             revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
             Ok(())
         }
 
-        pub fn checked_add_t_uint256<CI>(mut x: U256, mut y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn checked_add_uint256<CI>(mut x: U256, mut y: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
             let mut sum = U256::ZERO;
-            x = cleanup_t_uint256(x, context)?;
-            y = cleanup_t_uint256(y, context)?;
+            x = cleanup_uint256(x, context)?;
+            y = cleanup_uint256(y, context)?;
             sum = add(x, y, context)?;
             if gt(x, sum, context)? != U256::ZERO {
                 panic_error_0x11(context)?;
@@ -158,7 +148,7 @@ pub mod minimal {
             Ok(sum)
         }
 
-        pub fn cleanup_t_rational_1_by_1<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn cleanup_rational_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -176,16 +166,16 @@ pub mod minimal {
             Ok(ret)
         }
 
-        pub fn convert_t_rational_1_by_1_to_t_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn convert_rational_by_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
             let mut converted = U256::ZERO;
-            converted = cleanup_t_uint256(identity(cleanup_t_rational_1_by_1(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(identity(cleanup_rational_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn zero_value_for_split_t_uint256<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn zero_value_for_split_uint256<CI>(context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -194,20 +184,16 @@ pub mod minimal {
             Ok(ret)
         }
 
-        pub fn fun_add_one_13<CI>(var_x_3: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn fun_add_one<CI>(var_x: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
-            let mut var__6 = U256::ZERO;
-            let zero_t_uint256_1 = zero_value_for_split_t_uint256(context)?;
-            var__6 = zero_t_uint256_1;
-            let _2 = var_x_3;
-            let expr_8 = _2;
-            let expr_9 = U256::from(0x1u128);
-            let expr_10 = checked_add_t_uint256(expr_8, convert_t_rational_1_by_1_to_t_uint256(expr_9, context)?, context)?;
-            var__6 = expr_10;
-            return Ok(var__6);
-            Ok(var__6)
+            let mut var = U256::ZERO;
+            let zero_uint256 = zero_value_for_split_uint256(context)?;
+            var = zero_uint256;
+            let expr = checked_add_uint256(var_x, convert_rational_by_to_uint256(U256::from(0x1u128), context)?, context)?;
+            var = expr;
+            Ok(var)
         }
 
         pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb<CI>(context: &mut Context<CI>) -> YulOutput<()>
@@ -218,17 +204,17 @@ pub mod minimal {
             Ok(())
         }
 
-        pub fn external_fun_add_one_13<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        pub fn external_fun_add_one<CI>(context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
-            let param_0 = abi_decode_tuple_t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
-            let ret_0 = fun_add_one_13(param_0, context)?;
+            let param = abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let ret = fun_add_one(param, context)?;
             let memPos = allocate_unbounded(context)?;
-            let memEnd = abi_encode_tuple_t_uint256__to_t_uint256__fromStack(memPos, ret_0, context)?;
+            let memEnd = abi_encode_uint256(memPos, ret, context)?;
             return_(memPos, sub(memEnd, memPos, context)?, context)?;
             Ok(())
         }
@@ -241,15 +227,7 @@ pub mod minimal {
             Ok(())
         }
 
-        pub fn revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db<CI>(context: &mut Context<CI>) -> YulOutput<()>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
-            Ok(())
-        }
-
-        pub fn shift_right_224_unsigned<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn shift_right_unsigned<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -264,11 +242,9 @@ pub mod minimal {
         {
             mstore(U256::from(0x40u128), memoryguard(U256::from(0x80u128), context)?, context)?;
             if iszero(lt(calldatasize(context)?, U256::from(0x4u128), context)?, context)? != U256::ZERO {
-                let selector = shift_right_224_unsigned(calldataload(U256::from(0x0u128), context)?, context)?;
-                // switch
-                let δ = selector;
-                if δ == U256::from(0xdde38a34u128) {
-                    external_fun_add_one_13(context)?;
+                let selector = shift_right_unsigned(calldataload(U256::from(0x0u128), context)?, context)?;
+                if eq(U256::from(0xdde38a34u128), selector, context)? != U256::ZERO {
+                    external_fun_add_one(context)?;
                 }
             }
             revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74(context)?;

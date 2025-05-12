@@ -30,13 +30,49 @@ jobs:
         rustup toolchain install nightly-2024-12-07-x86_64-unknown-linux-gnu
         cargo --version
         sudo chown -R $(whoami) .
-    # - name: Translate to Yul JSON
-    #   run: |
-    #     for dir in contracts/*; do
-    #       solc --ir-optimized-ast-json --optimize --yul-optimizations hg $dir/contract.sol \
-    #         | tail -1 \
-    #         > $dir/contract.json
-    #     done
+    - name: Translate to Yul JSON
+      run: |
+        # erc20
+        cd third-parties/openzeppelin-contracts/contracts
+        solc --base-path . --include-path node_modules/ token/ERC20/ERC20.sol --ir-optimized-ast-json --optimize --yul-optimizations hg --overwrite --output-dir yul-json
+        cp yul-json/ERC20_opt_yul_ast.json ../../../contracts/erc20/contract.json
+        cd ../../..
+
+        # exp_test
+        cd third-parties/prb-math
+        npm install
+        solc --base-path . --include-path node_modules/ test/unit/ud60x18/math/exp/exp.t.sol --ir-optimized-ast-json --optimize --yul-optimizations hg --overwrite --output-dir yul-json
+        cp yul-json/Exp_Unit_Test_opt_yul_ast.json ../../contracts/exp_test/contract.json
+        cd ../..
+
+        # minimal
+        solc --ir-optimized-ast-json --optimize --yul-optimizations hg contracts/minimal/contract.sol \
+          | tail -1 \
+          > contracts/minimal/contract.json
+
+        # morpho
+        cd third-parties/morpho-blue
+        sed -i s/0.8.19/0.8.26/ src/Morpho.sol
+        solc --base-path . --include-path node_modules/ src/Morpho.sol --ir-optimized-ast-json --optimize --yul-optimizations hg --overwrite  --output-dir yul-json
+        cp yul-json/Morpho_opt_yul_ast.json ../../contracts/morpho/contract.json
+        cd ../..
+
+        # plonk
+        solc --ir-optimized-ast-json --optimize --yul-optimizations hg contracts/plonk_verifier/PlonkVerifier.sol \
+          | tail -1 \
+          > contracts/plonk_verifier/contract.json
+
+        # sablier
+        cd third-parties/sablier-lockup
+        npm install
+        solc --base-path . --include-path node_modules/ src/SablierLockup.sol --ir-optimized-ast-json --optimize --yul-optimizations hg --overwrite --output-dir yul-json
+        cp yul-json/SablierLockup_opt_yul_ast.json ../../contracts/sablier/contract.json
+        cd ../..
+
+        # test_opcodes
+        solc --ir-optimized-ast-json --optimize --yul-optimizations hg contract/test_opcodes/contract.sol
+          | tail -1 \
+          > contracts/test_opcodes/contract.json
     - name: Translate to Rust
       run: |
         for dir in contracts/*; do
