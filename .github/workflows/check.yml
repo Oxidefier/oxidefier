@@ -30,18 +30,19 @@ jobs:
         rustup toolchain install nightly-2024-12-07-x86_64-unknown-linux-gnu
         cargo --version
         sudo chown -R $(whoami) .
-    - name: Translate to Yul JSON
-      run: |
-        for dir in contracts/*; do
-          solc --ir-optimized-ast-json --optimize --yul-optimizations hg $dir/contract.sol \
-            | tail -1 \
-            > $dir/contract.json
-        done
+    # - name: Translate to Yul JSON
+    #   run: |
+    #     for dir in contracts/*; do
+    #       solc --ir-optimized-ast-json --optimize --yul-optimizations hg $dir/contract.sol \
+    #         | tail -1 \
+    #         > $dir/contract.json
+    #     done
     - name: Translate to Rust
       run: |
         for dir in contracts/*; do
           echo "Translating $dir"
           python oxidefier.py $dir/contract.json ${dir##*/}
+          echo
         done
     - name: Build
       run: cargo check
