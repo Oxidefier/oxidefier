@@ -52,7 +52,7 @@ jobs:
 
         # morpho
         cd third-parties/morpho-blue
-        sed -i s/0.8.19/0.8.26/ src/Morpho.sol
+        sed -i s/0.8.19/0.8.30/ src/Morpho.sol
         solc --base-path . --include-path node_modules/ src/Morpho.sol --ir-optimized-ast-json --optimize --yul-optimizations hg --overwrite  --output-dir yul-json
         cp yul-json/Morpho_opt_yul_ast.json ../../contracts/morpho/contract.json
         cd ../..
@@ -70,7 +70,7 @@ jobs:
         cd ../..
 
         # test_opcodes
-        solc --ir-optimized-ast-json --optimize --yul-optimizations hg contract/test_opcodes/contract.sol
+        solc --ir-optimized-ast-json --optimize --yul-optimizations hg contracts/test_opcodes/contract.sol \
           | tail -1 \
           > contracts/test_opcodes/contract.json
     - name: Translate to Rust
