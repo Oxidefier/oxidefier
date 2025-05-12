@@ -495,7 +495,7 @@ pub mod morpho {
         Ok(())
     }
 
-    pub fn body<CI: ContractInteractions>(context: &mut Context<CI>) -> YulOutput<()>
+    pub fn body<CI>(context: &mut Context<CI>) -> YulOutput<()>
     where
         Context<CI>: ContractInteractions,
     {
@@ -6314,7 +6314,7 @@ pub mod morpho {
             Ok(newValue)
         }
 
-        pub fn body<CI: ContractInteractions>(context: &mut Context<CI>) -> YulOutput<()>
+        pub fn body<CI>(context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -6392,6 +6392,7 @@ fn main() {
         contract_interactions: std::marker::PhantomData::<DummyContractInteractions>,
         memory: Memory::new(),
         immutables: std::collections::HashMap::new(),
+        storage: std::collections::HashMap::new(),
         address: U256::from(123),
         caller: U256::from(124),
         callvalue: U256::from(12),

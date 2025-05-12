@@ -30,6 +30,14 @@ impl Memory {
         self.inner.get(index).cloned().unwrap_or_default()
     }
 
+    fn get_buffer(&self, offset: usize, size: usize) -> Vec<u8> {
+        let mut buffer = Vec::with_capacity(size);
+        for i in 0..size {
+            buffer.push(self.get_byte(offset + i));
+        }
+        buffer
+    }
+
     fn slice_len(&mut self, from: usize, length: usize) -> &[u8] {
         self.inner.resize(from + length, 0);
         &self.inner[from..from + length]
@@ -68,6 +76,7 @@ pub struct Context<CI> {
     pub contract_interactions: std::marker::PhantomData<CI>,
     pub memory: Memory,
     pub immutables: HashMap<U256, U256>,
+    pub storage: HashMap<U256, U256>,
     pub address: U256,
     pub caller: U256,
     pub callvalue: U256,
@@ -79,8 +88,33 @@ pub struct Context<CI> {
 
 pub trait ContractInteractions {
     fn call(&self, gas: U256, to: U256, payload: &[u8]) -> Vec<u8>;
-
     fn get_balance(&self, address: U256) -> U256;
+
+    fn log0(&self, payload: &[u8]) {
+        println!("log0: {:?}", payload);
+    }
+
+    fn log1(&self, payload: &[u8], topic1: U256) {
+        println!("log1: {:?}, {:?}", payload, topic1);
+    }
+
+    fn log2(&self, payload: &[u8], topic1: U256, topic2: U256) {
+        println!("log2: {:?}, {:?}, {:?}", payload, topic1, topic2);
+    }
+
+    fn log3(&self, payload: &[u8], topic1: U256, topic2: U256, topic3: U256) {
+        println!(
+            "log3: {:?}, {:?}, {:?}, {:?}",
+            payload, topic1, topic2, topic3
+        );
+    }
+
+    fn log4(&self, payload: &[u8], topic1: U256, topic2: U256, topic3: U256, topic4: U256) {
+        println!(
+            "log4: {:?}, {:?}, {:?}, {:?}, {:?}",
+            payload, topic1, topic2, topic3, topic4
+        );
+    }
 }
 
 #[derive(Debug)]
@@ -281,12 +315,13 @@ pub fn mstore8<CI>(address: U256, value: U256, context: &mut Context<CI>) -> Yul
     Ok(())
 }
 
-pub fn sload<CI>(_p: U256, _context: &Context<CI>) -> YulOutput<U256> {
-    unimplemented!()
+pub fn sload<CI>(p: U256, context: &Context<CI>) -> YulOutput<U256> {
+    Ok(context.storage.get(&p).cloned().unwrap_or(U256::ZERO))
 }
 
-pub fn sstore<CI>(_p: U256, _v: U256, _context: &mut Context<CI>) -> YulOutput<()> {
-    unimplemented!()
+pub fn sstore<CI>(p: U256, v: U256, context: &mut Context<CI>) -> YulOutput<()> {
+    context.storage.insert(p, v);
+    Ok(())
 }
 
 pub fn gas<CI>(_context: &Context<CI>) -> YulOutput<U256> {
@@ -351,7 +386,7 @@ pub fn codecopy<CI>(_t: U256, _f: U256, _s: U256, _context: &Context<CI>) -> Yul
 }
 
 pub fn extcodesize<CI>(_a: U256, _context: &Context<CI>) -> YulOutput<U256> {
-    unimplemented!()
+    Ok(U256::from(1))
 }
 
 pub fn extcodecopy<CI>(
@@ -372,8 +407,22 @@ pub fn returndatacopy<CI>(_t: U256, _f: U256, _s: U256, _context: &Context<CI>) 
     unimplemented!()
 }
 
-pub fn mcopy<CI>(_t: U256, _f: U256, _s: U256, _context: &Context<CI>) -> YulOutput<()> {
-    unimplemented!()
+pub fn mcopy<CI>(
+    dest_offset: U256,
+    offset: U256,
+    size: U256,
+    _context: &mut Context<CI>,
+) -> YulOutput<()> {
+    let dest_offset: usize = U256::try_into(dest_offset).unwrap();
+    let offset: usize = U256::try_into(offset).unwrap();
+    let size: usize = U256::try_into(size).unwrap();
+    let buffer = _context.memory.get_buffer(offset, size);
+
+    for i in 0..size {
+        _context.memory.set_byte(dest_offset + i, buffer[i]);
+    }
+
+    Ok(())
 }
 
 pub fn extcodehash<CI>(_a: U256, _context: &Context<CI>) -> YulOutput<U256> {
@@ -453,45 +502,80 @@ pub fn invalid() -> YulOutput<()> {
     unimplemented!()
 }
 
-pub fn log0<CI>(_p: U256, _s: U256, _context: &mut Context<CI>) -> YulOutput<()> {
-    unimplemented!()
+pub fn log0<CI>(offset: U256, size: U256, context: &Context<CI>) -> YulOutput<()>
+where
+    Context<CI>: ContractInteractions,
+{
+    let offset: usize = U256::try_into(offset).unwrap();
+    let size: usize = U256::try_into(size).unwrap();
+    let buffer = context.memory.get_buffer(offset, size);
+    context.log0(&buffer);
+    Ok(())
 }
 
-pub fn log1<CI>(_p: U256, _s: U256, _t1: U256, _context: &mut Context<CI>) -> YulOutput<()> {
-    unimplemented!()
+pub fn log1<CI>(offset: U256, size: U256, topic1: U256, context: &Context<CI>) -> YulOutput<()>
+where
+    Context<CI>: ContractInteractions,
+{
+    let offset: usize = U256::try_into(offset).unwrap();
+    let size: usize = U256::try_into(size).unwrap();
+    let buffer = context.memory.get_buffer(offset, size);
+    context.log1(&buffer, topic1);
+    Ok(())
 }
 
 pub fn log2<CI>(
-    _p: U256,
-    _s: U256,
-    _t1: U256,
-    _t2: U256,
-    _context: &mut Context<CI>,
-) -> YulOutput<()> {
-    unimplemented!()
+    offset: U256,
+    size: U256,
+    topic1: U256,
+    topic2: U256,
+    context: &Context<CI>,
+) -> YulOutput<()>
+where
+    Context<CI>: ContractInteractions,
+{
+    let offset: usize = U256::try_into(offset).unwrap();
+    let size: usize = U256::try_into(size).unwrap();
+    let buffer = context.memory.get_buffer(offset, size);
+    context.log2(&buffer, topic1, topic2);
+    Ok(())
 }
 
 pub fn log3<CI>(
-    _p: U256,
-    _s: U256,
-    _t1: U256,
-    _t2: U256,
-    _t3: U256,
-    _context: &mut Context<CI>,
-) -> YulOutput<()> {
-    unimplemented!()
+    offset: U256,
+    size: U256,
+    topic1: U256,
+    topic2: U256,
+    topic3: U256,
+    context: &Context<CI>,
+) -> YulOutput<()>
+where
+    Context<CI>: ContractInteractions,
+{
+    let offset: usize = U256::try_into(offset).unwrap();
+    let size: usize = U256::try_into(size).unwrap();
+    let buffer = context.memory.get_buffer(offset, size);
+    context.log3(&buffer, topic1, topic2, topic3);
+    Ok(())
 }
 
 pub fn log4<CI>(
-    _p: U256,
-    _s: U256,
-    _t1: U256,
-    _t2: U256,
-    _t3: U256,
-    _t4: U256,
-    _context: &mut Context<CI>,
-) -> YulOutput<()> {
-    unimplemented!()
+    offset: U256,
+    size: U256,
+    topic1: U256,
+    topic2: U256,
+    topic3: U256,
+    topic4: U256,
+    context: &Context<CI>,
+) -> YulOutput<()>
+where
+    Context<CI>: ContractInteractions,
+{
+    let offset: usize = U256::try_into(offset).unwrap();
+    let size: usize = U256::try_into(size).unwrap();
+    let buffer = context.memory.get_buffer(offset, size);
+    context.log4(&buffer, topic1, topic2, topic3, topic4);
+    Ok(())
 }
 
 pub fn chainid<CI>(context: &Context<CI>) -> YulOutput<U256> {

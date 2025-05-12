@@ -392,7 +392,7 @@ def top_level_to_rust(node) -> str:
             if function.get('nodeType') == 'YulFunctionDefinition'
         ]
         body = \
-            "pub fn body<CI: ContractInteractions>(context: &mut Context<CI>) -> YulOutput<()>\n" + \
+            "pub fn body<CI>(context: &mut Context<CI>) -> YulOutput<()>\n" + \
             "where\n" + \
             indent("Context<CI>: ContractInteractions,\n") + \
             "{\n" + \
@@ -469,6 +469,7 @@ fn main() {
         contract_interactions: std::marker::PhantomData::<DummyContractInteractions>,
         memory: Memory::new(),
         immutables: std::collections::HashMap::new(),
+        storage: std::collections::HashMap::new(),
         address: U256::from(123),
         caller: U256::from(124),
         callvalue: U256::from(12),
@@ -478,14 +479,7 @@ fn main() {
         chain_id: U256::from(123456),
     };
 
-    let result = morpho::morpho_deployed::fun_withdraw(
-        U256::from(0),
-        U256::from(1),
-        U256::from(2),
-        U256::from(3),
-        U256::from(4),
-        &mut context,
-    );
+    let result = exp_unit_test::exp_unit_test_deployed::fun_test_Exp(&mut context);
     println!("result: {:#?}", result);
     println!("context: {:#?}", context);
 }
