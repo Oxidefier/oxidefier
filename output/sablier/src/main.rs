@@ -16487,7 +16487,7 @@ fn main() {
         chain_id: U256::from(123456),
     };
 
-    let result = exp_unit_test::exp_unit_test_deployed::fun_test_Exp(&mut context);
-    println!("result: {:#?}", result);
-    println!("context: {:#?}", context);
+    // let result = exp_unit_test::exp_unit_test_deployed::fun_test_Exp(&mut context);
+    // println!("result: {:#?}", result);
+    // println!("context: {:#?}", context);
 }
