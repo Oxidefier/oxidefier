@@ -73,6 +73,7 @@ pub struct Context {
     pub timestamp: U256,
     pub calldata: Vec<u8>,
     pub balances: HashMap<U256, U256>,
+    pub chainid: U256,
 }
 
 
@@ -441,8 +442,8 @@ pub fn log4(_p: U256, _s: U256, _t1: U256, _t2: U256, _t3: U256, _t4: U256, _con
     unimplemented!()
 }
 
-pub fn chainid() -> YulOutput<U256> {
-    unimplemented!()
+pub fn chainid(context: &Context) -> YulOutput<U256> {
+    Ok(context.chainid)
 }
 
 pub fn basefee() -> YulOutput<U256> {
