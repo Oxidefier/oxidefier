@@ -6388,7 +6388,7 @@ pub mod morpho {
 }
 
 fn main() {
-    let mut context = Context {
+    let context = Context {
         contract_interactions: std::marker::PhantomData::<DummyContractInteractions>,
         memory: Memory::new(),
         immutables: std::collections::HashMap::new(),
