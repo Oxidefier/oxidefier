@@ -6402,14 +6402,7 @@ fn main() {
         chain_id: U256::from(123456),
     };
 
-    let result = morpho::morpho_deployed::fun_withdraw(
-        U256::from(0),
-        U256::from(1),
-        U256::from(2),
-        U256::from(3),
-        U256::from(4),
-        &mut context,
-    );
+    let result = exp_unit_test::exp_unit_test_deployed::fun_test_Exp(&mut context);
     println!("result: {:#?}", result);
     println!("context: {:#?}", context);
 }
