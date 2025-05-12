@@ -9,42 +9,60 @@
 use alloy_primitives::U256;
 use evm_opcodes::*;
 
-pub mod morpho_2267 {
+pub mod morpho {
     use alloy_primitives::U256;
     use evm_opcodes::*;
 
-    pub fn cleanup_uint160(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn cleanup_uint160<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut cleaned = U256::ZERO;
         cleaned = and(value, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?;
         Ok(cleaned)
     }
 
-    pub fn cleanup_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn cleanup_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut cleaned = U256::ZERO;
         cleaned = cleanup_uint160(value, context)?;
         Ok(cleaned)
     }
 
-    pub fn validator_revert_address(value: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn validator_revert_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         if iszero(eq(value, cleanup_address(value, context)?, context)?, context)? != U256::ZERO {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
         }
         Ok(())
     }
 
-    pub fn abi_decode_address_fromMemory(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn abi_decode_address_fromMemory<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut value = U256::ZERO;
         value = mload(offset, context)?;
         validator_revert_address(value, context)?;
         Ok(value)
     }
 
-    pub fn revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context: &mut Context) -> YulOutput<()> {
+    pub fn revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b<CI>(context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
         Ok(())
     }
 
-    pub fn abi_decode_tuple_address_fromMemory(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn abi_decode_tuple_address_fromMemory<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut value0 = U256::ZERO;
         if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
             revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
@@ -53,34 +71,52 @@ pub mod morpho_2267 {
         Ok(value0)
     }
 
-    pub fn abi_encode_address(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn abi_encode_address<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         mstore(pos, cleanup_address(value, context)?, context)?;
         Ok(())
     }
 
-    pub fn cleanup_bytes32(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn cleanup_bytes32<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut cleaned = U256::ZERO;
         cleaned = value;
         Ok(cleaned)
     }
 
-    pub fn abi_encode_bytes32(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn abi_encode_bytes32<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         mstore(pos, cleanup_bytes32(value, context)?, context)?;
         Ok(())
     }
 
-    pub fn cleanup_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn cleanup_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut cleaned = U256::ZERO;
         cleaned = value;
         Ok(cleaned)
     }
 
-    pub fn abi_encode_uint256(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn abi_encode_uint256<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         mstore(pos, cleanup_uint256(value, context)?, context)?;
         Ok(())
     }
 
-    pub fn abi_encode_bytes32_uint256_address(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn abi_encode_bytes32_uint256_address<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut tail = U256::ZERO;
         tail = add(headStart, U256::from(0x60u128), context)?;
         abi_encode_bytes32(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -89,32 +125,47 @@ pub mod morpho_2267 {
         Ok(tail)
     }
 
-    pub fn array_length_string(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn array_length_string<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut length = U256::ZERO;
         length = mload(value, context)?;
         Ok(length)
     }
 
-    pub fn array_storeLengthForEncoding_string(pos: U256, length: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn array_storeLengthForEncoding_string<CI>(pos: U256, length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut updated_pos = U256::ZERO;
         mstore(pos, length, context)?;
         updated_pos = add(pos, U256::from(0x20u128), context)?;
         Ok(updated_pos)
     }
 
-    pub fn copy_memory_to_memory_with_cleanup(src: U256, dst: U256, length: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn copy_memory_to_memory_with_cleanup<CI>(src: U256, dst: U256, length: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         mcopy(dst, src, length, context)?;
         mstore(add(dst, length, context)?, U256::from(0x0u128), context)?;
         Ok(())
     }
 
-    pub fn round_up_to_mul_of(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn round_up_to_mul_of<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut result = U256::ZERO;
         result = and(add(value, U256::from(0x1fu128), context)?, not(U256::from(0x1fu128), context)?, context)?;
         Ok(result)
     }
 
-    pub fn abi_encode_string_memory_ptr(value: U256, mut pos: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn abi_encode_string_memory_ptr<CI>(value: U256, mut pos: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut end_ = U256::ZERO;
         let length = array_length_string(value, context)?;
         pos = array_storeLengthForEncoding_string(pos, length, context)?;
@@ -123,7 +174,10 @@ pub mod morpho_2267 {
         Ok(end_)
     }
 
-    pub fn abi_encode_string(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn abi_encode_string<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut tail = U256::ZERO;
         tail = add(headStart, U256::from(0x20u128), context)?;
         mstore(add(headStart, U256::from(0x0u128), context)?, sub(tail, headStart, context)?, context)?;
@@ -131,26 +185,38 @@ pub mod morpho_2267 {
         Ok(tail)
     }
 
-    pub fn abi_encode_tuple(headStart: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn abi_encode_tuple<CI>(headStart: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut tail = U256::ZERO;
         tail = add(headStart, U256::from(0x0u128), context)?;
         Ok(tail)
     }
 
-    pub fn allocate_unbounded(context: &mut Context) -> YulOutput<U256> {
+    pub fn allocate_unbounded<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut memPtr = U256::ZERO;
         memPtr = mload(U256::from(0x40u128), context)?;
         Ok(memPtr)
     }
 
-    pub fn panic_error_0x41(context: &mut Context) -> YulOutput<()> {
+    pub fn panic_error_0x41<CI>(context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
         mstore(U256::from(0x4u128), U256::from(0x41u128), context)?;
         revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
         Ok(())
     }
 
-    pub fn finalize_allocation(memPtr: U256, size: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn finalize_allocation<CI>(memPtr: U256, size: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let newFreePtr = add(memPtr, round_up_to_mul_of(size, context)?, context)?;
         if or(gt(newFreePtr, sub(shl(U256::from(0x40u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, lt(newFreePtr, memPtr, context)?, context)? != U256::ZERO {
             panic_error_0x41(context)?;
@@ -159,14 +225,20 @@ pub mod morpho_2267 {
         Ok(())
     }
 
-    pub fn allocate_memory(size: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn allocate_memory<CI>(size: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut memPtr = U256::ZERO;
         memPtr = allocate_unbounded(context)?;
         finalize_allocation(memPtr, size, context)?;
         Ok(memPtr)
     }
 
-    pub fn array_allocation_size_string(length: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn array_allocation_size_string<CI>(length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut size = U256::ZERO;
         if gt(length, sub(shl(U256::from(0x40u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)? != U256::ZERO {
             panic_error_0x41(context)?;
@@ -176,7 +248,10 @@ pub mod morpho_2267 {
         Ok(size)
     }
 
-    pub fn allocate_memory_array_string(length: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn allocate_memory_array_string<CI>(length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut memPtr = U256::ZERO;
         let allocSize = array_allocation_size_string(length, context)?;
         memPtr = allocate_memory(allocSize, context)?;
@@ -184,100 +259,148 @@ pub mod morpho_2267 {
         Ok(memPtr)
     }
 
-    pub fn array_dataslot_bytes(ptr: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn array_dataslot_bytes<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut data = U256::ZERO;
         data = ptr;
         data = add(ptr, U256::from(0x20u128), context)?;
         Ok(data)
     }
 
-    pub fn array_length_bytes(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn array_length_bytes<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut length = U256::ZERO;
         length = mload(value, context)?;
         Ok(length)
     }
 
-    pub fn cleanup_rational_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn cleanup_rational_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut cleaned = U256::ZERO;
         cleaned = value;
         Ok(cleaned)
     }
 
-    pub fn constant_DOMAIN_TYPEHASH(context: &mut Context) -> YulOutput<U256> {
+    pub fn constant_DOMAIN_TYPEHASH<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut ret = U256::ZERO;
         let expr = U256::from_be_slice(&[0x47, 0xe7, 0x95, 0x34, 0xa2, 0x45, 0x95, 0x2e, 0x8b, 0x16, 0x89, 0x3a, 0x33, 0x6b, 0x85, 0xa3, 0xd9, 0xea, 0x9f, 0xa8, 0xc5, 0x73, 0xf3, 0xd8, 0x03, 0xaf, 0xb9, 0x2a, 0x79, 0x46, 0x92, 0x18]);
         ret = expr;
         Ok(ret)
     }
 
-    pub fn store_literal_in_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn store_literal_in_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("7a65726f20616464726573730000000000000000000000000000000000000000"), context)?;
         Ok(())
     }
 
-    pub fn copy_literal_to_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7(context: &mut Context) -> YulOutput<U256> {
+    pub fn copy_literal_to_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut memPtr = U256::ZERO;
         memPtr = allocate_memory_array_string(U256::from(0xcu128), context)?;
         store_literal_in_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7(add(memPtr, U256::from(0x20u128), context)?, context)?;
         Ok(memPtr)
     }
 
-    pub fn convert_stringliteral_a4b4_to_string(context: &mut Context) -> YulOutput<U256> {
+    pub fn convert_stringliteral_a4b4_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut converted = U256::ZERO;
         converted = copy_literal_to_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7(context)?;
         Ok(converted)
     }
 
-    pub fn constant_ZERO_ADDRESS(context: &mut Context) -> YulOutput<U256> {
+    pub fn constant_ZERO_ADDRESS<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut ret_mpos = U256::ZERO;
         let _mpos = convert_stringliteral_a4b4_to_string(context)?;
         ret_mpos = _mpos;
         Ok(ret_mpos)
     }
 
-    pub fn identity(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn identity<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut ret = U256::ZERO;
         ret = value;
         Ok(ret)
     }
 
-    pub fn convert_uint160_to_uint160(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn convert_uint160_to_uint160<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut converted = U256::ZERO;
         converted = cleanup_uint160(identity(cleanup_uint160(value, context)?, context)?, context)?;
         Ok(converted)
     }
 
-    pub fn convert_uint160_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn convert_uint160_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut converted = U256::ZERO;
         converted = convert_uint160_to_uint160(value, context)?;
         Ok(converted)
     }
 
-    pub fn convert_address_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn convert_address_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut converted = U256::ZERO;
         converted = convert_uint160_to_address(value, context)?;
         Ok(converted)
     }
 
-    pub fn convert_contract_Morpho_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn convert_contract_Morpho_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut converted = U256::ZERO;
         converted = convert_uint160_to_address(value, context)?;
         Ok(converted)
     }
 
-    pub fn convert_rational_by_to_uint160(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn convert_rational_by_to_uint160<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut converted = U256::ZERO;
         converted = cleanup_uint160(identity(cleanup_rational_by(value, context)?, context)?, context)?;
         Ok(converted)
     }
 
-    pub fn convert_rational_by_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn convert_rational_by_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut converted = U256::ZERO;
         converted = convert_rational_by_to_uint160(value, context)?;
         Ok(converted)
     }
 
-    pub fn require_helper_string(condition: U256, expr_mpos: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn require_helper_string<CI>(condition: U256, expr_mpos: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         if iszero(condition, context)? != U256::ZERO {
             let memPtr = allocate_unbounded(context)?;
             mstore(memPtr, shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?, context)?;
@@ -287,19 +410,28 @@ pub mod morpho_2267 {
         Ok(())
     }
 
-    pub fn prepare_store_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn prepare_store_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut ret = U256::ZERO;
         ret = value;
         Ok(ret)
     }
 
-    pub fn shift_left(value: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn shift_left<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut newValue = U256::ZERO;
         newValue = shl(U256::from(0x0u128), value, context)?;
         Ok(newValue)
     }
 
-    pub fn update_byte_slice_shift(mut value: U256, mut toInsert: U256, context: &mut Context) -> YulOutput<U256> {
+    pub fn update_byte_slice_shift<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut result = U256::ZERO;
         let mask = sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?;
         toInsert = shift_left(toInsert, context)?;
@@ -308,13 +440,19 @@ pub mod morpho_2267 {
         Ok(result)
     }
 
-    pub fn update_storage_value_offsett_address_to_address(slot: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn update_storage_value_offsett_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let convertedValue = convert_address_to_address(value, context)?;
         sstore(slot, update_byte_slice_shift(sload(slot, context)?, prepare_store_address(convertedValue, context)?, context)?, context)?;
         Ok(())
     }
 
-    pub fn constructor_Morpho(var_newOwner: U256, context: &mut Context) -> YulOutput<()> {
+    pub fn constructor_Morpho<CI>(var_newOwner: U256, context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let expr = convert_rational_by_to_address(U256::from(0x0u128), context)?;
         let expr_1 = iszero(eq(cleanup_address(var_newOwner, context)?, cleanup_address(expr, context)?, context)?, context)?;
         let expr_mpos = constant_ZERO_ADDRESS(context)?;
@@ -336,7 +474,10 @@ pub mod morpho_2267 {
         Ok(())
     }
 
-    pub fn copy_arguments_for_constructor_object_Morpho(context: &mut Context) -> YulOutput<U256> {
+    pub fn copy_arguments_for_constructor_object_Morpho<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+    where
+        Context<CI>: ContractInteractions,
+    {
         let mut ret_param = U256::ZERO;
         let programSize = datasize(from_hex("4d6f7270686f5f32323637000000000000000000000000000000000000000000"), context)?;
         let argSize = sub(codesize(context)?, programSize, context)?;
@@ -346,12 +487,18 @@ pub mod morpho_2267 {
         Ok(ret_param)
     }
 
-    pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context: &mut Context) -> YulOutput<()> {
+    pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb<CI>(context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
         Ok(())
     }
 
-    pub fn body(context: &mut Context) -> YulOutput<()> {
+    pub fn body<CI: ContractInteractions>(context: &mut Context<CI>) -> YulOutput<()>
+    where
+        Context<CI>: ContractInteractions,
+    {
         mstore(U256::from(0x40u128), memoryguard(U256::from(0xa0u128), context)?, context)?;
         if callvalue(context)? != U256::ZERO {
             revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
@@ -365,49 +512,70 @@ pub mod morpho_2267 {
         Ok(())
     }
 
-    pub mod morpho_2267_deployed {
+    pub mod morpho_deployed {
         use alloy_primitives::U256;
         use evm_opcodes::*;
 
-        pub fn revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_decode(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_decode<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x0u128), context)? != U256::ZERO {
                 revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
             }
             Ok(())
         }
 
-        pub fn cleanup_uint160(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_uint160<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = and(value, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?;
             Ok(cleaned)
         }
 
-        pub fn cleanup_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = cleanup_uint160(value, context)?;
             Ok(cleaned)
         }
 
-        pub fn validator_revert_address(value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn validator_revert_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if iszero(eq(value, cleanup_address(value, context)?, context)?, context)? != U256::ZERO {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(())
         }
 
-        pub fn abi_decode_address(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_address<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = calldataload(offset, context)?;
             validator_revert_address(value, context)?;
             Ok(value)
         }
 
-        pub fn abi_decode_addresst_address(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_addresst_address<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x40u128), context)? != U256::ZERO {
@@ -418,27 +586,39 @@ pub mod morpho_2267 {
             Ok((value0, value1))
         }
 
-        pub fn cleanup_bool(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_bool<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = iszero(iszero(value, context)?, context)?;
             Ok(cleaned)
         }
 
-        pub fn validator_revert_bool(value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn validator_revert_bool<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if iszero(eq(value, cleanup_bool(value, context)?, context)?, context)? != U256::ZERO {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(())
         }
 
-        pub fn abi_decode_bool(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_bool<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = calldataload(offset, context)?;
             validator_revert_bool(value, context)?;
             Ok(value)
         }
 
-        pub fn abi_decode_addresst_bool(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_addresst_bool<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x40u128), context)? != U256::ZERO {
@@ -449,22 +629,34 @@ pub mod morpho_2267 {
             Ok((value0, value1))
         }
 
-        pub fn revert_error_15abf5612cd996bc235ba1e55a4a30ac60e6bb601ff7ba4ad3f179b6be8d0490(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_15abf5612cd996bc235ba1e55a4a30ac60e6bb601ff7ba4ad3f179b6be8d0490<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn revert_error_81385d8c0b31fffe14be1da910c8bd3a80be4cfa248e04f42ec0faea3132a8ef(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_81385d8c0b31fffe14be1da910c8bd3a80be4cfa248e04f42ec0faea3132a8ef<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_decode_bytes_calldata(offset: U256, end_: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_bytes_calldata<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut arrayPos = U256::ZERO;
             let mut length = U256::ZERO;
             if iszero(slt(add(offset, U256::from(0x1fu128), context)?, end_, context)?, context)? != U256::ZERO {
@@ -481,32 +673,47 @@ pub mod morpho_2267 {
             Ok((arrayPos, length))
         }
 
-        pub fn cleanup_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn validator_revert_uint256(value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn validator_revert_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if iszero(eq(value, cleanup_uint256(value, context)?, context)?, context)? != U256::ZERO {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(())
         }
 
-        pub fn abi_decode_uint256(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_uint256<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = calldataload(offset, context)?;
             validator_revert_uint256(value, context)?;
             Ok(value)
         }
 
-        pub fn revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_decode_addresst_uint256t_bytes_calldata(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256, U256, U256)> {
+        pub fn abi_decode_addresst_uint256t_bytes_calldata<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256, U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             let mut value2 = U256::ZERO;
@@ -524,7 +731,10 @@ pub mod morpho_2267 {
             Ok((value0, value1, value2, value3))
         }
 
-        pub fn abi_decode_array_bytes32_dyn_calldata(offset: U256, end_: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_array_bytes32_dyn_calldata<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut arrayPos = U256::ZERO;
             let mut length = U256::ZERO;
             if iszero(slt(add(offset, U256::from(0x1fu128), context)?, end_, context)?, context)? != U256::ZERO {
@@ -541,7 +751,10 @@ pub mod morpho_2267 {
             Ok((arrayPos, length))
         }
 
-        pub fn abi_decode_array_bytes32_dyn_calldata_ptr(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_array_bytes32_dyn_calldata_ptr<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
@@ -555,14 +768,20 @@ pub mod morpho_2267 {
             Ok((value0, value1))
         }
 
-        pub fn abi_decode_t_bool_fromMemory(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_t_bool_fromMemory<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = mload(offset, context)?;
             validator_revert_bool(value, context)?;
             Ok(value)
         }
 
-        pub fn abi_decode_bool_fromMemory(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_bool_fromMemory<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
                 revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
@@ -571,33 +790,48 @@ pub mod morpho_2267 {
             Ok(value0)
         }
 
-        pub fn abi_decode_fromMemory(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_decode_fromMemory<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x0u128), context)? != U256::ZERO {
                 revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
             }
             Ok(())
         }
 
-        pub fn allocate_unbounded(context: &mut Context) -> YulOutput<U256> {
+        pub fn allocate_unbounded<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = mload(U256::from(0x40u128), context)?;
             Ok(memPtr)
         }
 
-        pub fn panic_error_0x41(context: &mut Context) -> YulOutput<()> {
+        pub fn panic_error_0x41<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
             mstore(U256::from(0x4u128), U256::from(0x41u128), context)?;
             revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
             Ok(())
         }
 
-        pub fn round_up_to_mul_of(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn round_up_to_mul_of<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut result = U256::ZERO;
             result = and(add(value, U256::from(0x1fu128), context)?, not(U256::from(0x1fu128), context)?, context)?;
             Ok(result)
         }
 
-        pub fn finalize_allocation(memPtr: U256, size: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn finalize_allocation<CI>(memPtr: U256, size: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let newFreePtr = add(memPtr, round_up_to_mul_of(size, context)?, context)?;
             if or(gt(newFreePtr, U256::from(0xffffffffffffffffu128), context)?, lt(newFreePtr, memPtr, context)?, context)? != U256::ZERO {
                 panic_error_0x41(context)?;
@@ -606,19 +840,28 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn allocate_memory(size: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn allocate_memory<CI>(size: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_unbounded(context)?;
             finalize_allocation(memPtr, size, context)?;
             Ok(memPtr)
         }
 
-        pub fn revert_error_3538a459e4a0eb828f1aed5ebe5dc96fe59620a31d9b33e41259bb820cae769f(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_3538a459e4a0eb828f1aed5ebe5dc96fe59620a31d9b33e41259bb820cae769f<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_decode_struct_Authorization(headStart: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_struct_Authorization<CI>(headStart: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             if slt(sub(end_, headStart, context)?, U256::from(0xa0u128), context)? != U256::ZERO {
                 revert_error_3538a459e4a0eb828f1aed5ebe5dc96fe59620a31d9b33e41259bb820cae769f(context)?;
@@ -632,12 +875,18 @@ pub mod morpho_2267 {
             Ok(value)
         }
 
-        pub fn revert_error_21fe6b43b4db61d76a176e95bf1a6b9ede4c301f93a4246f41fecb96e160861d(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_21fe6b43b4db61d76a176e95bf1a6b9ede4c301f93a4246f41fecb96e160861d<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_decode_struct_Signature_calldata(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_struct_Signature_calldata<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             if slt(sub(end_, offset, context)?, U256::from(0x60u128), context)? != U256::ZERO {
                 revert_error_21fe6b43b4db61d76a176e95bf1a6b9ede4c301f93a4246f41fecb96e160861d(context)?;
@@ -646,7 +895,10 @@ pub mod morpho_2267 {
             Ok(value)
         }
 
-        pub fn abi_decode_struct_Authorizationt_struct_Signature_calldata(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_struct_Authorizationt_struct_Signature_calldata<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x100u128), context)? != U256::ZERO {
@@ -657,7 +909,10 @@ pub mod morpho_2267 {
             Ok((value0, value1))
         }
 
-        pub fn abi_decode_struct_MarketParams_memory_ptr(headStart: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_struct_MarketParams_memory_ptr<CI>(headStart: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             if slt(sub(end_, headStart, context)?, U256::from(0xa0u128), context)? != U256::ZERO {
                 revert_error_3538a459e4a0eb828f1aed5ebe5dc96fe59620a31d9b33e41259bb820cae769f(context)?;
@@ -671,7 +926,10 @@ pub mod morpho_2267 {
             Ok(value)
         }
 
-        pub fn abi_decode_struct_MarketParams(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_struct_MarketParams<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0xa0u128), context)? != U256::ZERO {
                 revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
@@ -680,7 +938,10 @@ pub mod morpho_2267 {
             Ok(value0)
         }
 
-        pub fn abi_decode_struct_MarketParamst_addresst_uint256t_uint256t_bytes_calldata(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256, U256, U256, U256, U256)> {
+        pub fn abi_decode_struct_MarketParamst_addresst_uint256t_uint256t_bytes_calldata<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256, U256, U256, U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             let mut value2 = U256::ZERO;
@@ -702,7 +963,10 @@ pub mod morpho_2267 {
             Ok((value0, value1, value2, value3, value4, value5))
         }
 
-        pub fn abi_decode_struct_MarketParamst_uint256(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_struct_MarketParamst_uint256<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0xc0u128), context)? != U256::ZERO {
@@ -713,7 +977,10 @@ pub mod morpho_2267 {
             Ok((value0, value1))
         }
 
-        pub fn abi_decode_struct_MarketParamst_uint256t_addresst_address(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256, U256, U256)> {
+        pub fn abi_decode_struct_MarketParamst_uint256t_addresst_address<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256, U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             let mut value2 = U256::ZERO;
@@ -728,7 +995,10 @@ pub mod morpho_2267 {
             Ok((value0, value1, value2, value3))
         }
 
-        pub fn abi_decode_struct_MarketParamst_uint256t_addresst_bytes_calldata(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256, U256, U256, U256)> {
+        pub fn abi_decode_struct_MarketParamst_uint256t_addresst_bytes_calldata<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256, U256, U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             let mut value2 = U256::ZERO;
@@ -748,7 +1018,10 @@ pub mod morpho_2267 {
             Ok((value0, value1, value2, value3, value4))
         }
 
-        pub fn abi_decode_struct_MarketParamst_uint256t_uint256t_addresst_address(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256, U256, U256, U256)> {
+        pub fn abi_decode_struct_MarketParamst_uint256t_uint256t_addresst_address<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256, U256, U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             let mut value2 = U256::ZERO;
@@ -765,7 +1038,10 @@ pub mod morpho_2267 {
             Ok((value0, value1, value2, value3, value4))
         }
 
-        pub fn abi_decode_struct_MarketParamst_uint256t_uint256t_addresst_bytes_calldata(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256, U256, U256, U256, U256)> {
+        pub fn abi_decode_struct_MarketParamst_uint256t_uint256t_addresst_bytes_calldata<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256, U256, U256, U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             let mut value2 = U256::ZERO;
@@ -787,14 +1063,20 @@ pub mod morpho_2267 {
             Ok((value0, value1, value2, value3, value4, value5))
         }
 
-        pub fn abi_decode_t_uint256_fromMemory(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_t_uint256_fromMemory<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = mload(offset, context)?;
             validator_revert_uint256(value, context)?;
             Ok(value)
         }
 
-        pub fn abi_decode_tuple_address(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_tuple_address<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
                 revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
@@ -803,7 +1085,10 @@ pub mod morpho_2267 {
             Ok(value0)
         }
 
-        pub fn abi_decode_tuple_uint256(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_tuple_uint256<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
                 revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
@@ -812,27 +1097,39 @@ pub mod morpho_2267 {
             Ok(value0)
         }
 
-        pub fn cleanup_bytes32(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_bytes32<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn validator_revert_userDefinedValueType_Id(value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn validator_revert_userDefinedValueType_Id<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if iszero(eq(value, cleanup_bytes32(value, context)?, context)?, context)? != U256::ZERO {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(())
         }
 
-        pub fn abi_decode_userDefinedValueType_Id(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_userDefinedValueType_Id<CI>(offset: U256, end_: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = calldataload(offset, context)?;
             validator_revert_userDefinedValueType_Id(value, context)?;
             Ok(value)
         }
 
-        pub fn abi_decode_tuple_userDefinedValueType_Id(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_tuple_userDefinedValueType_Id<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
                 revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
@@ -841,7 +1138,10 @@ pub mod morpho_2267 {
             Ok(value0)
         }
 
-        pub fn abi_decode_uint256_fromMemory(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_uint256_fromMemory<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
                 revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
@@ -850,7 +1150,10 @@ pub mod morpho_2267 {
             Ok(value0)
         }
 
-        pub fn abi_decode_userDefinedValueType_Idt_address(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_userDefinedValueType_Idt_address<CI>(headStart: U256, dataEnd: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             if slt(sub(dataEnd, headStart, context)?, U256::from(0x40u128), context)? != U256::ZERO {
@@ -861,29 +1164,44 @@ pub mod morpho_2267 {
             Ok((value0, value1))
         }
 
-        pub fn abi_encode_bytes32(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_bytes32<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_bytes32(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encodeUpdatedPos_bytes32(value0: U256, pos: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encodeUpdatedPos_bytes32<CI>(value0: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut updatedPos = U256::ZERO;
             abi_encode_bytes32(value0, pos, context)?;
             updatedPos = add(pos, U256::from(0x20u128), context)?;
             Ok(updatedPos)
         }
 
-        pub fn abi_encode_address(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_address<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_address(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_uint256_to_uint256_fromStack(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_uint256_to_uint256_fromStack<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_uint256(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_address_address_address_address_uint256(headStart: U256, value0: U256, value1: U256, value2: U256, value3: U256, value4: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_address_address_address_address_uint256<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, value3: U256, value4: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0xa0u128), context)?;
             abi_encode_address(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -894,7 +1212,10 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_address_address_uint256(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_address_address_uint256<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x60u128), context)?;
             abi_encode_address(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -903,12 +1224,18 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_address_to_address(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_address_to_address<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_address(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_address_uint256(headStart: U256, value0: U256, value1: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_address_uint256<CI>(headStart: U256, value0: U256, value1: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x40u128), context)?;
             abi_encode_address(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -916,7 +1243,10 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_address_uint256_uint256(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_address_uint256_uint256<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x60u128), context)?;
             abi_encode_address(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -925,33 +1255,48 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn array_dataslot_array_bytes32_dyn(ptr: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_dataslot_array_bytes32_dyn<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut data = U256::ZERO;
             data = ptr;
             data = add(ptr, U256::from(0x20u128), context)?;
             Ok(data)
         }
 
-        pub fn array_length_array_bytes32_dyn(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_length_array_bytes32_dyn<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut length = U256::ZERO;
             length = mload(value, context)?;
             Ok(length)
         }
 
-        pub fn array_nextElement_array_bytes32_dyn(ptr: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_nextElement_array_bytes32_dyn<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut next = U256::ZERO;
             next = add(ptr, U256::from(0x20u128), context)?;
             Ok(next)
         }
 
-        pub fn array_storeLengthForEncoding_array_bytes32_dyn(pos: U256, length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_storeLengthForEncoding_array_bytes32_dyn<CI>(pos: U256, length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut updated_pos = U256::ZERO;
             mstore(pos, length, context)?;
             updated_pos = add(pos, U256::from(0x20u128), context)?;
             Ok(updated_pos)
         }
 
-        pub fn abi_encode_array_bytes32_dyn_memory_ptr(value: U256, mut pos: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_array_bytes32_dyn_memory_ptr<CI>(value: U256, mut pos: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut end_ = U256::ZERO;
             let length = array_length_array_bytes32_dyn(value, context)?;
             pos = array_storeLengthForEncoding_array_bytes32_dyn(pos, length, context)?;
@@ -975,7 +1320,10 @@ pub mod morpho_2267 {
             Ok(end_)
         }
 
-        pub fn abi_encode_array_bytes32_dyn(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_array_bytes32_dyn<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
             mstore(add(headStart, U256::from(0x0u128), context)?, sub(tail, headStart, context)?, context)?;
@@ -983,27 +1331,42 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_bool(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_bool<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_bool(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_bool_to_bool(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_bool_to_bool<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_bool(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_bytes32_to_bytes32(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_bytes32_to_bytes32<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_bytes32(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_uint256_to_uint256(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_uint256_to_uint256<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_uint256(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_struct_Authorization(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_struct_Authorization<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let memberValue0 = mload(add(value, U256::from(0x0u128), context)?, context)?;
             abi_encode_address_to_address(memberValue0, add(pos, U256::from(0x0u128), context)?, context)?;
             let memberValue0_1 = mload(add(value, U256::from(0x20u128), context)?, context)?;
@@ -1017,7 +1380,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn abi_encode_bytes32_struct_Authorization(headStart: U256, value0: U256, value1: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_bytes32_struct_Authorization<CI>(headStart: U256, value0: U256, value1: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0xc0u128), context)?;
             abi_encode_bytes32_to_bytes32(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -1025,29 +1391,44 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn leftAlign_bytes32(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn leftAlign_bytes32<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut aligned = U256::ZERO;
             aligned = value;
             Ok(aligned)
         }
 
-        pub fn abi_encode_bytes32_to_bytes32_nonPadded_inplace(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_bytes32_to_bytes32_nonPadded_inplace<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, leftAlign_bytes32(cleanup_bytes32(value, context)?, context)?, context)?;
             Ok(())
         }
 
-        pub fn cleanup_uint8(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_uint8<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = and(value, U256::from(0xffu128), context)?;
             Ok(cleaned)
         }
 
-        pub fn abi_encode_uint8(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_uint8<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_uint8(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_bytes32_uint8_bytes32_bytes32(headStart: U256, value0: U256, value1: U256, value2: U256, value3: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_bytes32_uint8_bytes32_bytes32<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, value3: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x80u128), context)?;
             abi_encode_bytes32_to_bytes32(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -1057,20 +1438,29 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn array_storeLengthForEncoding_bytes(pos: U256, length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_storeLengthForEncoding_bytes<CI>(pos: U256, length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut updated_pos = U256::ZERO;
             mstore(pos, length, context)?;
             updated_pos = add(pos, U256::from(0x20u128), context)?;
             Ok(updated_pos)
         }
 
-        pub fn copy_calldata_to_memory_with_cleanup(src: U256, dst: U256, length: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn copy_calldata_to_memory_with_cleanup<CI>(src: U256, dst: U256, length: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             calldatacopy(dst, src, length, context)?;
             mstore(add(dst, length, context)?, U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_encode_bytes_calldata(start: U256, length: U256, mut pos: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_bytes_calldata<CI>(start: U256, length: U256, mut pos: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut end_ = U256::ZERO;
             pos = array_storeLengthForEncoding_bytes(pos, length, context)?;
             copy_calldata_to_memory_with_cleanup(start, pos, length, context)?;
@@ -1078,12 +1468,18 @@ pub mod morpho_2267 {
             Ok(end_)
         }
 
-        pub fn abi_encode_stringliteral_301a(pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_stringliteral_301a<CI>(pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, shl(U256::from(0xf0u128), U256::from(0x1901u128), context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_packed_stringliteral_301a_bytes32_bytes32(mut pos: U256, value0: U256, value1: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_packed_stringliteral_301a_bytes32_bytes32<CI>(mut pos: U256, value0: U256, value1: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut end_ = U256::ZERO;
             abi_encode_stringliteral_301a(pos, context)?;
             pos = add(pos, U256::from(0x2u128), context)?;
@@ -1095,26 +1491,38 @@ pub mod morpho_2267 {
             Ok(end_)
         }
 
-        pub fn array_length_string(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_length_string<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut length = U256::ZERO;
             length = mload(value, context)?;
             Ok(length)
         }
 
-        pub fn array_storeLengthForEncoding_string(pos: U256, length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_storeLengthForEncoding_string<CI>(pos: U256, length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut updated_pos = U256::ZERO;
             mstore(pos, length, context)?;
             updated_pos = add(pos, U256::from(0x20u128), context)?;
             Ok(updated_pos)
         }
 
-        pub fn copy_memory_to_memory_with_cleanup(src: U256, dst: U256, length: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn copy_memory_to_memory_with_cleanup<CI>(src: U256, dst: U256, length: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mcopy(dst, src, length, context)?;
             mstore(add(dst, length, context)?, U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_encode_string_memory_ptr(value: U256, mut pos: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_string_memory_ptr<CI>(value: U256, mut pos: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut end_ = U256::ZERO;
             let length = array_length_string(value, context)?;
             pos = array_storeLengthForEncoding_string(pos, length, context)?;
@@ -1123,7 +1531,10 @@ pub mod morpho_2267 {
             Ok(end_)
         }
 
-        pub fn abi_encode_string(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_string<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
             mstore(add(headStart, U256::from(0x0u128), context)?, sub(tail, headStart, context)?, context)?;
@@ -1131,7 +1542,10 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_struct_MarketParams_memory_ptr(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_struct_MarketParams_memory_ptr<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let memberValue0 = mload(add(value, U256::from(0x0u128), context)?, context)?;
             abi_encode_address_to_address(memberValue0, add(pos, U256::from(0x0u128), context)?, context)?;
             let memberValue0_1 = mload(add(value, U256::from(0x20u128), context)?, context)?;
@@ -1145,55 +1559,82 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn abi_encode_struct_MarketParams(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_struct_MarketParams<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0xa0u128), context)?;
             abi_encode_struct_MarketParams_memory_ptr(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
             Ok(tail)
         }
 
-        pub fn cleanup_uint128(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_uint128<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = and(value, U256::from(0xffffffffffffffffffffffffffffffffu128), context)?;
             Ok(cleaned)
         }
 
-        pub fn abi_encode_uint128_to_uint128(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_uint128_to_uint128<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_uint128(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn cleanup_from_storage_uint128(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_from_storage_uint128<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = and(value, U256::from(0xffffffffffffffffffffffffffffffffu128), context)?;
             Ok(cleaned)
         }
 
-        pub fn shift_right_128_unsigned(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn shift_right_128_unsigned<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut newValue = U256::ZERO;
             newValue = shr(U256::from(0x80u128), value, context)?;
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offset_16t_uint128(slot_value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn extract_from_storage_value_offset_16t_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = cleanup_from_storage_uint128(shift_right_128_unsigned(slot_value, context)?, context)?;
             Ok(value)
         }
 
-        pub fn shift_right_0_unsigned(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn shift_right_0_unsigned<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut newValue = U256::ZERO;
             newValue = shr(U256::from(0x0u128), value, context)?;
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offsett_uint128(slot_value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn extract_from_storage_value_offsett_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = cleanup_from_storage_uint128(shift_right_0_unsigned(slot_value, context)?, context)?;
             Ok(value)
         }
 
-        pub fn abi_encode_struct_Market_storage(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_struct_Market_storage<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut slotValue = U256::from(0x0u128);
             slotValue = sload(add(value, U256::from(0x0u128), context)?, context)?;
             let memberValue0 = extract_from_storage_value_offsett_uint128(slotValue, context)?;
@@ -1213,7 +1654,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn abi_encode_struct_MarketParams_struct_Market_storage(headStart: U256, value0: U256, value1: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_struct_MarketParams_struct_Market_storage<CI>(headStart: U256, value0: U256, value1: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x160u128), context)?;
             abi_encode_struct_MarketParams_memory_ptr(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -1221,39 +1665,57 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_tuple(headStart: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_tuple<CI>(headStart: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x0u128), context)?;
             Ok(tail)
         }
 
-        pub fn abi_encode_tuple_address(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_tuple_address<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
             abi_encode_address(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
             Ok(tail)
         }
 
-        pub fn abi_encode_tuple_bool(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_tuple_bool<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
             abi_encode_bool_to_bool(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
             Ok(tail)
         }
 
-        pub fn abi_encode_tuple_bytes32(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_tuple_bytes32<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
             abi_encode_bytes32_to_bytes32(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
             Ok(tail)
         }
 
-        pub fn abi_encode_uint128(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_uint128<CI>(value: U256, pos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(pos, cleanup_uint128(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_uint128_uint128_uint128_uint128_uint128_uint128(headStart: U256, value0: U256, value1: U256, value2: U256, value3: U256, value4: U256, value5: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_uint128_uint128_uint128_uint128_uint128_uint128<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, value3: U256, value4: U256, value5: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0xc0u128), context)?;
             abi_encode_uint128(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -1265,14 +1727,20 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_uint256(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_uint256<CI>(headStart: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
             abi_encode_uint256_to_uint256_fromStack(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
             Ok(tail)
         }
 
-        pub fn abi_encode_uint256_bytes_calldata(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_uint256_bytes_calldata<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x40u128), context)?;
             abi_encode_uint256_to_uint256_fromStack(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -1281,7 +1749,10 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_uint256_uint128_uint128(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_uint256_uint128_uint128<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x60u128), context)?;
             abi_encode_uint256_to_uint256_fromStack(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -1290,7 +1761,10 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_uint256_uint256(headStart: U256, value0: U256, value1: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_uint256_uint256<CI>(headStart: U256, value0: U256, value1: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x40u128), context)?;
             abi_encode_uint256_to_uint256_fromStack(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -1298,7 +1772,10 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_uint256_uint256_uint256(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_uint256_uint256_uint256<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x60u128), context)?;
             abi_encode_uint256_to_uint256_fromStack(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -1307,7 +1784,10 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn abi_encode_uint256_uint256_uint256_uint256_uint256(headStart: U256, value0: U256, value1: U256, value2: U256, value3: U256, value4: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_uint256_uint256_uint256_uint256_uint256<CI>(headStart: U256, value0: U256, value1: U256, value2: U256, value3: U256, value4: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0xa0u128), context)?;
             abi_encode_uint256_to_uint256_fromStack(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
@@ -1318,7 +1798,10 @@ pub mod morpho_2267 {
             Ok(tail)
         }
 
-        pub fn array_allocation_size_array_bytes32_dyn(length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_allocation_size_array_bytes32_dyn<CI>(length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut size = U256::ZERO;
             if gt(length, U256::from(0xffffffffffffffffu128), context)? != U256::ZERO {
                 panic_error_0x41(context)?;
@@ -1328,7 +1811,10 @@ pub mod morpho_2267 {
             Ok(size)
         }
 
-        pub fn allocate_memory_array_array_bytes32_dyn(length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn allocate_memory_array_array_bytes32_dyn<CI>(length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             let allocSize = array_allocation_size_array_bytes32_dyn(length, context)?;
             memPtr = allocate_memory(allocSize, context)?;
@@ -1336,12 +1822,18 @@ pub mod morpho_2267 {
             Ok(memPtr)
         }
 
-        pub fn zero_memory_chunk_bytes32(dataStart: U256, dataSizeInBytes: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn zero_memory_chunk_bytes32<CI>(dataStart: U256, dataSizeInBytes: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             calldatacopy(dataStart, calldatasize(context)?, dataSizeInBytes, context)?;
             Ok(())
         }
 
-        pub fn allocate_and_zero_memory_array_array_bytes32_dyn(length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn allocate_and_zero_memory_array_array_bytes32_dyn<CI>(length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_array_bytes32_dyn(length, context)?;
             let mut dataStart = memPtr;
@@ -1352,7 +1844,10 @@ pub mod morpho_2267 {
             Ok(memPtr)
         }
 
-        pub fn array_allocation_size_bytes(length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_allocation_size_bytes<CI>(length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut size = U256::ZERO;
             if gt(length, U256::from(0xffffffffffffffffu128), context)? != U256::ZERO {
                 panic_error_0x41(context)?;
@@ -1362,7 +1857,10 @@ pub mod morpho_2267 {
             Ok(size)
         }
 
-        pub fn allocate_memory_array_bytes(length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn allocate_memory_array_bytes<CI>(length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             let allocSize = array_allocation_size_bytes(length, context)?;
             memPtr = allocate_memory(allocSize, context)?;
@@ -1370,7 +1868,10 @@ pub mod morpho_2267 {
             Ok(memPtr)
         }
 
-        pub fn array_allocation_size_string(length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_allocation_size_string<CI>(length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut size = U256::ZERO;
             if gt(length, U256::from(0xffffffffffffffffu128), context)? != U256::ZERO {
                 panic_error_0x41(context)?;
@@ -1380,7 +1881,10 @@ pub mod morpho_2267 {
             Ok(size)
         }
 
-        pub fn allocate_memory_array_string(length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn allocate_memory_array_string<CI>(length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             let allocSize = array_allocation_size_string(length, context)?;
             memPtr = allocate_memory(allocSize, context)?;
@@ -1388,32 +1892,47 @@ pub mod morpho_2267 {
             Ok(memPtr)
         }
 
-        pub fn array_dataslot_bytes(ptr: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_dataslot_bytes<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut data = U256::ZERO;
             data = ptr;
             data = add(ptr, U256::from(0x20u128), context)?;
             Ok(data)
         }
 
-        pub fn array_length_array_bytes32_dyn_calldata(value: U256, len: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_length_array_bytes32_dyn_calldata<CI>(value: U256, len: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut length = U256::ZERO;
             length = len;
             Ok(length)
         }
 
-        pub fn array_length_bytes(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_length_bytes<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut length = U256::ZERO;
             length = mload(value, context)?;
             Ok(length)
         }
 
-        pub fn array_length_bytes_calldata(value: U256, len: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn array_length_bytes_calldata<CI>(value: U256, len: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut length = U256::ZERO;
             length = len;
             Ok(length)
         }
 
-        pub fn bytes_concat_stringliteral_301a_bytes32_bytes32(param: U256, param_1: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn bytes_concat_stringliteral_301a_bytes32_bytes32<CI>(param: U256, param_1: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut outPtr = U256::ZERO;
             outPtr = allocate_unbounded(context)?;
             let dataStart = add(outPtr, U256::from(0x20u128), context)?;
@@ -1423,14 +1942,20 @@ pub mod morpho_2267 {
             Ok(outPtr)
         }
 
-        pub fn panic_error_0x32(context: &mut Context) -> YulOutput<()> {
+        pub fn panic_error_0x32<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
             mstore(U256::from(0x4u128), U256::from(0x32u128), context)?;
             revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
             Ok(())
         }
 
-        pub fn calldata_array_index_access_bytes32_dyn_calldata(base_ref: U256, length: U256, index: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn calldata_array_index_access_bytes32_dyn_calldata<CI>(base_ref: U256, length: U256, index: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut addr = U256::ZERO;
             if iszero(lt(index, length, context)?, context)? != U256::ZERO {
                 panic_error_0x32(context)?;
@@ -1439,14 +1964,20 @@ pub mod morpho_2267 {
             Ok(addr)
         }
 
-        pub fn panic_error_0x11(context: &mut Context) -> YulOutput<()> {
+        pub fn panic_error_0x11<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
             mstore(U256::from(0x4u128), U256::from(0x11u128), context)?;
             revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
             Ok(())
         }
 
-        pub fn checked_add_uint128(mut x: U256, mut y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn checked_add_uint128<CI>(mut x: U256, mut y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut sum = U256::ZERO;
             x = cleanup_uint128(x, context)?;
             y = cleanup_uint128(y, context)?;
@@ -1457,7 +1988,10 @@ pub mod morpho_2267 {
             Ok(sum)
         }
 
-        pub fn checked_add_uint256(mut x: U256, mut y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn checked_add_uint256<CI>(mut x: U256, mut y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut sum = U256::ZERO;
             x = cleanup_uint256(x, context)?;
             y = cleanup_uint256(y, context)?;
@@ -1468,14 +2002,20 @@ pub mod morpho_2267 {
             Ok(sum)
         }
 
-        pub fn panic_error_0x12(context: &mut Context) -> YulOutput<()> {
+        pub fn panic_error_0x12<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
             mstore(U256::from(0x4u128), U256::from(0x12u128), context)?;
             revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
             Ok(())
         }
 
-        pub fn checked_div_uint256(mut x: U256, mut y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn checked_div_uint256<CI>(mut x: U256, mut y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut r = U256::ZERO;
             x = cleanup_uint256(x, context)?;
             y = cleanup_uint256(y, context)?;
@@ -1486,7 +2026,10 @@ pub mod morpho_2267 {
             Ok(r)
         }
 
-        pub fn checked_mul_uint256(mut x: U256, mut y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn checked_mul_uint256<CI>(mut x: U256, mut y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut product = U256::ZERO;
             x = cleanup_uint256(x, context)?;
             y = cleanup_uint256(y, context)?;
@@ -1497,7 +2040,10 @@ pub mod morpho_2267 {
             Ok(product)
         }
 
-        pub fn checked_sub_uint128(mut x: U256, mut y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn checked_sub_uint128<CI>(mut x: U256, mut y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut diff = U256::ZERO;
             x = cleanup_uint128(x, context)?;
             y = cleanup_uint128(y, context)?;
@@ -1508,7 +2054,10 @@ pub mod morpho_2267 {
             Ok(diff)
         }
 
-        pub fn checked_sub_uint256(mut x: U256, mut y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn checked_sub_uint256<CI>(mut x: U256, mut y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut diff = U256::ZERO;
             x = cleanup_uint256(x, context)?;
             y = cleanup_uint256(y, context)?;
@@ -1519,1055 +2068,1565 @@ pub mod morpho_2267 {
             Ok(diff)
         }
 
-        pub fn cleanup_from_storage_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_from_storage_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = and(value, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?;
             Ok(cleaned)
         }
 
-        pub fn cleanup_from_storage_bool(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_from_storage_bool<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = and(value, U256::from(0xffu128), context)?;
             Ok(cleaned)
         }
 
-        pub fn cleanup_from_storage_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_from_storage_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_rational_0_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_rational_0_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_rational_1000000000000000000000000000000000000_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_rational_1000000000000000000000000000000000000_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_rational_1150000000000000000_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_rational_1150000000000000000_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_rational_250000000000000000_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_rational_250000000000000000_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_rational_2_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_rational_2_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_rational_3_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_rational_3_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_rational_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_rational_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_rational_by_1(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_rational_by_1<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_t_rational_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_t_rational_by<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn cleanup_t_rational_by_1(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_t_rational_by_1<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn store_literal_in_memory_f6c00b09d2d55d4b94163c927f1e37be0dfa382ef0d91c45cde1d8cac8030b1d(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_f6c00b09d2d55d4b94163c927f1e37be0dfa382ef0d91c45cde1d8cac8030b1d<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("616c726561647920736574000000000000000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_f6c00b09d2d55d4b94163c927f1e37be0dfa382ef0d91c45cde1d8cac8030b1d(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_f6c00b09d2d55d4b94163c927f1e37be0dfa382ef0d91c45cde1d8cac8030b1d<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0xbu128), context)?;
             store_literal_in_memory_f6c00b09d2d55d4b94163c927f1e37be0dfa382ef0d91c45cde1d8cac8030b1d(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_f6c0_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_f6c0_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_f6c00b09d2d55d4b94163c927f1e37be0dfa382ef0d91c45cde1d8cac8030b1d(context)?;
             Ok(converted)
         }
 
-        pub fn constant_ALREADY_SET(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_ALREADY_SET<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _mpos = convert_stringliteral_f6c0_to_string(context)?;
             ret_mpos = _mpos;
             Ok(ret_mpos)
         }
 
-        pub fn constant_AUTHORIZATION_TYPEHASH(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_AUTHORIZATION_TYPEHASH<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let expr = U256::from_be_slice(&[0x81, 0xd0, 0x28, 0x4f, 0xb0, 0xe2, 0xcd, 0xe1, 0x8d, 0x05, 0x53, 0xb0, 0x61, 0x89, 0xd6, 0xf7, 0x61, 0x3c, 0x96, 0xa0, 0x1b, 0xb5, 0xb5, 0xe7, 0x82, 0x8e, 0xad, 0xe6, 0xa0, 0xdc, 0xac, 0x91]);
             ret = expr;
             Ok(ret)
         }
 
-        pub fn store_literal_in_memory_e190310e18d17f1064beb01f6d8e74924f4b126b0e55460f01b0d81f2a1e4c40(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_e190310e18d17f1064beb01f6d8e74924f4b126b0e55460f01b0d81f2a1e4c40<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("706f736974696f6e206973206865616c74687900000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_e190310e18d17f1064beb01f6d8e74924f4b126b0e55460f01b0d81f2a1e4c40(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_e190310e18d17f1064beb01f6d8e74924f4b126b0e55460f01b0d81f2a1e4c40<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x13u128), context)?;
             store_literal_in_memory_e190310e18d17f1064beb01f6d8e74924f4b126b0e55460f01b0d81f2a1e4c40(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_e190_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_e190_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_e190310e18d17f1064beb01f6d8e74924f4b126b0e55460f01b0d81f2a1e4c40(context)?;
             Ok(converted)
         }
 
-        pub fn constant_HEALTHY_POSITION(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_HEALTHY_POSITION<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _723_mpos = convert_stringliteral_e190_to_string(context)?;
             ret_mpos = _723_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_af014e38b7c5f227cd14c59116f3da8dd63513df483ec13a5a17d6093fb510a6(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_af014e38b7c5f227cd14c59116f3da8dd63513df483ec13a5a17d6093fb510a6<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("696e636f6e73697374656e7420696e7075740000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_af014e38b7c5f227cd14c59116f3da8dd63513df483ec13a5a17d6093fb510a6(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_af014e38b7c5f227cd14c59116f3da8dd63513df483ec13a5a17d6093fb510a6<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x12u128), context)?;
             store_literal_in_memory_af014e38b7c5f227cd14c59116f3da8dd63513df483ec13a5a17d6093fb510a6(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_af01_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_af01_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_af014e38b7c5f227cd14c59116f3da8dd63513df483ec13a5a17d6093fb510a6(context)?;
             Ok(converted)
         }
 
-        pub fn constant_INCONSISTENT_INPUT(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_INCONSISTENT_INPUT<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _33_mpos = convert_stringliteral_af01_to_string(context)?;
             ret_mpos = _33_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_3b807cd2312cb7a8816bf8f90c8b8fabc63939f2d074d6f3426cd3f6aa264952(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_3b807cd2312cb7a8816bf8f90c8b8fabc63939f2d074d6f3426cd3f6aa264952<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("696e73756666696369656e7420636f6c6c61746572616c000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_3b807cd2312cb7a8816bf8f90c8b8fabc63939f2d074d6f3426cd3f6aa264952(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_3b807cd2312cb7a8816bf8f90c8b8fabc63939f2d074d6f3426cd3f6aa264952<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x17u128), context)?;
             store_literal_in_memory_3b807cd2312cb7a8816bf8f90c8b8fabc63939f2d074d6f3426cd3f6aa264952(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_3b80_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_3b80_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_3b807cd2312cb7a8816bf8f90c8b8fabc63939f2d074d6f3426cd3f6aa264952(context)?;
             Ok(converted)
         }
 
-        pub fn constant_INSUFFICIENT_COLLATERAL(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_INSUFFICIENT_COLLATERAL<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _283_mpos = convert_stringliteral_3b80_to_string(context)?;
             ret_mpos = _283_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_ee16f499aa24e0ee394849a0c205c7424513d7e3afc7cb8ee1d45156f4e28a49(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_ee16f499aa24e0ee394849a0c205c7424513d7e3afc7cb8ee1d45156f4e28a49<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("696e73756666696369656e74206c697175696469747900000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_ee16f499aa24e0ee394849a0c205c7424513d7e3afc7cb8ee1d45156f4e28a49(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_ee16f499aa24e0ee394849a0c205c7424513d7e3afc7cb8ee1d45156f4e28a49<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x16u128), context)?;
             store_literal_in_memory_ee16f499aa24e0ee394849a0c205c7424513d7e3afc7cb8ee1d45156f4e28a49(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_ee16_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_ee16_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_ee16f499aa24e0ee394849a0c205c7424513d7e3afc7cb8ee1d45156f4e28a49(context)?;
             Ok(converted)
         }
 
-        pub fn constant_INSUFFICIENT_LIQUIDITY(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_INSUFFICIENT_LIQUIDITY<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _296_mpos = convert_stringliteral_ee16_to_string(context)?;
             ret_mpos = _296_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_71713bd5478b586cac708caace92720e83db31d1de15cf938f760684d5501e10(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_71713bd5478b586cac708caace92720e83db31d1de15cf938f760684d5501e10<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("696e76616c6964206e6f6e636500000000000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_71713bd5478b586cac708caace92720e83db31d1de15cf938f760684d5501e10(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_71713bd5478b586cac708caace92720e83db31d1de15cf938f760684d5501e10<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0xdu128), context)?;
             store_literal_in_memory_71713bd5478b586cac708caace92720e83db31d1de15cf938f760684d5501e10(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_7171_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_7171_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_71713bd5478b586cac708caace92720e83db31d1de15cf938f760684d5501e10(context)?;
             Ok(converted)
         }
 
-        pub fn constant_INVALID_NONCE(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_INVALID_NONCE<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _452_mpos = convert_stringliteral_7171_to_string(context)?;
             ret_mpos = _452_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_12a179e1a73f41ef8e1ba2f259a99bc53b6ace3abb110ac2ea058e42c6104e1a(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_12a179e1a73f41ef8e1ba2f259a99bc53b6ace3abb110ac2ea058e42c6104e1a<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("696e76616c6964207369676e6174757265000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_12a179e1a73f41ef8e1ba2f259a99bc53b6ace3abb110ac2ea058e42c6104e1a(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_12a179e1a73f41ef8e1ba2f259a99bc53b6ace3abb110ac2ea058e42c6104e1a<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x11u128), context)?;
             store_literal_in_memory_12a179e1a73f41ef8e1ba2f259a99bc53b6ace3abb110ac2ea058e42c6104e1a(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_12a1_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_12a1_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_12a179e1a73f41ef8e1ba2f259a99bc53b6ace3abb110ac2ea058e42c6104e1a(context)?;
             Ok(converted)
         }
 
-        pub fn constant_INVALID_SIGNATURE(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_INVALID_SIGNATURE<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _474_mpos = convert_stringliteral_12a1_to_string(context)?;
             ret_mpos = _474_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_2d8ebf55c9b8ace72ef0bf1b62cf64f9d3f1a9443d63532ea5a55317476ddf2b(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_2d8ebf55c9b8ace72ef0bf1b62cf64f9d3f1a9443d63532ea5a55317476ddf2b<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("49524d206e6f7420656e61626c65640000000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_2d8ebf55c9b8ace72ef0bf1b62cf64f9d3f1a9443d63532ea5a55317476ddf2b(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_2d8ebf55c9b8ace72ef0bf1b62cf64f9d3f1a9443d63532ea5a55317476ddf2b<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0xfu128), context)?;
             store_literal_in_memory_2d8ebf55c9b8ace72ef0bf1b62cf64f9d3f1a9443d63532ea5a55317476ddf2b(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_2d8e_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_2d8e_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_2d8ebf55c9b8ace72ef0bf1b62cf64f9d3f1a9443d63532ea5a55317476ddf2b(context)?;
             Ok(converted)
         }
 
-        pub fn constant_IRM_NOT_ENABLED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_IRM_NOT_ENABLED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _561_mpos = convert_stringliteral_2d8e_to_string(context)?;
             ret_mpos = _561_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn identity(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn identity<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = value;
             Ok(ret)
         }
 
-        pub fn convert_t_rational_by_to_t_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_t_rational_by_to_t_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_t_rational_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn constant_LIQUIDATION_CURSOR(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_LIQUIDATION_CURSOR<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let _1 = convert_t_rational_by_to_t_uint256(U256::from(0x429d069189e0000u128), context)?;
             ret = _1;
             Ok(ret)
         }
 
-        pub fn store_literal_in_memory_f0eb92cdd1b31b002c2ec568fbb7dbc78ecc4b2665fe50a65f491e029f0661b7(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_f0eb92cdd1b31b002c2ec568fbb7dbc78ecc4b2665fe50a65f491e029f0661b7<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("4c4c5456206e6f7420656e61626c656400000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_f0eb92cdd1b31b002c2ec568fbb7dbc78ecc4b2665fe50a65f491e029f0661b7(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_f0eb92cdd1b31b002c2ec568fbb7dbc78ecc4b2665fe50a65f491e029f0661b7<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x10u128), context)?;
             store_literal_in_memory_f0eb92cdd1b31b002c2ec568fbb7dbc78ecc4b2665fe50a65f491e029f0661b7(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_f0eb_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_f0eb_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_f0eb92cdd1b31b002c2ec568fbb7dbc78ecc4b2665fe50a65f491e029f0661b7(context)?;
             Ok(converted)
         }
 
-        pub fn constant_LLTV_NOT_ENABLED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_LLTV_NOT_ENABLED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _568_mpos = convert_stringliteral_f0eb_to_string(context)?;
             ret_mpos = _568_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_c924f76f855a219f278c48882fd037797f0591c2cef019229af291964c4d3b43(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_c924f76f855a219f278c48882fd037797f0591c2cef019229af291964c4d3b43<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("6d61726b657420616c7265616479206372656174656400000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_c924f76f855a219f278c48882fd037797f0591c2cef019229af291964c4d3b43(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_c924f76f855a219f278c48882fd037797f0591c2cef019229af291964c4d3b43<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x16u128), context)?;
             store_literal_in_memory_c924f76f855a219f278c48882fd037797f0591c2cef019229af291964c4d3b43(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_c924_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_c924_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_c924f76f855a219f278c48882fd037797f0591c2cef019229af291964c4d3b43(context)?;
             Ok(converted)
         }
 
-        pub fn constant_MARKET_ALREADY_CREATED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_MARKET_ALREADY_CREATED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _575_mpos = convert_stringliteral_c924_to_string(context)?;
             ret_mpos = _575_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_1798fe1b45706024844fe1ae37566f71d02866731bfe8dd8db26da9baccb8204(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_1798fe1b45706024844fe1ae37566f71d02866731bfe8dd8db26da9baccb8204<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("6d61726b6574206e6f7420637265617465640000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_1798fe1b45706024844fe1ae37566f71d02866731bfe8dd8db26da9baccb8204(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_1798fe1b45706024844fe1ae37566f71d02866731bfe8dd8db26da9baccb8204<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x12u128), context)?;
             store_literal_in_memory_1798fe1b45706024844fe1ae37566f71d02866731bfe8dd8db26da9baccb8204(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_1798_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_1798_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_1798fe1b45706024844fe1ae37566f71d02866731bfe8dd8db26da9baccb8204(context)?;
             Ok(converted)
         }
 
-        pub fn constant_MARKET_NOT_CREATED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_MARKET_NOT_CREATED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _19_mpos = convert_stringliteral_1798_to_string(context)?;
             ret_mpos = _19_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn convert_rational_250000000000000000_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_250000000000000000_by_1_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_rational_250000000000000000_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn constant_MAX_FEE(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_MAX_FEE<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let _1 = convert_rational_250000000000000000_by_1_to_uint256(U256::from(0x3782dace9d90000u128), context)?;
             ret = _1;
             Ok(ret)
         }
 
-        pub fn store_literal_in_memory_4530a1018f844b7636fc55587c6439f0d13cba2756954c065684847c09fd8695(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_4530a1018f844b7636fc55587c6439f0d13cba2756954c065684847c09fd8695<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("6d61782066656520657863656564656400000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_4530a1018f844b7636fc55587c6439f0d13cba2756954c065684847c09fd8695(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_4530a1018f844b7636fc55587c6439f0d13cba2756954c065684847c09fd8695<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x10u128), context)?;
             store_literal_in_memory_4530a1018f844b7636fc55587c6439f0d13cba2756954c065684847c09fd8695(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_4530_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_4530_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_4530a1018f844b7636fc55587c6439f0d13cba2756954c065684847c09fd8695(context)?;
             Ok(converted)
         }
 
-        pub fn constant_MAX_FEE_EXCEEDED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_MAX_FEE_EXCEEDED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _179_mpos = convert_stringliteral_4530_to_string(context)?;
             ret_mpos = _179_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn convert_rational_1150000000000000000_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_1150000000000000000_by_1_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_rational_1150000000000000000_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn constant_MAX_LIQUIDATION_INCENTIVE_FACTOR(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_MAX_LIQUIDATION_INCENTIVE_FACTOR<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let _1 = convert_rational_1150000000000000000_by_1_to_uint256(U256::from(0xff59ee833b30000u128), context)?;
             ret = _1;
             Ok(ret)
         }
 
-        pub fn store_literal_in_memory_640f90576275d294c88e507a81345b1231497628757ec4cf63f3b1503cdf1a9f(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_640f90576275d294c88e507a81345b1231497628757ec4cf63f3b1503cdf1a9f<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("6d6178204c4c5456206578636565646564000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_640f90576275d294c88e507a81345b1231497628757ec4cf63f3b1503cdf1a9f(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_640f90576275d294c88e507a81345b1231497628757ec4cf63f3b1503cdf1a9f<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x11u128), context)?;
             store_literal_in_memory_640f90576275d294c88e507a81345b1231497628757ec4cf63f3b1503cdf1a9f(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_640f_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_640f_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_640f90576275d294c88e507a81345b1231497628757ec4cf63f3b1503cdf1a9f(context)?;
             Ok(converted)
         }
 
-        pub fn constant_MAX_LLTV_EXCEEDED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_MAX_LLTV_EXCEEDED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _201_mpos = convert_stringliteral_640f_to_string(context)?;
             ret_mpos = _201_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_23a5a67a6705a938d2afa184b7de3e9b24c9212f02dec96966825e48f5b461b6(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_23a5a67a6705a938d2afa184b7de3e9b24c9212f02dec96966825e48f5b461b6<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("6d61782075696e74313238206578636565646564000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_23a5a67a6705a938d2afa184b7de3e9b24c9212f02dec96966825e48f5b461b6(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_23a5a67a6705a938d2afa184b7de3e9b24c9212f02dec96966825e48f5b461b6<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x14u128), context)?;
             store_literal_in_memory_23a5a67a6705a938d2afa184b7de3e9b24c9212f02dec96966825e48f5b461b6(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_23a5_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_23a5_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_23a5a67a6705a938d2afa184b7de3e9b24c9212f02dec96966825e48f5b461b6(context)?;
             Ok(converted)
         }
 
-        pub fn constant_MAX_UINT128_EXCEEDED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_MAX_UINT128_EXCEEDED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _1090_mpos = convert_stringliteral_23a5_to_string(context)?;
             ret_mpos = _1090_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_f2881edc58d5a08d0243d7f8afdab31d949d85825e628e4b88558657a031f74e(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_f2881edc58d5a08d0243d7f8afdab31d949d85825e628e4b88558657a031f74e<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("6e6f74206f776e65720000000000000000000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_f2881edc58d5a08d0243d7f8afdab31d949d85825e628e4b88558657a031f74e(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_f2881edc58d5a08d0243d7f8afdab31d949d85825e628e4b88558657a031f74e<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x9u128), context)?;
             store_literal_in_memory_f2881edc58d5a08d0243d7f8afdab31d949d85825e628e4b88558657a031f74e(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_f288_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_f288_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_f2881edc58d5a08d0243d7f8afdab31d949d85825e628e4b88558657a031f74e(context)?;
             Ok(converted)
         }
 
-        pub fn constant_NOT_OWNER(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_NOT_OWNER<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _2_mpos = convert_stringliteral_f288_to_string(context)?;
             ret_mpos = _2_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_032999fca1188e683f4a316e0deaa9b99b639717686bfe7875953796fc849c71(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_032999fca1188e683f4a316e0deaa9b99b639717686bfe7875953796fc849c71<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("6e6f20636f646500000000000000000000000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_032999fca1188e683f4a316e0deaa9b99b639717686bfe7875953796fc849c71(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_032999fca1188e683f4a316e0deaa9b99b639717686bfe7875953796fc849c71<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x7u128), context)?;
             store_literal_in_memory_032999fca1188e683f4a316e0deaa9b99b639717686bfe7875953796fc849c71(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_032999fca1188e683f4a316e0deaa9b99b639717686bfe7875953796fc849c71(context)?;
             Ok(converted)
         }
 
-        pub fn constant_NO_CODE(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_NO_CODE<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _1094_mpos = convert_stringliteral_to_string(context)?;
             ret_mpos = _1094_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn convert_rational_1000000000000000000000000000000000000_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_1000000000000000000000000000000000000_by_1_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_rational_1000000000000000000000000000000000000_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn constant_ORACLE_PRICE_SCALE(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_ORACLE_PRICE_SCALE<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let _1 = convert_rational_1000000000000000000000000000000000000_by_1_to_uint256(U256::from(0xc097ce7bc90715b34b9f1000000000u128), context)?;
             ret = _1;
             Ok(ret)
         }
 
-        pub fn store_literal_in_memory_f433534ec486a258d5f02d2db53468b858b8afa0b57bc61bc37ba0c2205a4fbd(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_f433534ec486a258d5f02d2db53468b858b8afa0b57bc61bc37ba0c2205a4fbd<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("7369676e61747572652065787069726564000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_f433534ec486a258d5f02d2db53468b858b8afa0b57bc61bc37ba0c2205a4fbd(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_f433534ec486a258d5f02d2db53468b858b8afa0b57bc61bc37ba0c2205a4fbd<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x11u128), context)?;
             store_literal_in_memory_f433534ec486a258d5f02d2db53468b858b8afa0b57bc61bc37ba0c2205a4fbd(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_f433_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_f433_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_f433534ec486a258d5f02d2db53468b858b8afa0b57bc61bc37ba0c2205a4fbd(context)?;
             Ok(converted)
         }
 
-        pub fn constant_SIGNATURE_EXPIRED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_SIGNATURE_EXPIRED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _441_mpos = convert_stringliteral_f433_to_string(context)?;
             ret_mpos = _441_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_ad4e91d846cee378cbbd4ed8fdb0537bfb87e11139fb8585a973fb1b267366b0(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_ad4e91d846cee378cbbd4ed8fdb0537bfb87e11139fb8585a973fb1b267366b0<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("7472616e7366657246726f6d2072657475726e65642066616c73650000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_ad4e91d846cee378cbbd4ed8fdb0537bfb87e11139fb8585a973fb1b267366b0(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_ad4e91d846cee378cbbd4ed8fdb0537bfb87e11139fb8585a973fb1b267366b0<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x1bu128), context)?;
             store_literal_in_memory_ad4e91d846cee378cbbd4ed8fdb0537bfb87e11139fb8585a973fb1b267366b0(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_ad4e_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_ad4e_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_ad4e91d846cee378cbbd4ed8fdb0537bfb87e11139fb8585a973fb1b267366b0(context)?;
             Ok(converted)
         }
 
-        pub fn constant_TRANSFER_FROM_RETURNED_FALSE(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_TRANSFER_FROM_RETURNED_FALSE<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _1107_mpos = convert_stringliteral_ad4e_to_string(context)?;
             ret_mpos = _1107_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_fe8c0c040bbd1663af28d63b3a1790971461e9c7eacb7abbff91b5b166409b4a(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_fe8c0c040bbd1663af28d63b3a1790971461e9c7eacb7abbff91b5b166409b4a<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("7472616e7366657246726f6d2072657665727465640000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_fe8c0c040bbd1663af28d63b3a1790971461e9c7eacb7abbff91b5b166409b4a(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_fe8c0c040bbd1663af28d63b3a1790971461e9c7eacb7abbff91b5b166409b4a<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x15u128), context)?;
             store_literal_in_memory_fe8c0c040bbd1663af28d63b3a1790971461e9c7eacb7abbff91b5b166409b4a(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_fe8c_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_fe8c_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_fe8c0c040bbd1663af28d63b3a1790971461e9c7eacb7abbff91b5b166409b4a(context)?;
             Ok(converted)
         }
 
-        pub fn constant_TRANSFER_FROM_REVERTED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_TRANSFER_FROM_REVERTED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _1104_mpos = convert_stringliteral_fe8c_to_string(context)?;
             ret_mpos = _1104_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_b0b1cc5e07eae1fb9c1e53fb6e7f759d03bf206d4233f4e365ee05d0824394ee(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_b0b1cc5e07eae1fb9c1e53fb6e7f759d03bf206d4233f4e365ee05d0824394ee<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("7472616e736665722072657475726e65642066616c7365000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_b0b1cc5e07eae1fb9c1e53fb6e7f759d03bf206d4233f4e365ee05d0824394ee(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_b0b1cc5e07eae1fb9c1e53fb6e7f759d03bf206d4233f4e365ee05d0824394ee<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x17u128), context)?;
             store_literal_in_memory_b0b1cc5e07eae1fb9c1e53fb6e7f759d03bf206d4233f4e365ee05d0824394ee(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_b0b1_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_b0b1_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_b0b1cc5e07eae1fb9c1e53fb6e7f759d03bf206d4233f4e365ee05d0824394ee(context)?;
             Ok(converted)
         }
 
-        pub fn constant_TRANSFER_RETURNED_FALSE(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_TRANSFER_RETURNED_FALSE<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _1157_mpos = convert_stringliteral_b0b1_to_string(context)?;
             ret_mpos = _1157_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_2a8385f53cbacc45d155583b417a48112a0633f2137989c786fa88b7647549f5(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_2a8385f53cbacc45d155583b417a48112a0633f2137989c786fa88b7647549f5<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("7472616e73666572207265766572746564000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_2a8385f53cbacc45d155583b417a48112a0633f2137989c786fa88b7647549f5(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_2a8385f53cbacc45d155583b417a48112a0633f2137989c786fa88b7647549f5<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0x11u128), context)?;
             store_literal_in_memory_2a8385f53cbacc45d155583b417a48112a0633f2137989c786fa88b7647549f5(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_2a83_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_2a83_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_2a8385f53cbacc45d155583b417a48112a0633f2137989c786fa88b7647549f5(context)?;
             Ok(converted)
         }
 
-        pub fn constant_TRANSFER_REVERTED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_TRANSFER_REVERTED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _1154_mpos = convert_stringliteral_2a83_to_string(context)?;
             ret_mpos = _1154_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_926a1b84b861d31f2d45224162461e1d5ff4377725d977d8f792bb84825a0348(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_926a1b84b861d31f2d45224162461e1d5ff4377725d977d8f792bb84825a0348<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("756e617574686f72697a65640000000000000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_926a1b84b861d31f2d45224162461e1d5ff4377725d977d8f792bb84825a0348(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_926a1b84b861d31f2d45224162461e1d5ff4377725d977d8f792bb84825a0348<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0xcu128), context)?;
             store_literal_in_memory_926a1b84b861d31f2d45224162461e1d5ff4377725d977d8f792bb84825a0348(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_926a_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_926a_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_926a1b84b861d31f2d45224162461e1d5ff4377725d977d8f792bb84825a0348(context)?;
             Ok(converted)
         }
 
-        pub fn constant_UNAUTHORIZED(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_UNAUTHORIZED<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _222_mpos = convert_stringliteral_926a_to_string(context)?;
             ret_mpos = _222_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn convert_rational_1_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_1_by_1_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_t_rational_by_1(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn constant_VIRTUAL_ASSETS(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_VIRTUAL_ASSETS<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let _1 = convert_rational_1_by_1_to_uint256(U256::from(0x1u128), context)?;
             ret = _1;
             Ok(ret)
         }
 
-        pub fn convert_rational_1000000_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_1000000_by_1_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_rational_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn constant_VIRTUAL_SHARES(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_VIRTUAL_SHARES<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let _1 = convert_rational_1000000_by_1_to_uint256(U256::from(0xf4240u128), context)?;
             ret = _1;
             Ok(ret)
         }
 
-        pub fn convert_rational_by_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_by_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_rational_by_1(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn constant_WAD(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_WAD<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let _1 = convert_rational_by_to_uint256(U256::from(0xde0b6b3a7640000u128), context)?;
             ret = _1;
             Ok(ret)
         }
 
-        pub fn store_literal_in_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("7a65726f20616464726573730000000000000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0xcu128), context)?;
             store_literal_in_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_a4b4_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_a4b4_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_a4b4461cfc9c1f0249c17896b005545dc5d1690f81d2023afc517b07ed3227a7(context)?;
             Ok(converted)
         }
 
-        pub fn constant_ZERO_ADDRESS(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_ZERO_ADDRESS<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _35_mpos = convert_stringliteral_a4b4_to_string(context)?;
             ret_mpos = _35_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn store_literal_in_memory_66565ea0c208e7335f4209a28fd1a047a5930228ef63dde212841a4b5b376b7e(memPtr: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn store_literal_in_memory_66565ea0c208e7335f4209a28fd1a047a5930228ef63dde212841a4b5b376b7e<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("7a65726f20617373657473000000000000000000000000000000000000000000"), context)?;
             Ok(())
         }
 
-        pub fn copy_literal_to_memory_66565ea0c208e7335f4209a28fd1a047a5930228ef63dde212841a4b5b376b7e(context: &mut Context) -> YulOutput<U256> {
+        pub fn copy_literal_to_memory_66565ea0c208e7335f4209a28fd1a047a5930228ef63dde212841a4b5b376b7e<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut memPtr = U256::ZERO;
             memPtr = allocate_memory_array_string(U256::from(0xbu128), context)?;
             store_literal_in_memory_66565ea0c208e7335f4209a28fd1a047a5930228ef63dde212841a4b5b376b7e(add(memPtr, U256::from(0x20u128), context)?, context)?;
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_6656_to_string(context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_stringliteral_6656_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_66565ea0c208e7335f4209a28fd1a047a5930228ef63dde212841a4b5b376b7e(context)?;
             Ok(converted)
         }
 
-        pub fn constant_ZERO_ASSETS(context: &mut Context) -> YulOutput<U256> {
+        pub fn constant_ZERO_ASSETS<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret_mpos = U256::ZERO;
             let _130_mpos = convert_stringliteral_6656_to_string(context)?;
             ret_mpos = _130_mpos;
             Ok(ret_mpos)
         }
 
-        pub fn convert_uint160_to_uint160(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_uint160<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint160(identity(cleanup_uint160(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint160_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_address_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_address_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint160_to_contract_IERC20(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_contract_IERC20<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_address_to_contract_IERC20(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_address_to_contract_IERC20<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_contract_IERC20(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint160_to_contract_IIrm(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_contract_IIrm<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_address_to_contract_IIrm(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_address_to_contract_IIrm<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_contract_IIrm(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint160_to_contract_IMorphoFlashLoanCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_contract_IMorphoFlashLoanCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_address_to_contract_IMorphoFlashLoanCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_address_to_contract_IMorphoFlashLoanCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_contract_IMorphoFlashLoanCallback(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint160_to_contract_IMorphoLiquidateCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_contract_IMorphoLiquidateCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_address_to_contract_IMorphoLiquidateCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_address_to_contract_IMorphoLiquidateCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_contract_IMorphoLiquidateCallback(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint160_to_contract_IMorphoRepayCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_contract_IMorphoRepayCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_address_to_contract_IMorphoRepayCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_address_to_contract_IMorphoRepayCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_contract_IMorphoRepayCallback(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint160_to_contract_IMorphoSupplyCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_contract_IMorphoSupplyCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_address_to_contract_IMorphoSupplyCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_address_to_contract_IMorphoSupplyCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_contract_IMorphoSupplyCallback(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint160_to_contract_IMorphoSupplyCollateralCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_contract_IMorphoSupplyCollateralCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_address_to_contract_IMorphoSupplyCollateralCallback(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_address_to_contract_IMorphoSupplyCollateralCallback<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_contract_IMorphoSupplyCollateralCallback(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint160_to_contract_IOracle(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint160_to_contract_IOracle<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_address_to_contract_IOracle(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_address_to_contract_IOracle<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_contract_IOracle(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_bool_to_bool(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_bool_to_bool<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_bool(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_bytes32_to_bytes32(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_bytes32_to_bytes32<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_bytes32(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_contract_IERC20_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_contract_IERC20_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_contract_IIrm_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_contract_IIrm_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_contract_IMorphoFlashLoanCallback_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_contract_IMorphoFlashLoanCallback_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_contract_IMorphoLiquidateCallback_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_contract_IMorphoLiquidateCallback_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_contract_IMorphoRepayCallback_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_contract_IMorphoRepayCallback_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_contract_IMorphoSupplyCallback_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_contract_IMorphoSupplyCallback_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_contract_IMorphoSupplyCollateralCallback_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_contract_IMorphoSupplyCollateralCallback_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_contract_IOracle_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_contract_IOracle_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_contract_Morpho_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_contract_Morpho_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_uint160_to_address(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_rational_0_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_0_by_1_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_rational_0_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_rational_2_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_2_by_1_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_rational_2_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_rational_3_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_3_by_1_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_rational_3_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_rational_by_to_uint160(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_by_to_uint160<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint160(identity(cleanup_rational_0_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_rational_by_to_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_by_to_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = convert_rational_by_to_uint160(value, context)?;
             Ok(converted)
         }
 
-        pub fn convert_rational_by_to_uint128(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_by_to_uint128<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint128(identity(cleanup_rational_0_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint128_to_uint128(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint128_to_uint128<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint128(identity(cleanup_uint128(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint128_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint128_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_uint128(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint256_to_uint128(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint256_to_uint128<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint128(identity(cleanup_uint256(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_uint256_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_uint256_to_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_uint256(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn read_from_memoryt_address(ptr: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_memoryt_address<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut returnValue = U256::ZERO;
             let value = cleanup_address(mload(ptr, context)?, context)?;
             returnValue = value;
             Ok(returnValue)
         }
 
-        pub fn read_from_memoryt_uint256(ptr: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_memoryt_uint256<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut returnValue = U256::ZERO;
             let value = cleanup_uint256(mload(ptr, context)?, context)?;
             returnValue = value;
             Ok(returnValue)
         }
 
-        pub fn prepare_store_address(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn prepare_store_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = value;
             Ok(ret)
         }
 
-        pub fn shift_left(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn shift_left<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut newValue = U256::ZERO;
             newValue = shl(U256::from(0x0u128), value, context)?;
             Ok(newValue)
         }
 
-        pub fn update_byte_slice_20_shift(mut value: U256, mut toInsert: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn update_byte_slice_20_shift<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut result = U256::ZERO;
             let mask = sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?;
             toInsert = shift_left(toInsert, context)?;
@@ -2576,19 +3635,28 @@ pub mod morpho_2267 {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_address_to_address(slot: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn update_storage_value_offsett_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let convertedValue = convert_address_to_address(value, context)?;
             sstore(slot, update_byte_slice_20_shift(sload(slot, context)?, prepare_store_address(convertedValue, context)?, context)?, context)?;
             Ok(())
         }
 
-        pub fn prepare_store_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn prepare_store_uint256<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = value;
             Ok(ret)
         }
 
-        pub fn update_byte_slice_shift_0(mut value: U256, mut toInsert: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn update_byte_slice_shift_0<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut result = U256::ZERO;
             let mask = not(U256::from(0x0u128), context)?;
             toInsert = shift_left(toInsert, context)?;
@@ -2597,13 +3665,19 @@ pub mod morpho_2267 {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint256_to_uint256(slot: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn update_storage_value_offsett_uint256_to_uint256<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let convertedValue = convert_uint256_to_uint256(value, context)?;
             sstore(slot, update_byte_slice_shift_0(sload(slot, context)?, prepare_store_uint256(convertedValue, context)?, context)?, context)?;
             Ok(())
         }
 
-        pub fn copy_struct_to_storage_from_struct_MarketParams_to_struct_MarketParams(slot: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn copy_struct_to_storage_from_struct_MarketParams_to_struct_MarketParams<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let memberValue = read_from_memoryt_address(add(value, U256::from(0x0u128), context)?, context)?;
             update_storage_value_offsett_address_to_address(add(slot, U256::from(0x0u128), context)?, memberValue, context)?;
             let memberValue_1 = read_from_memoryt_address(add(value, U256::from(0x20u128), context)?, context)?;
@@ -2617,18 +3691,27 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn getter_fun_DOMAIN_SEPARATOR(context: &mut Context) -> YulOutput<U256> {
+        pub fn getter_fun_DOMAIN_SEPARATOR<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut rval = U256::ZERO;
             rval = loadimmutable(from_hex("3634000000000000000000000000000000000000000000000000000000000000"), context)?;
             Ok(rval)
         }
 
-        pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn external_fun_DOMAIN_SEPARATOR(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_DOMAIN_SEPARATOR<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -2640,13 +3723,19 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn zero_value_for_split_uint256(context: &mut Context) -> YulOutput<U256> {
+        pub fn zero_value_for_split_uint256<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = U256::from(0x0u128);
             Ok(ret)
         }
 
-        pub fn fun_mulDivDown(var_x: U256, var_y: U256, var_d: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_mulDivDown<CI>(var_x: U256, var_y: U256, var_d: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -2656,7 +3745,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn fun_toSharesDown(var_assets: U256, var_totalAssets: U256, var_totalShares: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_toSharesDown<CI>(var_assets: U256, var_totalAssets: U256, var_totalShares: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -2669,7 +3761,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn require_helper_string(condition: U256, expr_167_mpos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn require_helper_string<CI>(condition: U256, expr_167_mpos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if iszero(condition, context)? != U256::ZERO {
                 let memPtr = allocate_unbounded(context)?;
                 mstore(memPtr, shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?, context)?;
@@ -2679,13 +3774,19 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn zero_value_for_split_uint128(context: &mut Context) -> YulOutput<U256> {
+        pub fn zero_value_for_split_uint128<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = U256::from(0x0u128);
             Ok(ret)
         }
 
-        pub fn fun_toUint128(var_x: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_toUint128<CI>(var_x: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint128 = zero_value_for_split_uint128(context)?;
             var = zero_uint128;
@@ -2697,7 +3798,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn fun_wMulDown(var_x: U256, var_y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_wMulDown<CI>(var_x: U256, var_y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -2707,7 +3811,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn fun_wTaylorCompounded(var_x: U256, var_n: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_wTaylorCompounded<CI>(var_x: U256, var_n: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -2723,7 +3830,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn mapping_index_access_mapping_address_struct_Position_storage_of_address(slot: U256, key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn mapping_index_access_mapping_address_struct_Position_storage_of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut dataSlot = U256::ZERO;
             mstore(U256::from(0x0u128), convert_address_to_address(key, context)?, context)?;
             mstore(U256::from(0x20u128), slot, context)?;
@@ -2731,7 +3841,10 @@ pub mod morpho_2267 {
             Ok(dataSlot)
         }
 
-        pub fn mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(slot: U256, key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut dataSlot = U256::ZERO;
             mstore(U256::from(0x0u128), convert_bytes32_to_bytes32(key, context)?, context)?;
             mstore(U256::from(0x20u128), slot, context)?;
@@ -2739,7 +3852,10 @@ pub mod morpho_2267 {
             Ok(dataSlot)
         }
 
-        pub fn mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(slot: U256, key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut dataSlot = U256::ZERO;
             mstore(U256::from(0x0u128), convert_bytes32_to_bytes32(key, context)?, context)?;
             mstore(U256::from(0x20u128), slot, context)?;
@@ -2747,68 +3863,101 @@ pub mod morpho_2267 {
             Ok(dataSlot)
         }
 
-        pub fn extract_from_storage_value_offsett_address(slot_value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn extract_from_storage_value_offsett_address<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = cleanup_from_storage_address(shift_right_0_unsigned(slot_value, context)?, context)?;
             Ok(value)
         }
 
-        pub fn read_from_storage_split_offset_address(slot: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_storage_split_offset_address<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = extract_from_storage_value_offsett_address(sload(slot, context)?, context)?;
             Ok(value)
         }
 
-        pub fn read_from_storage_split_offset_t_uint128(slot: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_storage_split_offset_t_uint128<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = extract_from_storage_value_offsett_uint128(sload(slot, context)?, context)?;
             Ok(value)
         }
 
-        pub fn read_from_storage_split_offset_uint128(slot: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_storage_split_offset_uint128<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = extract_from_storage_value_offset_16t_uint128(sload(slot, context)?, context)?;
             Ok(value)
         }
 
-        pub fn extract_from_storage_value_offsett_uint256(slot_value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn extract_from_storage_value_offsett_uint256<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = cleanup_from_storage_uint256(shift_right_0_unsigned(slot_value, context)?, context)?;
             Ok(value)
         }
 
-        pub fn read_from_storage_split_offset_uint256(slot: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_storage_split_offset_uint256<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = extract_from_storage_value_offsett_uint256(sload(slot, context)?, context)?;
             Ok(value)
         }
 
-        pub fn revert_forward(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_forward<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let pos = allocate_unbounded(context)?;
             returndatacopy(pos, U256::from(0x0u128), returndatasize(context)?, context)?;
             revert(pos, returndatasize(context)?, context)?;
             Ok(())
         }
 
-        pub fn shift_left_224(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn shift_left_224<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut newValue = U256::ZERO;
             newValue = shl(U256::from(0xe0u128), value, context)?;
             Ok(newValue)
         }
 
-        pub fn prepare_store_uint128(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn prepare_store_uint128<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = value;
             Ok(ret)
         }
 
-        pub fn shift_left_128(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn shift_left_128<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut newValue = U256::ZERO;
             newValue = shl(U256::from(0x80u128), value, context)?;
             Ok(newValue)
         }
 
-        pub fn update_byte_slice_shift_16(mut value: U256, mut toInsert: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn update_byte_slice_shift_16<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut result = U256::ZERO;
             let mask = not(U256::from(0xffffffffffffffffffffffffffffffffu128), context)?;
             toInsert = shift_left_128(toInsert, context)?;
@@ -2817,13 +3966,19 @@ pub mod morpho_2267 {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint128_to_t_uint128(slot: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn update_storage_value_offsett_uint128_to_t_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let convertedValue = convert_uint128_to_uint128(value, context)?;
             sstore(slot, update_byte_slice_shift_16(sload(slot, context)?, prepare_store_uint128(convertedValue, context)?, context)?, context)?;
             Ok(())
         }
 
-        pub fn update_byte_slice_shift(mut value: U256, mut toInsert: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn update_byte_slice_shift<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut result = U256::ZERO;
             let mask = U256::from(0xffffffffffffffffffffffffffffffffu128);
             toInsert = shift_left(toInsert, context)?;
@@ -2832,13 +3987,19 @@ pub mod morpho_2267 {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint128_to_uint128(slot: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn update_storage_value_offsett_uint128_to_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let convertedValue = convert_uint128_to_uint128(value, context)?;
             sstore(slot, update_byte_slice_shift(sload(slot, context)?, prepare_store_uint128(convertedValue, context)?, context)?, context)?;
             Ok(())
         }
 
-        pub fn fun_accrueInterest(var_marketParams_1971_mpos: U256, var_id: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_accrueInterest<CI>(var_marketParams_1971_mpos: U256, var_id: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _973_slot = U256::from(0x3u128);
             let _1 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_973_slot, var_id, context)?;
             let _2 = read_from_storage_split_offset_t_uint128(add(_1, U256::from(0x2u128), context)?, context)?;
@@ -2933,13 +4094,19 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn zero_value_for_split_userDefinedValueType_Id(context: &mut Context) -> YulOutput<U256> {
+        pub fn zero_value_for_split_userDefinedValueType_Id<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = U256::from(0x0u128);
             Ok(ret)
         }
 
-        pub fn fun_id(var_marketParams_3107_mpos: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_id<CI>(var_marketParams_3107_mpos: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var_marketParamsId = U256::ZERO;
             let zero_userDefinedValueType_Id = zero_value_for_split_userDefinedValueType_Id(context)?;
             var_marketParamsId = zero_userDefinedValueType_Id;
@@ -2947,7 +4114,10 @@ pub mod morpho_2267 {
             Ok(var_marketParamsId)
         }
 
-        pub fn fun_accrueInterest_1967(var_marketParams_1940_mpos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_accrueInterest_1967<CI>(var_marketParams_1940_mpos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let expr = fun_id(var_marketParams_1940_mpos, context)?;
             let _1 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(U256::from(0x3u128), expr, context)?;
             let _2 = read_from_storage_split_offset_t_uint128(add(_1, U256::from(0x2u128), context)?, context)?;
@@ -2958,7 +4128,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn external_fun_accrueInterest(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_accrueInterest<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -2970,7 +4143,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_mulDivUp(var_x: U256, var_y: U256, var_d: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_mulDivUp<CI>(var_x: U256, var_y: U256, var_d: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -2982,7 +4158,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn fun_toAssetsUp(var_shares: U256, var_totalAssets: U256, var_totalShares: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_toAssetsUp<CI>(var_shares: U256, var_totalAssets: U256, var_totalShares: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -2995,13 +4174,19 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn zero_value_for_split_bool(context: &mut Context) -> YulOutput<U256> {
+        pub fn zero_value_for_split_bool<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = U256::from(0x0u128);
             Ok(ret)
         }
 
-        pub fn fun_isHealthy(var_marketParams_mpos: U256, var_id: U256, var_borrower: U256, var_collateralPrice: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_isHealthy<CI>(var_marketParams_mpos: U256, var_id: U256, var_borrower: U256, var_collateralPrice: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var_ = U256::ZERO;
             let zero_bool = zero_value_for_split_bool(context)?;
             var_ = zero_bool;
@@ -3029,7 +4214,10 @@ pub mod morpho_2267 {
             Ok(var_)
         }
 
-        pub fn fun__isHealthy(var_marketParams_2125_mpos: U256, var_id: U256, var_borrower: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun__isHealthy<CI>(var_marketParams_2125_mpos: U256, var_id: U256, var_borrower: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_bool = zero_value_for_split_bool(context)?;
             var = zero_bool;
@@ -3065,7 +4253,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn fun_exactlyOneZero(var_x: U256, var_y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_exactlyOneZero<CI>(var_x: U256, var_y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var_z = U256::ZERO;
             let zero_bool = zero_value_for_split_bool(context)?;
             var_z = zero_bool;
@@ -3073,7 +4264,10 @@ pub mod morpho_2267 {
             Ok(var_z)
         }
 
-        pub fn mapping_index_access_mapping_address_bool_of_address(slot: U256, key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn mapping_index_access_mapping_address_bool_of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut dataSlot = U256::ZERO;
             mstore(U256::from(0x0u128), convert_address_to_address(key, context)?, context)?;
             mstore(U256::from(0x20u128), slot, context)?;
@@ -3081,7 +4275,10 @@ pub mod morpho_2267 {
             Ok(dataSlot)
         }
 
-        pub fn mapping_index_access_mapping_address_mapping_address_bool_of_address(slot: U256, key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn mapping_index_access_mapping_address_mapping_address_bool_of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut dataSlot = U256::ZERO;
             mstore(U256::from(0x0u128), convert_address_to_address(key, context)?, context)?;
             mstore(U256::from(0x20u128), slot, context)?;
@@ -3089,19 +4286,28 @@ pub mod morpho_2267 {
             Ok(dataSlot)
         }
 
-        pub fn extract_from_storage_value_offsett_bool(slot_value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn extract_from_storage_value_offsett_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = cleanup_from_storage_bool(shift_right_0_unsigned(slot_value, context)?, context)?;
             Ok(value)
         }
 
-        pub fn read_from_storage_split_offset_bool(slot: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_storage_split_offset_bool<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = extract_from_storage_value_offsett_bool(sload(slot, context)?, context)?;
             Ok(value)
         }
 
-        pub fn fun_isSenderAuthorized(var_onBehalf: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_isSenderAuthorized<CI>(var_onBehalf: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_t_bool = zero_value_for_split_bool(context)?;
             var = zero_t_bool;
@@ -3117,13 +4323,19 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn zero_value_for_split_bytes(context: &mut Context) -> YulOutput<U256> {
+        pub fn zero_value_for_split_bytes<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = U256::from(0x60u128);
             Ok(ret)
         }
 
-        pub fn extract_returndata(context: &mut Context) -> YulOutput<U256> {
+        pub fn extract_returndata<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut data = U256::ZERO;
             // switch
             let δ = returndatasize(context)?;
@@ -3133,7 +4345,10 @@ pub mod morpho_2267 {
             Ok(data)
         }
 
-        pub fn fun_safeTransfer(var_token_3293_address: U256, var_to: U256, var_value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_safeTransfer<CI>(var_token_3293_address: U256, var_to: U256, var_value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let expr = convert_contract_IERC20_to_address(var_token_3293_address, context)?;
             let expr_1 = extcodesize(expr, context)?;
             let expr_2 = gt(cleanup_uint256(expr_1, context)?, convert_rational_0_by_1_to_uint256(U256::from(0x0u128), context)?, context)?;
@@ -3163,7 +4378,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_toAssetsDown(var_shares: U256, var_totalAssets: U256, var_totalShares: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_toAssetsDown<CI>(var_shares: U256, var_totalAssets: U256, var_totalShares: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -3176,7 +4394,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn fun_toSharesUp(var_assets: U256, var_totalAssets: U256, var_totalShares: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_toSharesUp<CI>(var_assets: U256, var_totalAssets: U256, var_totalShares: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -3189,7 +4410,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn fun_borrow(var_marketParams_792_mpos: U256, mut var_assets: U256, var_shares: U256, var_onBehalf: U256, var_receiver: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn fun_borrow<CI>(var_marketParams_792_mpos: U256, mut var_assets: U256, var_shares: U256, var_onBehalf: U256, var_receiver: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let mut var_1 = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
@@ -3269,7 +4493,10 @@ pub mod morpho_2267 {
             Ok((var, var_1))
         }
 
-        pub fn external_fun_borrow(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_borrow<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3281,7 +4508,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn mapping_index_access_mapping_uint256_bool_of_uint256(slot: U256, key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn mapping_index_access_mapping_uint256_bool_of_uint256<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut dataSlot = U256::ZERO;
             mstore(U256::from(0x0u128), convert_uint256_to_uint256(key, context)?, context)?;
             mstore(U256::from(0x20u128), slot, context)?;
@@ -3289,7 +4519,10 @@ pub mod morpho_2267 {
             Ok(dataSlot)
         }
 
-        pub fn mapping_index_access_mapping_userDefinedValueType_Id_struct_MarketParams_storage_of_userDefinedValueType_Id(slot: U256, key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn mapping_index_access_mapping_userDefinedValueType_Id_struct_MarketParams_storage_of_userDefinedValueType_Id<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut dataSlot = U256::ZERO;
             mstore(U256::from(0x0u128), convert_bytes32_to_bytes32(key, context)?, context)?;
             mstore(U256::from(0x20u128), slot, context)?;
@@ -3297,12 +4530,18 @@ pub mod morpho_2267 {
             Ok(dataSlot)
         }
 
-        pub fn update_storage_value_offsett_struct_MarketParams_to_struct_MarketParams(slot: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn update_storage_value_offsett_struct_MarketParams_to_struct_MarketParams<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             copy_struct_to_storage_from_struct_MarketParams_to_struct_MarketParams(slot, value, context)?;
             Ok(())
         }
 
-        pub fn fun_createMarket(var_marketParams_369_mpos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_createMarket<CI>(var_marketParams_369_mpos: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let expr = fun_id(var_marketParams_369_mpos, context)?;
             let _1 = add(var_marketParams_369_mpos, U256::from(0x60u128), context)?;
             let _2 = read_from_memoryt_address(_1, context)?;
@@ -3358,7 +4597,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn external_fun_createMarket(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_createMarket<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3370,13 +4612,19 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn prepare_store_bool(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn prepare_store_bool<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = value;
             Ok(ret)
         }
 
-        pub fn update_byte_slice_1_shift(mut value: U256, mut toInsert: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn update_byte_slice_1_shift<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut result = U256::ZERO;
             toInsert = shift_left(toInsert, context)?;
             value = and(value, not(U256::from(0xffu128), context)?, context)?;
@@ -3384,13 +4632,19 @@ pub mod morpho_2267 {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_bool_to_bool(slot: U256, value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn update_storage_value_offsett_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let convertedValue = convert_bool_to_bool(value, context)?;
             sstore(slot, update_byte_slice_1_shift(sload(slot, context)?, prepare_store_bool(convertedValue, context)?, context)?, context)?;
             Ok(())
         }
 
-        pub fn fun_enableIrm_inner(var_irm: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_enableIrm_inner<CI>(var_irm: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = mapping_index_access_mapping_address_bool_of_address(U256::from(0x4u128), var_irm, context)?;
             let _2 = read_from_storage_split_offset_bool(_1, context)?;
             let expr = cleanup_bool(iszero(_2, context)?, context)?;
@@ -3405,7 +4659,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn modifier_onlyOwner_205(var_irm: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn modifier_onlyOwner_205<CI>(var_irm: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = read_from_storage_split_offset_address(U256::from(0x0u128), context)?;
             let expr = eq(cleanup_address(caller(context)?, context)?, cleanup_address(_1, context)?, context)?;
             let expr_mpos = constant_NOT_OWNER(context)?;
@@ -3414,12 +4671,18 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_enableIrm(var_irm: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_enableIrm<CI>(var_irm: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             modifier_onlyOwner_205(var_irm, context)?;
             Ok(())
         }
 
-        pub fn external_fun_enableIrm(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_enableIrm<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3431,7 +4694,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_enableLltv_inner(var_lltv: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_enableLltv_inner<CI>(var_lltv: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = mapping_index_access_mapping_uint256_bool_of_uint256(U256::from(0x5u128), var_lltv, context)?;
             let _2 = read_from_storage_split_offset_bool(_1, context)?;
             let expr = cleanup_bool(iszero(_2, context)?, context)?;
@@ -3449,7 +4715,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn modifier_onlyOwner_235(var_lltv: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn modifier_onlyOwner_235<CI>(var_lltv: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = read_from_storage_split_offset_address(U256::from(0x0u128), context)?;
             let expr = eq(cleanup_address(caller(context)?, context)?, cleanup_address(_1, context)?, context)?;
             let expr_mpos = constant_NOT_OWNER(context)?;
@@ -3458,12 +4727,18 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_enableLltv(var_lltv: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_enableLltv<CI>(var_lltv: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             modifier_onlyOwner_235(var_lltv, context)?;
             Ok(())
         }
 
-        pub fn external_fun_enableLltv(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_enableLltv<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3475,7 +4750,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn increment_uint256(mut value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn increment_uint256<CI>(mut value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             value = cleanup_uint256(value, context)?;
             if eq(value, not(U256::from(0x0u128), context)?, context)? != U256::ZERO {
@@ -3485,14 +4763,20 @@ pub mod morpho_2267 {
             Ok(ret)
         }
 
-        pub fn validator_revert_bytes32(value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn validator_revert_bytes32<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if iszero(eq(value, cleanup_bytes32(value, context)?, context)?, context)? != U256::ZERO {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(())
         }
 
-        pub fn read_from_calldatat_bytes32(ptr: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_calldatat_bytes32<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut returnValue = U256::ZERO;
             let value = calldataload(ptr, context)?;
             validator_revert_bytes32(value, context)?;
@@ -3500,13 +4784,19 @@ pub mod morpho_2267 {
             Ok(returnValue)
         }
 
-        pub fn zero_value_for_split_array_bytes32_dyn(context: &mut Context) -> YulOutput<U256> {
+        pub fn zero_value_for_split_array_bytes32_dyn<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = U256::from(0x60u128);
             Ok(ret)
         }
 
-        pub fn fun_extSloads(var_slots_offset: U256, var_slots_length: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_extSloads<CI>(var_slots_offset: U256, var_slots_length: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var_res_mpos = U256::ZERO;
             let zero_array_bytes32_dyn_mpos = zero_value_for_split_array_bytes32_dyn(context)?;
             var_res_mpos = zero_array_bytes32_dyn_mpos;
@@ -3538,7 +4828,10 @@ pub mod morpho_2267 {
             Ok(var_res_mpos)
         }
 
-        pub fn external_fun_extSloads(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_extSloads<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3550,31 +4843,46 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn shift_right_unsigned_dynamic(bits: U256, value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn shift_right_unsigned_dynamic<CI>(bits: U256, value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut newValue = U256::ZERO;
             newValue = shr(bits, value, context)?;
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_dynamict_address(slot_value: U256, offset: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn extract_from_storage_value_dynamict_address<CI>(slot_value: U256, offset: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = cleanup_from_storage_address(shift_right_unsigned_dynamic(mul(offset, U256::from(0x8u128), context)?, slot_value, context)?, context)?;
             Ok(value)
         }
 
-        pub fn read_from_storage_split_dynamic_address(slot: U256, offset: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_storage_split_dynamic_address<CI>(slot: U256, offset: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = extract_from_storage_value_dynamict_address(sload(slot, context)?, offset, context)?;
             Ok(value)
         }
 
-        pub fn getter_fun_feeRecipient(context: &mut Context) -> YulOutput<U256> {
+        pub fn getter_fun_feeRecipient<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = read_from_storage_split_dynamic_address(U256::from(0x1u128), U256::from(0x0u128), context)?;
             Ok(ret)
         }
 
-        pub fn external_fun_feeRecipient(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_feeRecipient<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3586,7 +4894,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_safeTransferFrom(var_token_address: U256, var_from: U256, var_to: U256, var_value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_safeTransferFrom<CI>(var_token_address: U256, var_from: U256, var_to: U256, var_value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let expr = convert_contract_IERC20_to_address(var_token_address, context)?;
             let expr_1 = extcodesize(expr, context)?;
             let expr_2 = gt(cleanup_uint256(expr_1, context)?, convert_rational_0_by_1_to_uint256(U256::from(0x0u128), context)?, context)?;
@@ -3616,12 +4927,18 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn revert_error_0cc013b6b3b6beabea4e3a74a6d380f0df81852ca99887912475e1f66b2a2c20(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_0cc013b6b3b6beabea4e3a74a6d380f0df81852ca99887912475e1f66b2a2c20<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn fun_flashLoan(var_token: U256, var_assets: U256, var_data_1702_offset: U256, var_data_1702_length: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_flashLoan<CI>(var_token: U256, var_assets: U256, var_data_1702_offset: U256, var_data_1702_length: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let expr = iszero(eq(cleanup_uint256(var_assets, context)?, convert_rational_0_by_1_to_uint256(U256::from(0x0u128), context)?, context)?, context)?;
             let expr_1710_mpos = constant_ZERO_ASSETS(context)?;
             require_helper_string(expr, expr_1710_mpos, context)?;
@@ -3657,7 +4974,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn external_fun_flashLoan(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_flashLoan<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3669,7 +4989,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn getter_fun_idToMarketParams(key: U256, context: &mut Context) -> YulOutput<(U256, U256, U256, U256, U256)> {
+        pub fn getter_fun_idToMarketParams<CI>(key: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256, U256, U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let mut ret_1 = U256::ZERO;
             let mut ret_2 = U256::ZERO;
@@ -3685,7 +5008,10 @@ pub mod morpho_2267 {
             Ok((ret, ret_1, ret_2, ret_3, ret_4))
         }
 
-        pub fn external_fun_idToMarketParams(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_idToMarketParams<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3697,19 +5023,28 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn extract_from_storage_value_dynamict_bool(slot_value: U256, offset: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn extract_from_storage_value_dynamict_bool<CI>(slot_value: U256, offset: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = cleanup_from_storage_bool(shift_right_unsigned_dynamic(mul(offset, U256::from(0x8u128), context)?, slot_value, context)?, context)?;
             Ok(value)
         }
 
-        pub fn read_from_storage_split_dynamic_bool(slot: U256, offset: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_storage_split_dynamic_bool<CI>(slot: U256, offset: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = extract_from_storage_value_dynamict_bool(sload(slot, context)?, offset, context)?;
             Ok(value)
         }
 
-        pub fn getter_fun_isAuthorized(key: U256, key_1: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn getter_fun_isAuthorized<CI>(key: U256, key_1: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let mut slot = U256::from(0x6u128);
             slot = mapping_index_access_mapping_address_mapping_address_bool_of_address(U256::from(0x6u128), key, context)?;
@@ -3718,7 +5053,10 @@ pub mod morpho_2267 {
             Ok(ret)
         }
 
-        pub fn external_fun_isAuthorized(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_isAuthorized<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3730,7 +5068,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn getter_fun_isIrmEnabled(key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn getter_fun_isIrmEnabled<CI>(key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let mut slot = U256::from(0x4u128);
             slot = mapping_index_access_mapping_address_bool_of_address(U256::from(0x4u128), key, context)?;
@@ -3738,7 +5079,10 @@ pub mod morpho_2267 {
             Ok(ret)
         }
 
-        pub fn external_fun_isIrmEnabled(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_isIrmEnabled<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3750,7 +5094,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn getter_fun_isLltvEnabled(key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn getter_fun_isLltvEnabled<CI>(key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let mut slot = U256::from(0x5u128);
             slot = mapping_index_access_mapping_uint256_bool_of_uint256(U256::from(0x5u128), key, context)?;
@@ -3758,7 +5105,10 @@ pub mod morpho_2267 {
             Ok(ret)
         }
 
-        pub fn external_fun_isLltvEnabled(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_isLltvEnabled<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -3770,7 +5120,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_min(var_x: U256, var_y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_min<CI>(var_x: U256, var_y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var_z = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var_z = zero_uint256;
@@ -3778,7 +5131,10 @@ pub mod morpho_2267 {
             Ok(var_z)
         }
 
-        pub fn fun_wDivDown(var_x: U256, var_y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_wDivDown<CI>(var_x: U256, var_y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -3788,7 +5144,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn fun_wDivUp(var_x: U256, var_y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_wDivUp<CI>(var_x: U256, var_y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_uint256;
@@ -3798,7 +5157,10 @@ pub mod morpho_2267 {
             Ok(var)
         }
 
-        pub fn fun_zeroFloorSub(var_x: U256, var_y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_zeroFloorSub<CI>(var_x: U256, var_y: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var_z = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var_z = zero_uint256;
@@ -3806,7 +5168,10 @@ pub mod morpho_2267 {
             Ok(var_z)
         }
 
-        pub fn fun_liquidate(var_marketParams_1354_mpos: U256, var_borrower: U256, mut var_seizedAssets: U256, var_repaidShares: U256, var_data_offset: U256, var_data_1362_length: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn fun_liquidate<CI>(var_marketParams_1354_mpos: U256, var_borrower: U256, mut var_seizedAssets: U256, var_repaidShares: U256, var_data_offset: U256, var_data_1362_length: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let mut var_1 = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
@@ -3997,7 +5362,10 @@ pub mod morpho_2267 {
             Ok((var, var_1))
         }
 
-        pub fn external_fun_liquidate(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_liquidate<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4009,7 +5377,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn getter_fun_market(key: U256, context: &mut Context) -> YulOutput<(U256, U256, U256, U256, U256, U256)> {
+        pub fn getter_fun_market<CI>(key: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256, U256, U256, U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let mut ret_1 = U256::ZERO;
             let mut ret_2 = U256::ZERO;
@@ -4027,7 +5398,10 @@ pub mod morpho_2267 {
             Ok((ret, ret_1, ret_2, ret_3, ret_4, ret_5))
         }
 
-        pub fn external_fun_market(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_market<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4039,7 +5413,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn mapping_index_access_mapping_address_uint256_of_address(slot: U256, key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn mapping_index_access_mapping_address_uint256_of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut dataSlot = U256::ZERO;
             mstore(U256::from(0x0u128), convert_address_to_address(key, context)?, context)?;
             mstore(U256::from(0x20u128), slot, context)?;
@@ -4047,19 +5424,28 @@ pub mod morpho_2267 {
             Ok(dataSlot)
         }
 
-        pub fn extract_from_storage_value_dynamict_uint256(slot_value: U256, offset: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn extract_from_storage_value_dynamict_uint256<CI>(slot_value: U256, offset: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = cleanup_from_storage_uint256(shift_right_unsigned_dynamic(mul(offset, U256::from(0x8u128), context)?, slot_value, context)?, context)?;
             Ok(value)
         }
 
-        pub fn read_from_storage_split_dynamic_uint256(slot: U256, offset: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_storage_split_dynamic_uint256<CI>(slot: U256, offset: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut value = U256::ZERO;
             value = extract_from_storage_value_dynamict_uint256(sload(slot, context)?, offset, context)?;
             Ok(value)
         }
 
-        pub fn getter_fun_nonce(key: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn getter_fun_nonce<CI>(key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let mut slot = U256::from(0x7u128);
             slot = mapping_index_access_mapping_address_uint256_of_address(U256::from(0x7u128), key, context)?;
@@ -4067,7 +5453,10 @@ pub mod morpho_2267 {
             Ok(ret)
         }
 
-        pub fn external_fun_nonce(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_nonce<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4079,13 +5468,19 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn getter_fun_owner(context: &mut Context) -> YulOutput<U256> {
+        pub fn getter_fun_owner<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             ret = read_from_storage_split_dynamic_address(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(ret)
         }
 
-        pub fn external_fun_owner(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_owner<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4097,7 +5492,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn getter_fun_position(key: U256, key_1: U256, context: &mut Context) -> YulOutput<(U256, U256, U256)> {
+        pub fn getter_fun_position<CI>(key: U256, key_1: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut ret = U256::ZERO;
             let mut ret_1 = U256::ZERO;
             let mut ret_2 = U256::ZERO;
@@ -4110,7 +5508,10 @@ pub mod morpho_2267 {
             Ok((ret, ret_1, ret_2))
         }
 
-        pub fn external_fun_position(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_position<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4122,7 +5523,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_repay(var_marketParams_974_mpos: U256, mut var_assets: U256, var_shares: U256, var_onBehalf: U256, var_data_982_offset: U256, var_data_982_length: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn fun_repay<CI>(var_marketParams_974_mpos: U256, mut var_assets: U256, var_shares: U256, var_onBehalf: U256, var_data_982_offset: U256, var_data_982_length: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let mut var_1 = U256::ZERO;
             let zero_t_uint256 = zero_value_for_split_uint256(context)?;
@@ -4215,7 +5619,10 @@ pub mod morpho_2267 {
             Ok((var, var_1))
         }
 
-        pub fn external_fun_repay(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_repay<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4227,7 +5634,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_setAuthorization(var_authorized: U256, var_newIsAuthorized: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_setAuthorization<CI>(var_authorized: U256, var_newIsAuthorized: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = mapping_index_access_mapping_address_mapping_address_bool_of_address(U256::from(0x6u128), caller(context)?, context)?;
             let _2 = mapping_index_access_mapping_address_bool_of_address(_1, var_authorized, context)?;
             let _3 = read_from_storage_split_offset_bool(_2, context)?;
@@ -4245,7 +5655,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn external_fun_setAuthorization(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_setAuthorization<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4257,14 +5670,20 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn validator_revert_uint8(value: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn validator_revert_uint8<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if iszero(eq(value, cleanup_uint8(value, context)?, context)?, context)? != U256::ZERO {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(())
         }
 
-        pub fn read_from_calldatat_uint8(ptr: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_calldatat_uint8<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut returnValue = U256::ZERO;
             let value = calldataload(ptr, context)?;
             validator_revert_uint8(value, context)?;
@@ -4272,14 +5691,20 @@ pub mod morpho_2267 {
             Ok(returnValue)
         }
 
-        pub fn read_from_memoryt_bool(ptr: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn read_from_memoryt_bool<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut returnValue = U256::ZERO;
             let value = cleanup_bool(mload(ptr, context)?, context)?;
             returnValue = value;
             Ok(returnValue)
         }
 
-        pub fn fun_setAuthorizationWithSig(var_authorization_mpos: U256, var_signature_offset: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_setAuthorizationWithSig<CI>(var_authorization_mpos: U256, var_signature_offset: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = read_from_memoryt_uint256(add(var_authorization_mpos, U256::from(0x80u128), context)?, context)?;
             let expr = iszero(gt(cleanup_uint256(timestamp(context)?, context)?, cleanup_uint256(_1, context)?, context)?, context)?;
             let expr_1813_mpos = constant_SIGNATURE_EXPIRED(context)?;
@@ -4352,7 +5777,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn external_fun_setAuthorizationWithSig(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_setAuthorizationWithSig<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4364,7 +5792,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_setFee_inner(var_marketParams_mpos: U256, var_newFee: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_setFee_inner<CI>(var_marketParams_mpos: U256, var_newFee: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let expr = fun_id(var_marketParams_mpos, context)?;
             let _164_slot = U256::from(0x3u128);
             let _1 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_164_slot, expr, context)?;
@@ -4392,7 +5823,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn modifier_onlyOwner_276(var_marketParams_271_mpos: U256, var_newFee: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn modifier_onlyOwner_276<CI>(var_marketParams_271_mpos: U256, var_newFee: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = read_from_storage_split_offset_address(U256::from(0x0u128), context)?;
             let expr = eq(cleanup_address(caller(context)?, context)?, cleanup_address(_1, context)?, context)?;
             let expr_mpos = constant_NOT_OWNER(context)?;
@@ -4401,12 +5835,18 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_setFee(var_marketParams_mpos: U256, var_newFee: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_setFee<CI>(var_marketParams_mpos: U256, var_newFee: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             modifier_onlyOwner_276(var_marketParams_mpos, var_newFee, context)?;
             Ok(())
         }
 
-        pub fn external_fun_setFee(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_setFee<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4418,7 +5858,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_setFeeRecipient_inner(var_newFeeRecipient: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_setFeeRecipient_inner<CI>(var_newFeeRecipient: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = read_from_storage_split_offset_address(U256::from(0x1u128), context)?;
             let expr = iszero(eq(cleanup_address(var_newFeeRecipient, context)?, cleanup_address(_1, context)?, context)?, context)?;
             let expr_351_mpos = constant_ALREADY_SET(context)?;
@@ -4431,7 +5874,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn modifier_onlyOwner_344(var_newFeeRecipient: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn modifier_onlyOwner_344<CI>(var_newFeeRecipient: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = read_from_storage_split_offset_address(U256::from(0x0u128), context)?;
             let expr = eq(cleanup_address(caller(context)?, context)?, cleanup_address(_1, context)?, context)?;
             let expr_mpos = constant_NOT_OWNER(context)?;
@@ -4440,12 +5886,18 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_setFeeRecipient(var_newFeeRecipient: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_setFeeRecipient<CI>(var_newFeeRecipient: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             modifier_onlyOwner_344(var_newFeeRecipient, context)?;
             Ok(())
         }
 
-        pub fn external_fun_setFeeRecipient(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_setFeeRecipient<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4457,7 +5909,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_setOwner_inner(var_newOwner: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_setOwner_inner<CI>(var_newOwner: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = read_from_storage_split_offset_address(U256::from(0x0u128), context)?;
             let expr = iszero(eq(cleanup_address(var_newOwner, context)?, cleanup_address(_1, context)?, context)?, context)?;
             let expr_185_mpos = constant_ALREADY_SET(context)?;
@@ -4470,7 +5925,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn modifier_onlyOwner(var_newOwner: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn modifier_onlyOwner<CI>(var_newOwner: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let _1 = read_from_storage_split_offset_address(U256::from(0x0u128), context)?;
             let expr = eq(cleanup_address(caller(context)?, context)?, cleanup_address(_1, context)?, context)?;
             let expr_mpos = constant_NOT_OWNER(context)?;
@@ -4479,12 +5937,18 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_setOwner(var_newOwner: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_setOwner<CI>(var_newOwner: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             modifier_onlyOwner(var_newOwner, context)?;
             Ok(())
         }
 
-        pub fn external_fun_setOwner(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_setOwner<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4496,7 +5960,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_supply(var_marketParams_456_mpos: U256, mut var_assets: U256, var_shares: U256, var_onBehalf: U256, var_data_464_offset: U256, var_data_464_length: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn fun_supply<CI>(var_marketParams_456_mpos: U256, mut var_assets: U256, var_shares: U256, var_onBehalf: U256, var_data_464_offset: U256, var_data_464_length: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let mut var_1 = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
@@ -4587,7 +6054,10 @@ pub mod morpho_2267 {
             Ok((var, var_1))
         }
 
-        pub fn external_fun_supply(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_supply<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4599,7 +6069,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_supplyCollateral(var_marketParams_1149_mpos: U256, var_assets: U256, var_onBehalf: U256, var_data_1155_offset: U256, var_data_length: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_supplyCollateral<CI>(var_marketParams_1149_mpos: U256, var_assets: U256, var_onBehalf: U256, var_data_1155_offset: U256, var_data_length: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let expr = fun_id(var_marketParams_1149_mpos, context)?;
             let _1 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(U256::from(0x3u128), expr, context)?;
             let _2 = read_from_storage_split_offset_t_uint128(add(_1, U256::from(0x2u128), context)?, context)?;
@@ -4657,7 +6130,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn external_fun_supplyCollateral(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_supplyCollateral<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4669,7 +6145,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_withdraw(var_marketParams_622_mpos: U256, mut var_assets: U256, var_shares: U256, var_onBehalf: U256, var_receiver: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn fun_withdraw<CI>(var_marketParams_622_mpos: U256, mut var_assets: U256, var_shares: U256, var_onBehalf: U256, var_receiver: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut var = U256::ZERO;
             let mut var_1 = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
@@ -4745,7 +6224,10 @@ pub mod morpho_2267 {
             Ok((var, var_1))
         }
 
-        pub fn external_fun_withdraw(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_withdraw<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4757,7 +6239,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn fun_withdrawCollateral(var_marketParams_1249_mpos: U256, var_assets: U256, var_onBehalf: U256, var_receiver: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_withdrawCollateral<CI>(var_marketParams_1249_mpos: U256, var_assets: U256, var_onBehalf: U256, var_receiver: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let expr = fun_id(var_marketParams_1249_mpos, context)?;
             let _1 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(U256::from(0x3u128), expr, context)?;
             let _2 = read_from_storage_split_offset_t_uint128(add(_1, U256::from(0x2u128), context)?, context)?;
@@ -4797,7 +6282,10 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn external_fun_withdrawCollateral(context: &mut Context) -> YulOutput<()> {
+        pub fn external_fun_withdrawCollateral<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             if callvalue(context)? != U256::ZERO {
                 revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
             }
@@ -4809,18 +6297,27 @@ pub mod morpho_2267 {
             Ok(())
         }
 
-        pub fn revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74<CI>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn shift_right_unsigned(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn shift_right_unsigned<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
             let mut newValue = U256::ZERO;
             newValue = shr(U256::from(0xe0u128), value, context)?;
             Ok(newValue)
         }
 
-        pub fn body(context: &mut Context) -> YulOutput<()> {
+        pub fn body<CI: ContractInteractions>(context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
             mstore(U256::from(0x40u128), memoryguard(U256::from(0x80u128), context)?, context)?;
             if iszero(lt(calldatasize(context)?, U256::from(0x4u128), context)?, context)? != U256::ZERO {
                 let selector = shift_right_unsigned(calldataload(U256::from(0x0u128), context)?, context)?;
@@ -4890,106 +6387,28 @@ pub mod morpho_2267 {
     }
 }
 
-use std::future::Future;
-use std::pin::Pin;
-use std::task::{Context, Poll, RawWaker, RawWakerVTable, Waker};
-use std::time::Duration;
-
-// A custom async function (no external libraries!)
-async fn my_async_function() {
-    println!("Async function started");
-    // Simulate async work (e.g., I/O or sleep)
-    yield_once().await;
-    println!("Async function resumed");
-    yield_once().await;
-    println!("Async function completed");
-}
-
-// A helper future to simulate yielding control
-struct YieldOnce {
-    yielded: bool,
-}
-
-#[derive(Clone, Debug)]
-enum Request {
-    Call(Vec<u8>),
-}
-
-#[derive(Clone, Debug)]
-enum Response {
-    Success(Vec<u8>),
-}
-
-#[derive(Debug)]
-enum MyGenerator {
-    Request(Request),
-    Response(Response),
-}
-
-impl Future for MyGenerator {
-    type Output = Response;
-
-    fn poll(self: Pin<&mut Self>, _cx: &mut Context<'_>) -> Poll<Self::Output> {
-        match self.get_mut() {
-            MyGenerator::Request(request) => {
-                Poll::Pending
-            }
-            MyGenerator::Response(response) => {
-                Poll::Ready(response.clone())
-            }
-        }
-    }
-}
-
-impl Future for YieldOnce {
-    type Output = ();
-
-    fn poll(mut self: Pin<&mut Self>, _cx: &mut Context<'_>) -> Poll<Self::Output> {
-        if !self.yielded {
-            self.yielded = true;
-            Poll::Pending // Yield control
-        } else {
-            Poll::Ready(()) // Resume
-        }
-    }
-}
-
-fn yield_once() -> YieldOnce {
-    YieldOnce { yielded: false }
-}
-
-// A minimal "scheduler" that runs futures to completion
-fn block_on<F: Future>(future: F) -> F::Output {
-    let mut fut = Box::pin(future);
-    let waker = dummy_waker();
-    let mut cx = Context::from_waker(&waker);
-
-    loop {
-        match fut.as_mut().poll(&mut cx) {
-            Poll::Ready(result) => return result,
-            Poll::Pending => {
-                println!("Scheduler: Future yielded, simulating work...");
-                // In a real runtime, we'd wait for I/O or timers here.
-                std::thread::sleep(Duration::from_millis(500));
-            }
-        }
-    }
-}
-
-// Create a dummy waker (does nothing, just satisfies the Future API)
-fn dummy_waker() -> Waker {
-    const VTABLE: &RawWakerVTable = &RawWakerVTable::new(
-        |_| RawWaker::new(std::ptr::null(), VTABLE), // clone
-        |_| {}, // wake
-        |_| {}, // wake_by_ref
-        |_| {}, // drop
-    );
-
-    unsafe { Waker::from_raw(RawWaker::new(std::ptr::null(), VTABLE)) }
-}
-
 fn main() {
-    println!("Starting manual async runtime...");
-    block_on(my_async_function());
-    println!("Done!");
+    let mut context = Context {
+        contract_interactions: std::marker::PhantomData::<DummyContractInteractions>,
+        memory: Memory::new(),
+        immutables: std::collections::HashMap::new(),
+        address: U256::from(123),
+        caller: U256::from(124),
+        callvalue: U256::from(12),
+        gas: U256::from(100 * 1000),
+        timestamp: U256::from(1000 * 1000),
+        calldata: vec![],
+        chain_id: U256::from(123456),
+    };
+
+    let result = morpho::morpho_deployed::fun_withdraw(
+        U256::from(0),
+        U256::from(1),
+        U256::from(2),
+        U256::from(3),
+        U256::from(4),
+        &mut context,
+    );
+    println!("result: {:#?}", result);
+    println!("context: {:#?}", context);
 }

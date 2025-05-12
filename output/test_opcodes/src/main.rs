@@ -17,19 +17,43 @@ pub mod testopcodes_684 {
         Ok(memPtr)
     }
 
-    pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context: &mut Context) -> YulOutput<()> {
+    pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+        context: &mut Context,
+    ) -> YulOutput<()> {
         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
         Ok(())
     }
 
     pub fn body(context: &mut Context) -> YulOutput<()> {
-        mstore(U256::from(0x40u128), memoryguard(U256::from(0x80u128), context)?, context)?;
+        mstore(
+            U256::from(0x40u128),
+            memoryguard(U256::from(0x80u128), context)?,
+            context,
+        )?;
         if callvalue(context)? != U256::ZERO {
             revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
         }
         let _1 = allocate_unbounded(context)?;
-        codecopy(_1, dataoffset(from_hex("546573744f70636f6465735f3638345f6465706c6f7965640000000000000000"), context)?, datasize(from_hex("546573744f70636f6465735f3638345f6465706c6f7965640000000000000000"), context)?, context)?;
-        return_(_1, datasize(from_hex("546573744f70636f6465735f3638345f6465706c6f7965640000000000000000"), context)?, context)?;
+        codecopy(
+            _1,
+            dataoffset(
+                from_hex("546573744f70636f6465735f3638345f6465706c6f7965640000000000000000"),
+                context,
+            )?,
+            datasize(
+                from_hex("546573744f70636f6465735f3638345f6465706c6f7965640000000000000000"),
+                context,
+            )?,
+            context,
+        )?;
+        return_(
+            _1,
+            datasize(
+                from_hex("546573744f70636f6465735f3638345f6465706c6f7965640000000000000000"),
+                context,
+            )?,
+            context,
+        )?;
         Ok(())
     }
 
@@ -37,14 +61,23 @@ pub mod testopcodes_684 {
         use alloy_primitives::U256;
         use evm_opcodes::*;
 
-        pub fn revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(
+            context: &mut Context,
+        ) -> YulOutput<()> {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
         pub fn abi_decode(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<()> {
-            if slt(sub(dataEnd, headStart, context)?, U256::from(0x0u128), context)? != U256::ZERO {
-                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
+            if slt(
+                sub(dataEnd, headStart, context)?,
+                U256::from(0x0u128),
+                context,
+            )? != U256::ZERO
+            {
+                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(
+                    context,
+                )?;
             }
             Ok(())
         }
@@ -56,7 +89,11 @@ pub mod testopcodes_684 {
         }
 
         pub fn panic_error_0x41(context: &mut Context) -> YulOutput<()> {
-            mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
+            mstore(
+                U256::from(0x0u128),
+                shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?,
+                context,
+            )?;
             mstore(U256::from(0x4u128), U256::from(0x41u128), context)?;
             revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
             Ok(())
@@ -64,13 +101,26 @@ pub mod testopcodes_684 {
 
         pub fn round_up_to_mul_of(value: U256, context: &mut Context) -> YulOutput<U256> {
             let mut result = U256::ZERO;
-            result = and(add(value, U256::from(0x1fu128), context)?, not(U256::from(0x1fu128), context)?, context)?;
+            result = and(
+                add(value, U256::from(0x1fu128), context)?,
+                not(U256::from(0x1fu128), context)?,
+                context,
+            )?;
             Ok(result)
         }
 
-        pub fn finalize_allocation(memPtr: U256, size: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn finalize_allocation(
+            memPtr: U256,
+            size: U256,
+            context: &mut Context,
+        ) -> YulOutput<()> {
             let newFreePtr = add(memPtr, round_up_to_mul_of(size, context)?, context)?;
-            if or(gt(newFreePtr, U256::from(0xffffffffffffffffu128), context)?, lt(newFreePtr, memPtr, context)?, context)? != U256::ZERO {
+            if or(
+                gt(newFreePtr, U256::from(0xffffffffffffffffu128), context)?,
+                lt(newFreePtr, memPtr, context)?,
+                context,
+            )? != U256::ZERO
+            {
                 panic_error_0x41(context)?;
             }
             mstore(U256::from(0x40u128), newFreePtr, context)?;
@@ -94,57 +144,109 @@ pub mod testopcodes_684 {
             Ok(size)
         }
 
-        pub fn copy_calldata_to_memory_with_cleanup(src: U256, dst: U256, length: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn copy_calldata_to_memory_with_cleanup(
+            src: U256,
+            dst: U256,
+            length: U256,
+            context: &mut Context,
+        ) -> YulOutput<()> {
             calldatacopy(dst, src, length, context)?;
             mstore(add(dst, length, context)?, U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn revert_error_987264b3b1d58a9c7f8255e93e81c77d86d6299019c33110a076957a3e06e2ae(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_987264b3b1d58a9c7f8255e93e81c77d86d6299019c33110a076957a3e06e2ae(
+            context: &mut Context,
+        ) -> YulOutput<()> {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_decode_available_length_bytes(src: U256, length: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_available_length_bytes(
+            src: U256,
+            length: U256,
+            end_: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut array = U256::ZERO;
             array = allocate_memory(array_allocation_size_bytes(length, context)?, context)?;
             mstore(array, length, context)?;
             if gt(add(src, length, context)?, end_, context)? != U256::ZERO {
-                revert_error_987264b3b1d58a9c7f8255e93e81c77d86d6299019c33110a076957a3e06e2ae(context)?;
+                revert_error_987264b3b1d58a9c7f8255e93e81c77d86d6299019c33110a076957a3e06e2ae(
+                    context,
+                )?;
             }
-            copy_calldata_to_memory_with_cleanup(src, add(array, U256::from(0x20u128), context)?, length, context)?;
+            copy_calldata_to_memory_with_cleanup(
+                src,
+                add(array, U256::from(0x20u128), context)?,
+                length,
+                context,
+            )?;
             Ok(array)
         }
 
-        pub fn revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d(
+            context: &mut Context,
+        ) -> YulOutput<()> {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_decode_bytes_memory_ptr(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_bytes_memory_ptr(
+            offset: U256,
+            end_: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut array = U256::ZERO;
-            if iszero(slt(add(offset, U256::from(0x1fu128), context)?, end_, context)?, context)? != U256::ZERO {
-                revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d(context)?;
+            if iszero(
+                slt(add(offset, U256::from(0x1fu128), context)?, end_, context)?,
+                context,
+            )? != U256::ZERO
+            {
+                revert_error_1b9f4a0a5773e33b91aa01db23bf8c55fce1411167c872835e7fa00a4f17d46d(
+                    context,
+                )?;
             }
-            array = abi_decode_available_length_bytes(add(offset, U256::from(0x20u128), context)?, calldataload(offset, context)?, end_, context)?;
+            array = abi_decode_available_length_bytes(
+                add(offset, U256::from(0x20u128), context)?,
+                calldataload(offset, context)?,
+                end_,
+                context,
+            )?;
             Ok(array)
         }
 
-        pub fn revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db(
+            context: &mut Context,
+        ) -> YulOutput<()> {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
-        pub fn abi_decode_bytes(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_bytes(
+            headStart: U256,
+            dataEnd: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut value0 = U256::ZERO;
-            if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
-                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
+            if slt(
+                sub(dataEnd, headStart, context)?,
+                U256::from(0x20u128),
+                context,
+            )? != U256::ZERO
+            {
+                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(
+                    context,
+                )?;
             }
             let offset = calldataload(add(headStart, U256::from(0x0u128), context)?, context)?;
             if gt(offset, U256::from(0xffffffffffffffffu128), context)? != U256::ZERO {
-                revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db(context)?;
+                revert_error_c1322bf8034eace5e0b5c7295db60986aa89aae5e0ea0873e4689e076861a5db(
+                    context,
+                )?;
             }
-            value0 = abi_decode_bytes_memory_ptr(add(headStart, offset, context)?, dataEnd, context)?;
+            value0 =
+                abi_decode_bytes_memory_ptr(add(headStart, offset, context)?, dataEnd, context)?;
             Ok(value0)
         }
 
@@ -155,27 +257,54 @@ pub mod testopcodes_684 {
         }
 
         pub fn validator_revert_int256(value: U256, context: &mut Context) -> YulOutput<()> {
-            if iszero(eq(value, cleanup_int256(value, context)?, context)?, context)? != U256::ZERO {
+            if iszero(
+                eq(value, cleanup_int256(value, context)?, context)?,
+                context,
+            )? != U256::ZERO
+            {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(())
         }
 
-        pub fn abi_decode_int256(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_int256(
+            offset: U256,
+            end_: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut value = U256::ZERO;
             value = calldataload(offset, context)?;
             validator_revert_int256(value, context)?;
             Ok(value)
         }
 
-        pub fn abi_decode_int256t_int256(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_int256t_int256(
+            headStart: U256,
+            dataEnd: U256,
+            context: &mut Context,
+        ) -> YulOutput<(U256, U256)> {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
-            if slt(sub(dataEnd, headStart, context)?, U256::from(0x40u128), context)? != U256::ZERO {
-                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
+            if slt(
+                sub(dataEnd, headStart, context)?,
+                U256::from(0x40u128),
+                context,
+            )? != U256::ZERO
+            {
+                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(
+                    context,
+                )?;
             }
-            value0 = abi_decode_int256(add(headStart, U256::from(0x0u128), context)?, dataEnd, context)?;
-            value1 = abi_decode_int256(add(headStart, U256::from(0x20u128), context)?, dataEnd, context)?;
+            value0 = abi_decode_int256(
+                add(headStart, U256::from(0x0u128), context)?,
+                dataEnd,
+                context,
+            )?;
+            value1 = abi_decode_int256(
+                add(headStart, U256::from(0x20u128), context)?,
+                dataEnd,
+                context,
+            )?;
             Ok((value0, value1))
         }
 
@@ -186,60 +315,144 @@ pub mod testopcodes_684 {
         }
 
         pub fn validator_revert_uint256(value: U256, context: &mut Context) -> YulOutput<()> {
-            if iszero(eq(value, cleanup_uint256(value, context)?, context)?, context)? != U256::ZERO {
+            if iszero(
+                eq(value, cleanup_uint256(value, context)?, context)?,
+                context,
+            )? != U256::ZERO
+            {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(())
         }
 
-        pub fn abi_decode_uint256(offset: U256, end_: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_uint256(
+            offset: U256,
+            end_: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut value = U256::ZERO;
             value = calldataload(offset, context)?;
             validator_revert_uint256(value, context)?;
             Ok(value)
         }
 
-        pub fn abi_decode_tuple_uint256(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_decode_tuple_uint256(
+            headStart: U256,
+            dataEnd: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut value0 = U256::ZERO;
-            if slt(sub(dataEnd, headStart, context)?, U256::from(0x20u128), context)? != U256::ZERO {
-                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
+            if slt(
+                sub(dataEnd, headStart, context)?,
+                U256::from(0x20u128),
+                context,
+            )? != U256::ZERO
+            {
+                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(
+                    context,
+                )?;
             }
-            value0 = abi_decode_uint256(add(headStart, U256::from(0x0u128), context)?, dataEnd, context)?;
+            value0 = abi_decode_uint256(
+                add(headStart, U256::from(0x0u128), context)?,
+                dataEnd,
+                context,
+            )?;
             Ok(value0)
         }
 
-        pub fn abi_decode_uint256t_int256(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_uint256t_int256(
+            headStart: U256,
+            dataEnd: U256,
+            context: &mut Context,
+        ) -> YulOutput<(U256, U256)> {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
-            if slt(sub(dataEnd, headStart, context)?, U256::from(0x40u128), context)? != U256::ZERO {
-                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
+            if slt(
+                sub(dataEnd, headStart, context)?,
+                U256::from(0x40u128),
+                context,
+            )? != U256::ZERO
+            {
+                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(
+                    context,
+                )?;
             }
-            value0 = abi_decode_uint256(add(headStart, U256::from(0x0u128), context)?, dataEnd, context)?;
-            value1 = abi_decode_int256(add(headStart, U256::from(0x20u128), context)?, dataEnd, context)?;
+            value0 = abi_decode_uint256(
+                add(headStart, U256::from(0x0u128), context)?,
+                dataEnd,
+                context,
+            )?;
+            value1 = abi_decode_int256(
+                add(headStart, U256::from(0x20u128), context)?,
+                dataEnd,
+                context,
+            )?;
             Ok((value0, value1))
         }
 
-        pub fn abi_decode_uint256t_uint256(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256)> {
+        pub fn abi_decode_uint256t_uint256(
+            headStart: U256,
+            dataEnd: U256,
+            context: &mut Context,
+        ) -> YulOutput<(U256, U256)> {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
-            if slt(sub(dataEnd, headStart, context)?, U256::from(0x40u128), context)? != U256::ZERO {
-                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
+            if slt(
+                sub(dataEnd, headStart, context)?,
+                U256::from(0x40u128),
+                context,
+            )? != U256::ZERO
+            {
+                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(
+                    context,
+                )?;
             }
-            value0 = abi_decode_uint256(add(headStart, U256::from(0x0u128), context)?, dataEnd, context)?;
-            value1 = abi_decode_uint256(add(headStart, U256::from(0x20u128), context)?, dataEnd, context)?;
+            value0 = abi_decode_uint256(
+                add(headStart, U256::from(0x0u128), context)?,
+                dataEnd,
+                context,
+            )?;
+            value1 = abi_decode_uint256(
+                add(headStart, U256::from(0x20u128), context)?,
+                dataEnd,
+                context,
+            )?;
             Ok((value0, value1))
         }
 
-        pub fn abi_decode_uint256t_uint256t_uint256(headStart: U256, dataEnd: U256, context: &mut Context) -> YulOutput<(U256, U256, U256)> {
+        pub fn abi_decode_uint256t_uint256t_uint256(
+            headStart: U256,
+            dataEnd: U256,
+            context: &mut Context,
+        ) -> YulOutput<(U256, U256, U256)> {
             let mut value0 = U256::ZERO;
             let mut value1 = U256::ZERO;
             let mut value2 = U256::ZERO;
-            if slt(sub(dataEnd, headStart, context)?, U256::from(0x60u128), context)? != U256::ZERO {
-                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(context)?;
+            if slt(
+                sub(dataEnd, headStart, context)?,
+                U256::from(0x60u128),
+                context,
+            )? != U256::ZERO
+            {
+                revert_error_dbdddcbe895c83990c08b3492a0e83918d802a52331272ac6fdb6a7c4aea3b1b(
+                    context,
+                )?;
             }
-            value0 = abi_decode_uint256(add(headStart, U256::from(0x0u128), context)?, dataEnd, context)?;
-            value1 = abi_decode_uint256(add(headStart, U256::from(0x20u128), context)?, dataEnd, context)?;
-            value2 = abi_decode_uint256(add(headStart, U256::from(0x40u128), context)?, dataEnd, context)?;
+            value0 = abi_decode_uint256(
+                add(headStart, U256::from(0x0u128), context)?,
+                dataEnd,
+                context,
+            )?;
+            value1 = abi_decode_uint256(
+                add(headStart, U256::from(0x20u128), context)?,
+                dataEnd,
+                context,
+            )?;
+            value2 = abi_decode_uint256(
+                add(headStart, U256::from(0x40u128), context)?,
+                dataEnd,
+                context,
+            )?;
             Ok((value0, value1, value2))
         }
 
@@ -249,15 +462,27 @@ pub mod testopcodes_684 {
             Ok(cleaned)
         }
 
-        pub fn abi_encode_bytes32_to_bytes32(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_bytes32_to_bytes32(
+            value: U256,
+            pos: U256,
+            context: &mut Context,
+        ) -> YulOutput<()> {
             mstore(pos, cleanup_bytes32(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_bytes32(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_bytes32(
+            headStart: U256,
+            value0: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
-            abi_encode_bytes32_to_bytes32(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
+            abi_encode_bytes32_to_bytes32(
+                value0,
+                add(headStart, U256::from(0x0u128), context)?,
+                context,
+            )?;
             Ok(tail)
         }
 
@@ -284,21 +509,39 @@ pub mod testopcodes_684 {
             Ok(ret)
         }
 
-        pub fn convert_rational_by_to_uint16(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_by_to_uint16(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint16(identity(cleanup_rational_4660_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint16(
+                identity(cleanup_rational_4660_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn abi_encode_rational_by_to_uint16(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_rational_by_to_uint16(
+            value: U256,
+            pos: U256,
+            context: &mut Context,
+        ) -> YulOutput<()> {
             mstore(pos, convert_rational_by_to_uint16(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_rational_by(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_rational_by(
+            headStart: U256,
+            value0: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
-            abi_encode_rational_by_to_uint16(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
+            abi_encode_rational_by_to_uint16(
+                value0,
+                add(headStart, U256::from(0x0u128), context)?,
+                context,
+            )?;
             Ok(tail)
         }
 
@@ -308,22 +551,42 @@ pub mod testopcodes_684 {
             Ok(tail)
         }
 
-        pub fn abi_encode_tuple_int256(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_tuple_int256(
+            headStart: U256,
+            value0: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
-            abi_encode_int256(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
+            abi_encode_int256(
+                value0,
+                add(headStart, U256::from(0x0u128), context)?,
+                context,
+            )?;
             Ok(tail)
         }
 
-        pub fn abi_encode_uint256_to_uint256(value: U256, pos: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn abi_encode_uint256_to_uint256(
+            value: U256,
+            pos: U256,
+            context: &mut Context,
+        ) -> YulOutput<()> {
             mstore(pos, cleanup_uint256(value, context)?, context)?;
             Ok(())
         }
 
-        pub fn abi_encode_uint256(headStart: U256, value0: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn abi_encode_uint256(
+            headStart: U256,
+            value0: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut tail = U256::ZERO;
             tail = add(headStart, U256::from(0x20u128), context)?;
-            abi_encode_uint256_to_uint256(value0, add(headStart, U256::from(0x0u128), context)?, context)?;
+            abi_encode_uint256_to_uint256(
+                value0,
+                add(headStart, U256::from(0x0u128), context)?,
+                context,
+            )?;
             Ok(tail)
         }
 
@@ -341,7 +604,11 @@ pub mod testopcodes_684 {
         }
 
         pub fn panic_error_0x01(context: &mut Context) -> YulOutput<()> {
-            mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
+            mstore(
+                U256::from(0x0u128),
+                shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?,
+                context,
+            )?;
             mstore(U256::from(0x4u128), U256::from(0x1u128), context)?;
             revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
             Ok(())
@@ -360,7 +627,10 @@ pub mod testopcodes_684 {
             Ok(cleaned)
         }
 
-        pub fn cleanup_rational_115792089237316195423570985008687907853269984665640564039457584007913129639808_by(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_rational_115792089237316195423570985008687907853269984665640564039457584007913129639808_by(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
@@ -462,153 +732,297 @@ pub mod testopcodes_684 {
             Ok(cleaned)
         }
 
-        pub fn cleanup_t_rational_minus_by_1(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn cleanup_t_rational_minus_by_1(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut cleaned = U256::ZERO;
             cleaned = value;
             Ok(cleaned)
         }
 
-        pub fn convert_rational_0_by_1_to_int256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_0_by_1_to_int256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_int256(identity(cleanup_rational_0_by(value, context)?, context)?, context)?;
+            converted = cleanup_int256(
+                identity(cleanup_rational_0_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_0_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_0_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_0_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_0_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_115792089237316195423570985008687907853269984665640564039457584007913129639808_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_115792089237316195423570985008687907853269984665640564039457584007913129639808_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
             converted = cleanup_uint256(identity(cleanup_rational_115792089237316195423570985008687907853269984665640564039457584007913129639808_by(value, context)?, context)?, context)?;
             Ok(converted)
         }
 
-        pub fn convert_rational_127_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_127_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_t_rational_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_t_rational_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_128_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_128_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_128_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_128_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_18_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_18_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_t_rational_by_1(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_t_rational_by_1(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_1_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_1_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_1_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_1_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_2_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_2_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_2_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_2_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_32_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_32_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_by_1(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_by_1(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_3_by_1_to_int256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_3_by_1_to_int256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_int256(identity(cleanup_rational_3_by(value, context)?, context)?, context)?;
+            converted = cleanup_int256(
+                identity(cleanup_rational_3_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_3_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_3_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_3_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_3_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_4660_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_4660_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_4660_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_4660_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_4_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_4_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_7_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_7_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_7_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_7_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_8_by_1_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_8_by_1_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_8_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_8_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_by_to_int256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_by_to_int256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_int256(identity(cleanup_rational_2_by(value, context)?, context)?, context)?;
+            converted = cleanup_int256(
+                identity(cleanup_rational_2_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_by_to_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_by_to_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_63_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_63_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_minus_3_by_1_to_int256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_minus_3_by_1_to_int256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_int256(identity(cleanup_rational_minus_3_by(value, context)?, context)?, context)?;
+            converted = cleanup_int256(
+                identity(cleanup_rational_minus_3_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_minus_4_by_1_to_int256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_minus_4_by_1_to_int256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_int256(identity(cleanup_rational_minus_by_1(value, context)?, context)?, context)?;
+            converted = cleanup_int256(
+                identity(cleanup_rational_minus_by_1(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_minus_7_by_1_to_int256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_minus_7_by_1_to_int256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_int256(identity(cleanup_rational_minus_by(value, context)?, context)?, context)?;
+            converted = cleanup_int256(
+                identity(cleanup_rational_minus_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_rational_minus_by_to_int256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_rational_minus_by_to_int256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_int256(identity(cleanup_t_rational_minus_by(value, context)?, context)?, context)?;
+            converted = cleanup_int256(
+                identity(cleanup_t_rational_minus_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_t_rational_by_to_t_int256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_t_rational_by_to_t_int256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_int256(identity(cleanup_rational_1_by(value, context)?, context)?, context)?;
+            converted = cleanup_int256(
+                identity(cleanup_rational_1_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_t_rational_by_to_t_uint256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_t_rational_by_to_t_uint256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_uint256(identity(cleanup_rational_6_by(value, context)?, context)?, context)?;
+            converted = cleanup_uint256(
+                identity(cleanup_rational_6_by(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
-        pub fn convert_t_rational_minus_by_to_t_int256(value: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn convert_t_rational_minus_by_to_t_int256(
+            value: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut converted = U256::ZERO;
-            converted = cleanup_int256(identity(cleanup_t_rational_minus_by_1(value, context)?, context)?, context)?;
+            converted = cleanup_int256(
+                identity(cleanup_t_rational_minus_by_1(value, context)?, context)?,
+                context,
+            )?;
             Ok(converted)
         }
 
@@ -626,7 +1040,12 @@ pub mod testopcodes_684 {
             Ok(var_result)
         }
 
-        pub fn fun_testAddmod(var_x: U256, var_y: U256, var_z: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_testAddmod(
+            var_x: U256,
+            var_y: U256,
+            var_z: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut var_result = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var_result = zero_uint256;
@@ -716,7 +1135,11 @@ pub mod testopcodes_684 {
             let mut var_result = U256::ZERO;
             let zero_bytes32 = zero_value_for_split_bytes32(context)?;
             var_result = zero_bytes32;
-            var_result = keccak256(add(var_data_mpos, U256::from(0x20u128), context)?, mload(var_data_mpos, context)?, context)?;
+            var_result = keccak256(
+                add(var_data_mpos, U256::from(0x20u128), context)?,
+                mload(var_data_mpos, context)?,
+                context,
+            )?;
             Ok(var_result)
         }
 
@@ -762,7 +1185,12 @@ pub mod testopcodes_684 {
             Ok(var_result)
         }
 
-        pub fn fun_testMulmod(var_x: U256, var_y: U256, var_z: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_testMulmod(
+            var_x: U256,
+            var_y: U256,
+            var_z: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut var_result = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var_result = zero_uint256;
@@ -832,7 +1260,11 @@ pub mod testopcodes_684 {
             Ok(var_result)
         }
 
-        pub fn fun_testSignextend(var_x: U256, var_y: U256, context: &mut Context) -> YulOutput<U256> {
+        pub fn fun_testSignextend(
+            var_x: U256,
+            var_y: U256,
+            context: &mut Context,
+        ) -> YulOutput<U256> {
             let mut var_result = U256::ZERO;
             let zero_uint256 = zero_value_for_split_uint256(context)?;
             var_result = zero_uint256;
@@ -883,7 +1315,11 @@ pub mod testopcodes_684 {
             let _3 = convert_rational_2_by_1_to_uint256(expr_3, context)?;
             let expr_4 = fun_testAdd(_2, _3, context)?;
             let expr_5 = U256::from(0x3u128);
-            let expr_6 = eq(cleanup_uint256(expr_4, context)?, convert_rational_3_by_1_to_uint256(expr_5, context)?, context)?;
+            let expr_6 = eq(
+                cleanup_uint256(expr_4, context)?,
+                convert_rational_3_by_1_to_uint256(expr_5, context)?,
+                context,
+            )?;
             assert_helper(expr_6, context)?;
             let expr_7 = fun_testSub(_1, _1, context)?;
             let expr_8 = eq(cleanup_uint256(expr_7, context)?, _1, context)?;
@@ -893,32 +1329,61 @@ pub mod testopcodes_684 {
             assert_helper(expr_10, context)?;
             let _4 = convert_rational_3_by_1_to_uint256(expr_5, context)?;
             let expr_11 = fun_testMul(_3, _4, context)?;
-            let expr_12 = eq(cleanup_uint256(expr_11, context)?, convert_t_rational_by_to_t_uint256(U256::from(0x6u128), context)?, context)?;
+            let expr_12 = eq(
+                cleanup_uint256(expr_11, context)?,
+                convert_t_rational_by_to_t_uint256(U256::from(0x6u128), context)?,
+                context,
+            )?;
             assert_helper(expr_12, context)?;
             let _5 = convert_t_rational_by_to_t_uint256(U256::from(0x6u128), context)?;
             let expr_13 = fun_testDiv(_5, _3, context)?;
             let expr_14 = eq(cleanup_uint256(expr_13, context)?, _4, context)?;
             assert_helper(expr_14, context)?;
-            let _6 = convert_t_rational_minus_by_to_t_int256(not(U256::from(0x5u128), context)?, context)?;
+            let _6 = convert_t_rational_minus_by_to_t_int256(
+                not(U256::from(0x5u128), context)?,
+                context,
+            )?;
             let _7 = convert_rational_by_to_int256(expr_3, context)?;
             let expr_15 = fun_testSdiv(_6, _7, context)?;
-            let expr_16 = eq(cleanup_int256(expr_15, context)?, convert_rational_minus_3_by_1_to_int256(not(U256::from(0x2u128), context)?, context)?, context)?;
+            let expr_16 = eq(
+                cleanup_int256(expr_15, context)?,
+                convert_rational_minus_3_by_1_to_int256(
+                    not(U256::from(0x2u128), context)?,
+                    context,
+                )?,
+                context,
+            )?;
             assert_helper(expr_16, context)?;
             let _8 = convert_rational_7_by_1_to_uint256(U256::from(0x7u128), context)?;
             let expr_17 = fun_testMod(_8, _4, context)?;
             let expr_18 = eq(cleanup_uint256(expr_17, context)?, _2, context)?;
             assert_helper(expr_18, context)?;
-            let _9 = convert_rational_minus_7_by_1_to_int256(not(U256::from(0x6u128), context)?, context)?;
+            let _9 = convert_rational_minus_7_by_1_to_int256(
+                not(U256::from(0x6u128), context)?,
+                context,
+            )?;
             let _10 = convert_rational_3_by_1_to_int256(expr_5, context)?;
             let expr_19 = fun_testSmod(_9, _10, context)?;
             let expr_20 = not(U256::from(0x0u128), context)?;
-            let expr_21 = eq(cleanup_int256(expr_19, context)?, convert_rational_minus_by_to_int256(expr_20, context)?, context)?;
+            let expr_21 = eq(
+                cleanup_int256(expr_19, context)?,
+                convert_rational_minus_by_to_int256(expr_20, context)?,
+                context,
+            )?;
             assert_helper(expr_21, context)?;
             let expr_22 = fun_testExp(_3, _4, context)?;
-            let expr_23 = eq(cleanup_uint256(expr_22, context)?, convert_rational_8_by_1_to_uint256(U256::from(0x8u128), context)?, context)?;
+            let expr_23 = eq(
+                cleanup_uint256(expr_22, context)?,
+                convert_rational_8_by_1_to_uint256(U256::from(0x8u128), context)?,
+                context,
+            )?;
             assert_helper(expr_23, context)?;
             let expr_24 = fun_testNot(_1, context)?;
-            let expr_25 = eq(cleanup_uint256(expr_24, context)?, cleanup_uint256(expr_20, context)?, context)?;
+            let expr_25 = eq(
+                cleanup_uint256(expr_24, context)?,
+                cleanup_uint256(expr_20, context)?,
+                context,
+            )?;
             assert_helper(expr_25, context)?;
             let expr_26 = fun_testLt(_2, _3, context)?;
             let expr_27 = eq(cleanup_uint256(expr_26, context)?, _2, context)?;
@@ -956,13 +1421,20 @@ pub mod testopcodes_684 {
             let expr_46 = eq(cleanup_uint256(expr_45, context)?, _1, context)?;
             assert_helper(expr_46, context)?;
             let expr_47 = fun_testShl(_3, _2, context)?;
-            let expr_48 = eq(cleanup_uint256(expr_47, context)?, convert_rational_4_by_1_to_uint256(U256::from(0x4u128), context)?, context)?;
+            let expr_48 = eq(
+                cleanup_uint256(expr_47, context)?,
+                convert_rational_4_by_1_to_uint256(U256::from(0x4u128), context)?,
+                context,
+            )?;
             assert_helper(expr_48, context)?;
             let _15 = convert_rational_4_by_1_to_uint256(U256::from(0x4u128), context)?;
             let expr_49 = fun_testShr(_3, _15, context)?;
             let expr_50 = eq(cleanup_uint256(expr_49, context)?, _2, context)?;
             assert_helper(expr_50, context)?;
-            let _16 = convert_rational_minus_4_by_1_to_int256(not(U256::from(0x3u128), context)?, context)?;
+            let _16 = convert_rational_minus_4_by_1_to_int256(
+                not(U256::from(0x3u128), context)?,
+                context,
+            )?;
             let expr_51 = fun_testSar(_3, _16, context)?;
             let expr_52 = eq(cleanup_int256(expr_51, context)?, _11, context)?;
             assert_helper(expr_52, context)?;
@@ -991,8 +1463,16 @@ pub mod testopcodes_684 {
             let _22 = abi_encode_rational_by(_21, expr_44, context)?;
             mstore(expr_631_mpos, sub(_22, _21, context)?, context)?;
             finalize_allocation(expr_631_mpos, sub(_22, expr_631_mpos, context)?, context)?;
-            let expr_62 = keccak256(array_dataslot_bytes(expr_631_mpos, context)?, array_length_bytes(expr_631_mpos, context)?, context)?;
-            let expr_63 = eq(cleanup_bytes32(expr_61, context)?, cleanup_bytes32(expr_62, context)?, context)?;
+            let expr_62 = keccak256(
+                array_dataslot_bytes(expr_631_mpos, context)?,
+                array_length_bytes(expr_631_mpos, context)?,
+                context,
+            )?;
+            let expr_63 = eq(
+                cleanup_bytes32(expr_61, context)?,
+                cleanup_bytes32(expr_62, context)?,
+                context,
+            )?;
             assert_helper(expr_63, context)?;
             fun_testMstore(_1, _14, context)?;
             let expr_64 = fun_testMload(_1, context)?;
@@ -1014,14 +1494,18 @@ pub mod testopcodes_684 {
             Ok(())
         }
 
-        pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+            context: &mut Context,
+        ) -> YulOutput<()> {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
 
         pub fn external_fun_runTests(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
             abi_decode(U256::from(0x4u128), calldatasize(context)?, context)?;
             fun_runTests(context)?;
@@ -1033,9 +1517,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testAdd(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testAdd(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1045,9 +1532,15 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testAddmod(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1, param_2) = abi_decode_uint256t_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1, param_2) = abi_decode_uint256t_uint256t_uint256(
+                U256::from(0x4u128),
+                calldatasize(context)?,
+                context,
+            )?;
             let ret = fun_testAddmod(param, param_1, param_2, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1057,9 +1550,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testAnd(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testAnd(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1069,9 +1565,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testByte(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testByte(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1079,16 +1578,27 @@ pub mod testopcodes_684 {
             Ok(())
         }
 
-        pub fn fun_testCalldatacopy(var_t: U256, var_f: U256, var_s: U256, context: &mut Context) -> YulOutput<()> {
+        pub fn fun_testCalldatacopy(
+            var_t: U256,
+            var_f: U256,
+            var_s: U256,
+            context: &mut Context,
+        ) -> YulOutput<()> {
             calldatacopy(var_t, var_f, var_s, context)?;
             Ok(())
         }
 
         pub fn external_fun_testCalldatacopy(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1, param_2) = abi_decode_uint256t_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1, param_2) = abi_decode_uint256t_uint256t_uint256(
+                U256::from(0x4u128),
+                calldatasize(context)?,
+                context,
+            )?;
             fun_testCalldatacopy(param, param_1, param_2, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_tuple(memPos, context)?;
@@ -1106,9 +1616,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testCalldataload(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let param = abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let param =
+                abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testCalldataload(param, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1118,7 +1631,9 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testCalldatasize(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
             abi_decode(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testCalldatasize(context)?;
@@ -1130,9 +1645,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testDiv(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testDiv(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1142,9 +1660,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testEq(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testEq(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1154,9 +1675,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testExp(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testExp(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1166,7 +1690,9 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testGas(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
             abi_decode(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testGas(context)?;
@@ -1178,9 +1704,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testGt(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testGt(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1190,9 +1719,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testIszero(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let param = abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let param =
+                abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testIszero(param, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1202,7 +1734,9 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testKeccak256(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
             let param = abi_decode_bytes(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testKeccak256(param, context)?;
@@ -1214,9 +1748,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testLt(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testLt(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1226,9 +1763,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testMload(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let param = abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let param =
+                abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testMload(param, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1238,9 +1778,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testMod(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testMod(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1250,9 +1793,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testMstore(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             fun_testMstore(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_tuple(memPos, context)?;
@@ -1262,9 +1808,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testMstore8(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             fun_testMstore8(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_tuple(memPos, context)?;
@@ -1274,9 +1823,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testMul(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testMul(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1286,9 +1838,15 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testMulmod(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1, param_2) = abi_decode_uint256t_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1, param_2) = abi_decode_uint256t_uint256t_uint256(
+                U256::from(0x4u128),
+                calldatasize(context)?,
+                context,
+            )?;
             let ret = fun_testMulmod(param, param_1, param_2, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1298,9 +1856,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testNot(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let param = abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let param =
+                abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testNot(param, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1310,9 +1871,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testOr(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testOr(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1322,9 +1886,14 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testPop(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            pop(abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?, context)?;
+            pop(
+                abi_decode_tuple_uint256(U256::from(0x4u128), calldatasize(context)?, context)?,
+                context,
+            )?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_tuple(memPos, context)?;
             return_(memPos, sub(memEnd, memPos, context)?, context)?;
@@ -1333,9 +1902,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testSar(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testSar(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_tuple_int256(memPos, ret, context)?;
@@ -1345,9 +1917,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testSdiv(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_int256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_int256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testSdiv(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_tuple_int256(memPos, ret, context)?;
@@ -1357,9 +1932,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testSgt(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_int256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_int256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testSgt(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1369,9 +1947,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testShl(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testShl(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1381,9 +1962,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testShr(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testShr(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1393,9 +1977,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testSignextend(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testSignextend(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1405,9 +1992,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testSlt(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_int256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_int256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testSlt(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1417,9 +2007,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testSmod(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_int256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_int256t_int256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testSmod(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_tuple_int256(memPos, ret, context)?;
@@ -1429,9 +2022,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testSub(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testSub(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1441,9 +2037,12 @@ pub mod testopcodes_684 {
 
         pub fn external_fun_testXor(context: &mut Context) -> YulOutput<()> {
             if callvalue(context)? != U256::ZERO {
-                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(context)?;
+                revert_error_ca66f745a3ce8ff40e2ccaf1ad45db7774001b90d25810abd9040049be7bf4bb(
+                    context,
+                )?;
             }
-            let (param, param_1) = abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
+            let (param, param_1) =
+                abi_decode_uint256t_uint256(U256::from(0x4u128), calldatasize(context)?, context)?;
             let ret = fun_testXor(param, param_1, context)?;
             let memPos = allocate_unbounded(context)?;
             let memEnd = abi_encode_uint256(memPos, ret, context)?;
@@ -1451,7 +2050,9 @@ pub mod testopcodes_684 {
             Ok(())
         }
 
-        pub fn revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74(context: &mut Context) -> YulOutput<()> {
+        pub fn revert_error_42b3090547df1d2001c96683413b8cf91c1b902ef5e3cb8d9f6f304cf7446f74(
+            context: &mut Context,
+        ) -> YulOutput<()> {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             Ok(())
         }
@@ -1464,8 +2065,13 @@ pub mod testopcodes_684 {
 
         pub fn body(context: &mut Context) -> YulOutput<()> {
             mstore(U256::from(0x40u128), U256::from(0x80u128), context)?;
-            if iszero(lt(calldatasize(context)?, U256::from(0x4u128), context)?, context)? != U256::ZERO {
-                let selector = shift_right_unsigned(calldataload(U256::from(0x0u128), context)?, context)?;
+            if iszero(
+                lt(calldatasize(context)?, U256::from(0x4u128), context)?,
+                context,
+            )? != U256::ZERO
+            {
+                let selector =
+                    shift_right_unsigned(calldataload(U256::from(0x0u128), context)?, context)?;
                 // switch
                 let δ = selector;
                 if δ == U256::from(0x4037b50u128) {
@@ -1552,9 +2158,7 @@ fn main() {
         gas: U256::from(100 * 1000),
         calldata: vec![],
     };
-    let result = testopcodes_684::testopcodes_684_deployed::fun_runTests(
-        &mut context
-    );
+    let result = testopcodes_684::testopcodes_684_deployed::fun_runTests(&mut context);
     println!("result: {:#?}", result);
     // println!("context: {:#?}", context);
 }

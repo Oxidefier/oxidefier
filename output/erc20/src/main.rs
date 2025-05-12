@@ -15,7 +15,11 @@ pub mod erc20_403 {
         let mut sum = U256::ZERO;
         sum = add(x, U256::from(0x14u128), context)?;
         if gt(x, sum, context)? != U256::ZERO {
-            mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
+            mstore(
+                U256::from(0x0u128),
+                shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?,
+                context,
+            )?;
             mstore(U256::from(0x4u128), U256::from(0x11u128), context)?;
             revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
         }
@@ -29,25 +33,77 @@ pub mod erc20_403 {
             revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
         }
         if iszero(caller(context)?, context)? != U256::ZERO {
-            mstore(_1, shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?, context)?;
-            mstore(add(_1, U256::from(0x4u128), context)?, U256::from(0x20u128), context)?;
-            mstore(add(_1, U256::from(0x24u128), context)?, U256::from(0x1fu128), context)?;
-            mstore(add(_1, U256::from(0x44u128), context)?, from_hex("45726332303a206d696e7420746f20746865207a65726f206164647265737300"), context)?;
+            mstore(
+                _1,
+                shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?,
+                context,
+            )?;
+            mstore(
+                add(_1, U256::from(0x4u128), context)?,
+                U256::from(0x20u128),
+                context,
+            )?;
+            mstore(
+                add(_1, U256::from(0x24u128), context)?,
+                U256::from(0x1fu128),
+                context,
+            )?;
+            mstore(
+                add(_1, U256::from(0x44u128), context)?,
+                from_hex("45726332303a206d696e7420746f20746865207a65726f206164647265737300"),
+                context,
+            )?;
             revert(_1, U256::from(0x64u128), context)?;
         }
-        sstore(U256::from(0x2u128), checked_add_uint256(sload(U256::from(0x2u128), context)?, context)?, context)?;
+        sstore(
+            U256::from(0x2u128),
+            checked_add_uint256(sload(U256::from(0x2u128), context)?, context)?,
+            context,
+        )?;
         mstore(U256::from(0x0u128), caller(context)?, context)?;
         mstore(U256::from(0x20u128), U256::from(0x0u128), context)?;
-        let _2 = checked_add_uint256(sload(keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?, context)?, context)?;
+        let _2 = checked_add_uint256(
+            sload(
+                keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?,
+                context,
+            )?,
+            context,
+        )?;
         mstore(U256::from(0x0u128), caller(context)?, context)?;
         mstore(U256::from(0x20u128), U256::from(0x0u128), context)?;
-        sstore(keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?, _2, context)?;
+        sstore(
+            keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?,
+            _2,
+            context,
+        )?;
         let _3 = mload(U256::from(0x40u128), context)?;
         mstore(_3, U256::from(0x14u128), context)?;
-        log3(_3, U256::from(0x20u128), U256::from_be_slice(&[0xdd, 0xf2, 0x52, 0xad, 0x1b, 0xe2, 0xc8, 0x9b, 0x69, 0xc2, 0xb0, 0x68, 0xfc, 0x37, 0x8d, 0xaa, 0x95, 0x2b, 0xa7, 0xf1, 0x63, 0xc4, 0xa1, 0x16, 0x28, 0xf5, 0x5a, 0x4d, 0xf5, 0x23, 0xb3, 0xef]), U256::from(0x0u128), caller(context)?, context)?;
+        log3(
+            _3,
+            U256::from(0x20u128),
+            U256::from_be_slice(&[
+                0xdd, 0xf2, 0x52, 0xad, 0x1b, 0xe2, 0xc8, 0x9b, 0x69, 0xc2, 0xb0, 0x68, 0xfc, 0x37,
+                0x8d, 0xaa, 0x95, 0x2b, 0xa7, 0xf1, 0x63, 0xc4, 0xa1, 0x16, 0x28, 0xf5, 0x5a, 0x4d,
+                0xf5, 0x23, 0xb3, 0xef,
+            ]),
+            U256::from(0x0u128),
+            caller(context)?,
+            context,
+        )?;
         let _4 = mload(U256::from(0x40u128), context)?;
-        let _5 = datasize(from_hex("45726332305f3430335f6465706c6f7965640000000000000000000000000000"), context)?;
-        codecopy(_4, dataoffset(from_hex("45726332305f3430335f6465706c6f7965640000000000000000000000000000"), context)?, _5, context)?;
+        let _5 = datasize(
+            from_hex("45726332305f3430335f6465706c6f7965640000000000000000000000000000"),
+            context,
+        )?;
+        codecopy(
+            _4,
+            dataoffset(
+                from_hex("45726332305f3430335f6465706c6f7965640000000000000000000000000000"),
+                context,
+            )?,
+            _5,
+            context,
+        )?;
         return_(_4, _5, context)?;
         Ok(())
     }
@@ -59,7 +115,23 @@ pub mod erc20_403 {
         pub fn abi_decode_address(context: &mut Context) -> YulOutput<U256> {
             let mut value = U256::ZERO;
             value = calldataload(U256::from(0x4u128), context)?;
-            if iszero(eq(value, and(value, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, context)?, context)? != U256::ZERO {
+            if iszero(
+                eq(
+                    value,
+                    and(
+                        value,
+                        sub(
+                            shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                            U256::from(0x1u128),
+                            context,
+                        )?,
+                        context,
+                    )?,
+                    context,
+                )?,
+                context,
+            )? != U256::ZERO
+            {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(value)
@@ -68,7 +140,23 @@ pub mod erc20_403 {
         pub fn abi_decode_t_address(context: &mut Context) -> YulOutput<U256> {
             let mut value = U256::ZERO;
             value = calldataload(U256::from(0x24u128), context)?;
-            if iszero(eq(value, and(value, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, context)?, context)? != U256::ZERO {
+            if iszero(
+                eq(
+                    value,
+                    and(
+                        value,
+                        sub(
+                            shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                            U256::from(0x1u128),
+                            context,
+                        )?,
+                        context,
+                    )?,
+                    context,
+                )?,
+                context,
+            )? != U256::ZERO
+            {
                 revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
             }
             Ok(value)
@@ -78,7 +166,11 @@ pub mod erc20_403 {
             let mut sum = U256::ZERO;
             sum = add(x, y, context)?;
             if gt(x, sum, context)? != U256::ZERO {
-                mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
+                mstore(
+                    U256::from(0x0u128),
+                    shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?,
+                    context,
+                )?;
                 mstore(U256::from(0x4u128), U256::from(0x11u128), context)?;
                 revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
             }
@@ -89,32 +181,97 @@ pub mod erc20_403 {
             let mut diff = U256::ZERO;
             diff = sub(x, y, context)?;
             if gt(diff, x, context)? != U256::ZERO {
-                mstore(U256::from(0x0u128), shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?, context)?;
+                mstore(
+                    U256::from(0x0u128),
+                    shl(U256::from(0xe0u128), U256::from(0x4e487b71u128), context)?,
+                    context,
+                )?;
                 mstore(U256::from(0x4u128), U256::from(0x11u128), context)?;
                 revert(U256::from(0x0u128), U256::from(0x24u128), context)?;
             }
             Ok(diff)
         }
 
-        pub fn fun_approve(var_owner: U256, var_spender: U256, var_value: U256, context: &mut Context) -> YulOutput<()> {
-            let _1 = and(var_owner, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?;
+        pub fn fun_approve(
+            var_owner: U256,
+            var_spender: U256,
+            var_value: U256,
+            context: &mut Context,
+        ) -> YulOutput<()> {
+            let _1 = and(
+                var_owner,
+                sub(
+                    shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                    U256::from(0x1u128),
+                    context,
+                )?,
+                context,
+            )?;
             if iszero(_1, context)? != U256::ZERO {
                 let memPtr = mload(U256::from(0x40u128), context)?;
-                mstore(memPtr, shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?, context)?;
-                mstore(add(memPtr, U256::from(0x4u128), context)?, U256::from(0x20u128), context)?;
-                mstore(add(memPtr, U256::from(0x24u128), context)?, U256::from(0x24u128), context)?;
-                mstore(add(memPtr, U256::from(0x44u128), context)?, from_hex("45726332303a20617070726f76652066726f6d20746865207a65726f20616464"), context)?;
-                mstore(add(memPtr, U256::from(0x64u128), context)?, from_hex("7265737300000000000000000000000000000000000000000000000000000000"), context)?;
+                mstore(
+                    memPtr,
+                    shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?,
+                    context,
+                )?;
+                mstore(
+                    add(memPtr, U256::from(0x4u128), context)?,
+                    U256::from(0x20u128),
+                    context,
+                )?;
+                mstore(
+                    add(memPtr, U256::from(0x24u128), context)?,
+                    U256::from(0x24u128),
+                    context,
+                )?;
+                mstore(
+                    add(memPtr, U256::from(0x44u128), context)?,
+                    from_hex("45726332303a20617070726f76652066726f6d20746865207a65726f20616464"),
+                    context,
+                )?;
+                mstore(
+                    add(memPtr, U256::from(0x64u128), context)?,
+                    from_hex("7265737300000000000000000000000000000000000000000000000000000000"),
+                    context,
+                )?;
                 revert(memPtr, U256::from(0x84u128), context)?;
             }
-            let _2 = and(var_spender, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?;
+            let _2 = and(
+                var_spender,
+                sub(
+                    shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                    U256::from(0x1u128),
+                    context,
+                )?,
+                context,
+            )?;
             if iszero(_2, context)? != U256::ZERO {
                 let memPtr_1 = mload(U256::from(0x40u128), context)?;
-                mstore(memPtr_1, shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?, context)?;
-                mstore(add(memPtr_1, U256::from(0x4u128), context)?, U256::from(0x20u128), context)?;
-                mstore(add(memPtr_1, U256::from(0x24u128), context)?, U256::from(0x22u128), context)?;
-                mstore(add(memPtr_1, U256::from(0x44u128), context)?, from_hex("45726332303a20617070726f766520746f20746865207a65726f206164647265"), context)?;
-                mstore(add(memPtr_1, U256::from(0x64u128), context)?, from_hex("7373000000000000000000000000000000000000000000000000000000000000"), context)?;
+                mstore(
+                    memPtr_1,
+                    shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?,
+                    context,
+                )?;
+                mstore(
+                    add(memPtr_1, U256::from(0x4u128), context)?,
+                    U256::from(0x20u128),
+                    context,
+                )?;
+                mstore(
+                    add(memPtr_1, U256::from(0x24u128), context)?,
+                    U256::from(0x22u128),
+                    context,
+                )?;
+                mstore(
+                    add(memPtr_1, U256::from(0x44u128), context)?,
+                    from_hex("45726332303a20617070726f766520746f20746865207a65726f206164647265"),
+                    context,
+                )?;
+                mstore(
+                    add(memPtr_1, U256::from(0x64u128), context)?,
+                    from_hex("7373000000000000000000000000000000000000000000000000000000000000"),
+                    context,
+                )?;
                 revert(memPtr_1, U256::from(0x84u128), context)?;
             }
             mstore(U256::from(0x0u128), _1, context)?;
@@ -127,54 +284,165 @@ pub mod erc20_403 {
             sstore(dataSlot_1, var_value, context)?;
             let _3 = mload(U256::from(0x40u128), context)?;
             mstore(_3, var_value, context)?;
-            log3(_3, U256::from(0x20u128), U256::from_be_slice(&[0x8c, 0x5b, 0xe1, 0xe5, 0xeb, 0xec, 0x7d, 0x5b, 0xd1, 0x4f, 0x71, 0x42, 0x7d, 0x1e, 0x84, 0xf3, 0xdd, 0x03, 0x14, 0xc0, 0xf7, 0xb2, 0x29, 0x1e, 0x5b, 0x20, 0x0a, 0xc8, 0xc7, 0xc3, 0xb9, 0x25]), _1, _2, context)?;
+            log3(
+                _3,
+                U256::from(0x20u128),
+                U256::from_be_slice(&[
+                    0x8c, 0x5b, 0xe1, 0xe5, 0xeb, 0xec, 0x7d, 0x5b, 0xd1, 0x4f, 0x71, 0x42, 0x7d,
+                    0x1e, 0x84, 0xf3, 0xdd, 0x03, 0x14, 0xc0, 0xf7, 0xb2, 0x29, 0x1e, 0x5b, 0x20,
+                    0x0a, 0xc8, 0xc7, 0xc3, 0xb9, 0x25,
+                ]),
+                _1,
+                _2,
+                context,
+            )?;
             Ok(())
         }
 
-        pub fn fun_transfer(var_from: U256, var_to: U256, var_value: U256, context: &mut Context) -> YulOutput<()> {
-            let _1 = and(var_to, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?;
+        pub fn fun_transfer(
+            var_from: U256,
+            var_to: U256,
+            var_value: U256,
+            context: &mut Context,
+        ) -> YulOutput<()> {
+            let _1 = and(
+                var_to,
+                sub(
+                    shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                    U256::from(0x1u128),
+                    context,
+                )?,
+                context,
+            )?;
             if iszero(_1, context)? != U256::ZERO {
                 let memPtr = mload(U256::from(0x40u128), context)?;
-                mstore(memPtr, shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?, context)?;
-                mstore(add(memPtr, U256::from(0x4u128), context)?, U256::from(0x20u128), context)?;
-                mstore(add(memPtr, U256::from(0x24u128), context)?, U256::from(0x23u128), context)?;
-                mstore(add(memPtr, U256::from(0x44u128), context)?, from_hex("45726332303a207472616e7366657220746f20746865207a65726f2061646472"), context)?;
-                mstore(add(memPtr, U256::from(0x64u128), context)?, from_hex("6573730000000000000000000000000000000000000000000000000000000000"), context)?;
+                mstore(
+                    memPtr,
+                    shl(U256::from(0xe5u128), U256::from(0x461bcdu128), context)?,
+                    context,
+                )?;
+                mstore(
+                    add(memPtr, U256::from(0x4u128), context)?,
+                    U256::from(0x20u128),
+                    context,
+                )?;
+                mstore(
+                    add(memPtr, U256::from(0x24u128), context)?,
+                    U256::from(0x23u128),
+                    context,
+                )?;
+                mstore(
+                    add(memPtr, U256::from(0x44u128), context)?,
+                    from_hex("45726332303a207472616e7366657220746f20746865207a65726f2061646472"),
+                    context,
+                )?;
+                mstore(
+                    add(memPtr, U256::from(0x64u128), context)?,
+                    from_hex("6573730000000000000000000000000000000000000000000000000000000000"),
+                    context,
+                )?;
                 revert(memPtr, U256::from(0x84u128), context)?;
             }
-            let _2 = and(var_from, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?;
+            let _2 = and(
+                var_from,
+                sub(
+                    shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                    U256::from(0x1u128),
+                    context,
+                )?,
+                context,
+            )?;
             mstore(U256::from(0x0u128), _2, context)?;
             mstore(U256::from(0x20u128), U256::from(0x0u128), context)?;
-            let _3 = checked_sub_uint256(sload(keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?, context)?, var_value, context)?;
+            let _3 = checked_sub_uint256(
+                sload(
+                    keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?,
+                    context,
+                )?,
+                var_value,
+                context,
+            )?;
             mstore(U256::from(0x0u128), _2, context)?;
             mstore(U256::from(0x20u128), U256::from(0x0u128), context)?;
-            sstore(keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?, _3, context)?;
+            sstore(
+                keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?,
+                _3,
+                context,
+            )?;
             mstore(U256::from(0x0u128), _1, context)?;
             mstore(U256::from(0x20u128), U256::from(0x0u128), context)?;
-            let _4 = checked_add_uint256(sload(keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?, context)?, var_value, context)?;
+            let _4 = checked_add_uint256(
+                sload(
+                    keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?,
+                    context,
+                )?,
+                var_value,
+                context,
+            )?;
             mstore(U256::from(0x0u128), _1, context)?;
             mstore(U256::from(0x20u128), U256::from(0x0u128), context)?;
-            sstore(keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?, _4, context)?;
+            sstore(
+                keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?,
+                _4,
+                context,
+            )?;
             let _5 = mload(U256::from(0x40u128), context)?;
             mstore(_5, var_value, context)?;
-            log3(_5, U256::from(0x20u128), U256::from_be_slice(&[0xdd, 0xf2, 0x52, 0xad, 0x1b, 0xe2, 0xc8, 0x9b, 0x69, 0xc2, 0xb0, 0x68, 0xfc, 0x37, 0x8d, 0xaa, 0x95, 0x2b, 0xa7, 0xf1, 0x63, 0xc4, 0xa1, 0x16, 0x28, 0xf5, 0x5a, 0x4d, 0xf5, 0x23, 0xb3, 0xef]), _2, _1, context)?;
+            log3(
+                _5,
+                U256::from(0x20u128),
+                U256::from_be_slice(&[
+                    0xdd, 0xf2, 0x52, 0xad, 0x1b, 0xe2, 0xc8, 0x9b, 0x69, 0xc2, 0xb0, 0x68, 0xfc,
+                    0x37, 0x8d, 0xaa, 0x95, 0x2b, 0xa7, 0xf1, 0x63, 0xc4, 0xa1, 0x16, 0x28, 0xf5,
+                    0x5a, 0x4d, 0xf5, 0x23, 0xb3, 0xef,
+                ]),
+                _2,
+                _1,
+                context,
+            )?;
             Ok(())
         }
 
         pub fn body(context: &mut Context) -> YulOutput<()> {
-            mstore(U256::from(0x40u128), memoryguard(U256::from(0x80u128), context)?, context)?;
-            if iszero(lt(calldatasize(context)?, U256::from(0x4u128), context)?, context)? != U256::ZERO {
+            mstore(
+                U256::from(0x40u128),
+                memoryguard(U256::from(0x80u128), context)?,
+                context,
+            )?;
+            if iszero(
+                lt(calldatasize(context)?, U256::from(0x4u128), context)?,
+                context,
+            )? != U256::ZERO
+            {
                 // switch
-                let δ = shr(U256::from(0xe0u128), calldataload(U256::from(0x0u128), context)?, context)?;
+                let δ = shr(
+                    U256::from(0xe0u128),
+                    calldataload(U256::from(0x0u128), context)?,
+                    context,
+                )?;
                 if δ == U256::from(0x95ea7b3u128) {
                     if callvalue(context)? != U256::ZERO {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
-                    if slt(add(calldatasize(context)?, not(U256::from(0x3u128), context)?, context)?, U256::from(0x40u128), context)? != U256::ZERO {
+                    if slt(
+                        add(
+                            calldatasize(context)?,
+                            not(U256::from(0x3u128), context)?,
+                            context,
+                        )?,
+                        U256::from(0x40u128),
+                        context,
+                    )? != U256::ZERO
+                    {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
                     let value0 = abi_decode_address(context)?;
-                    fun_approve(caller(context)?, value0, calldataload(U256::from(0x24u128), context)?, context)?;
+                    fun_approve(
+                        caller(context)?,
+                        value0,
+                        calldataload(U256::from(0x24u128), context)?,
+                        context,
+                    )?;
                     let memPos = mload(U256::from(0x40u128), context)?;
                     mstore(memPos, U256::from(0x1u128), context)?;
                     return_(memPos, U256::from(0x20u128), context)?;
@@ -182,7 +450,16 @@ pub mod erc20_403 {
                     if callvalue(context)? != U256::ZERO {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
-                    if slt(add(calldatasize(context)?, not(U256::from(0x3u128), context)?, context)?, U256::from(0x0u128), context)? != U256::ZERO {
+                    if slt(
+                        add(
+                            calldatasize(context)?,
+                            not(U256::from(0x3u128), context)?,
+                            context,
+                        )?,
+                        U256::from(0x0u128),
+                        context,
+                    )? != U256::ZERO
+                    {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
                     let _1 = sload(U256::from(0x2u128), context)?;
@@ -193,21 +470,59 @@ pub mod erc20_403 {
                     if callvalue(context)? != U256::ZERO {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
-                    if slt(add(calldatasize(context)?, not(U256::from(0x3u128), context)?, context)?, U256::from(0x60u128), context)? != U256::ZERO {
+                    if slt(
+                        add(
+                            calldatasize(context)?,
+                            not(U256::from(0x3u128), context)?,
+                            context,
+                        )?,
+                        U256::from(0x60u128),
+                        context,
+                    )? != U256::ZERO
+                    {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
                     let value0_1 = abi_decode_address(context)?;
                     let value1 = abi_decode_t_address(context)?;
                     let value = calldataload(U256::from(0x44u128), context)?;
                     fun_transfer(value0_1, value1, value, context)?;
-                    mstore(U256::from(0x0u128), and(value0_1, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, context)?;
+                    mstore(
+                        U256::from(0x0u128),
+                        and(
+                            value0_1,
+                            sub(
+                                shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                                U256::from(0x1u128),
+                                context,
+                            )?,
+                            context,
+                        )?,
+                        context,
+                    )?;
                     mstore(U256::from(0x20u128), U256::from(0x1u128), context)?;
                     let dataSlot = keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?;
                     let mut dataSlot_1 = U256::from(0x0u128);
-                    mstore(U256::from(0x0u128), and(caller(context)?, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, context)?;
+                    mstore(
+                        U256::from(0x0u128),
+                        and(
+                            caller(context)?,
+                            sub(
+                                shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                                U256::from(0x1u128),
+                                context,
+                            )?,
+                            context,
+                        )?,
+                        context,
+                    )?;
                     mstore(U256::from(0x20u128), dataSlot, context)?;
                     dataSlot_1 = keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?;
-                    fun_approve(value0_1, caller(context)?, checked_sub_uint256(sload(dataSlot_1, context)?, value, context)?, context)?;
+                    fun_approve(
+                        value0_1,
+                        caller(context)?,
+                        checked_sub_uint256(sload(dataSlot_1, context)?, value, context)?,
+                        context,
+                    )?;
                     let memPos_2 = mload(U256::from(0x40u128), context)?;
                     mstore(memPos_2, U256::from(0x1u128), context)?;
                     return_(memPos_2, U256::from(0x20u128), context)?;
@@ -215,7 +530,16 @@ pub mod erc20_403 {
                     if callvalue(context)? != U256::ZERO {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
-                    if slt(add(calldatasize(context)?, not(U256::from(0x3u128), context)?, context)?, U256::from(0x40u128), context)? != U256::ZERO {
+                    if slt(
+                        add(
+                            calldatasize(context)?,
+                            not(U256::from(0x3u128), context)?,
+                            context,
+                        )?,
+                        U256::from(0x40u128),
+                        context,
+                    )? != U256::ZERO
+                    {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
                     let value0_2 = abi_decode_address(context)?;
@@ -223,10 +547,31 @@ pub mod erc20_403 {
                     mstore(U256::from(0x20u128), U256::from(0x1u128), context)?;
                     let dataSlot_2 = keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?;
                     let mut dataSlot_3 = U256::from(0x0u128);
-                    mstore(U256::from(0x0u128), and(value0_2, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, context)?;
+                    mstore(
+                        U256::from(0x0u128),
+                        and(
+                            value0_2,
+                            sub(
+                                shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                                U256::from(0x1u128),
+                                context,
+                            )?,
+                            context,
+                        )?,
+                        context,
+                    )?;
                     mstore(U256::from(0x20u128), dataSlot_2, context)?;
                     dataSlot_3 = keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?;
-                    fun_approve(caller(context)?, value0_2, checked_add_uint256(sload(dataSlot_3, context)?, calldataload(U256::from(0x24u128), context)?, context)?, context)?;
+                    fun_approve(
+                        caller(context)?,
+                        value0_2,
+                        checked_add_uint256(
+                            sload(dataSlot_3, context)?,
+                            calldataload(U256::from(0x24u128), context)?,
+                            context,
+                        )?,
+                        context,
+                    )?;
                     let memPos_3 = mload(U256::from(0x40u128), context)?;
                     mstore(memPos_3, U256::from(0x1u128), context)?;
                     return_(memPos_3, U256::from(0x20u128), context)?;
@@ -234,12 +579,36 @@ pub mod erc20_403 {
                     if callvalue(context)? != U256::ZERO {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
-                    if slt(add(calldatasize(context)?, not(U256::from(0x3u128), context)?, context)?, U256::from(0x20u128), context)? != U256::ZERO {
+                    if slt(
+                        add(
+                            calldatasize(context)?,
+                            not(U256::from(0x3u128), context)?,
+                            context,
+                        )?,
+                        U256::from(0x20u128),
+                        context,
+                    )? != U256::ZERO
+                    {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
-                    mstore(U256::from(0x0u128), and(abi_decode_address(context)?, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, context)?;
+                    mstore(
+                        U256::from(0x0u128),
+                        and(
+                            abi_decode_address(context)?,
+                            sub(
+                                shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                                U256::from(0x1u128),
+                                context,
+                            )?,
+                            context,
+                        )?,
+                        context,
+                    )?;
                     mstore(U256::from(0x20u128), U256::from(0x0u128), context)?;
-                    let _2 = sload(keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?, context)?;
+                    let _2 = sload(
+                        keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?,
+                        context,
+                    )?;
                     let memPos_4 = mload(U256::from(0x40u128), context)?;
                     mstore(memPos_4, _2, context)?;
                     return_(memPos_4, U256::from(0x20u128), context)?;
@@ -247,7 +616,16 @@ pub mod erc20_403 {
                     if callvalue(context)? != U256::ZERO {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
-                    if slt(add(calldatasize(context)?, not(U256::from(0x3u128), context)?, context)?, U256::from(0x40u128), context)? != U256::ZERO {
+                    if slt(
+                        add(
+                            calldatasize(context)?,
+                            not(U256::from(0x3u128), context)?,
+                            context,
+                        )?,
+                        U256::from(0x40u128),
+                        context,
+                    )? != U256::ZERO
+                    {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
                     let value0_3 = abi_decode_address(context)?;
@@ -255,10 +633,31 @@ pub mod erc20_403 {
                     mstore(U256::from(0x20u128), U256::from(0x1u128), context)?;
                     let dataSlot_4 = keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?;
                     let mut dataSlot_5 = U256::from(0x0u128);
-                    mstore(U256::from(0x0u128), and(value0_3, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, context)?;
+                    mstore(
+                        U256::from(0x0u128),
+                        and(
+                            value0_3,
+                            sub(
+                                shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                                U256::from(0x1u128),
+                                context,
+                            )?,
+                            context,
+                        )?,
+                        context,
+                    )?;
                     mstore(U256::from(0x20u128), dataSlot_4, context)?;
                     dataSlot_5 = keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?;
-                    fun_approve(caller(context)?, value0_3, checked_sub_uint256(sload(dataSlot_5, context)?, calldataload(U256::from(0x24u128), context)?, context)?, context)?;
+                    fun_approve(
+                        caller(context)?,
+                        value0_3,
+                        checked_sub_uint256(
+                            sload(dataSlot_5, context)?,
+                            calldataload(U256::from(0x24u128), context)?,
+                            context,
+                        )?,
+                        context,
+                    )?;
                     let memPos_5 = mload(U256::from(0x40u128), context)?;
                     mstore(memPos_5, U256::from(0x1u128), context)?;
                     return_(memPos_5, U256::from(0x20u128), context)?;
@@ -266,11 +665,25 @@ pub mod erc20_403 {
                     if callvalue(context)? != U256::ZERO {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
-                    if slt(add(calldatasize(context)?, not(U256::from(0x3u128), context)?, context)?, U256::from(0x40u128), context)? != U256::ZERO {
+                    if slt(
+                        add(
+                            calldatasize(context)?,
+                            not(U256::from(0x3u128), context)?,
+                            context,
+                        )?,
+                        U256::from(0x40u128),
+                        context,
+                    )? != U256::ZERO
+                    {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
                     let value0_4 = abi_decode_address(context)?;
-                    fun_transfer(caller(context)?, value0_4, calldataload(U256::from(0x24u128), context)?, context)?;
+                    fun_transfer(
+                        caller(context)?,
+                        value0_4,
+                        calldataload(U256::from(0x24u128), context)?,
+                        context,
+                    )?;
                     let memPos_6 = mload(U256::from(0x40u128), context)?;
                     mstore(memPos_6, U256::from(0x1u128), context)?;
                     return_(memPos_6, U256::from(0x20u128), context)?;
@@ -278,16 +691,49 @@ pub mod erc20_403 {
                     if callvalue(context)? != U256::ZERO {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
-                    if slt(add(calldatasize(context)?, not(U256::from(0x3u128), context)?, context)?, U256::from(0x40u128), context)? != U256::ZERO {
+                    if slt(
+                        add(
+                            calldatasize(context)?,
+                            not(U256::from(0x3u128), context)?,
+                            context,
+                        )?,
+                        U256::from(0x40u128),
+                        context,
+                    )? != U256::ZERO
+                    {
                         revert(U256::from(0x0u128), U256::from(0x0u128), context)?;
                     }
                     let value0_5 = abi_decode_address(context)?;
                     let value1_1 = abi_decode_t_address(context)?;
-                    mstore(U256::from(0x0u128), and(value0_5, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, context)?;
+                    mstore(
+                        U256::from(0x0u128),
+                        and(
+                            value0_5,
+                            sub(
+                                shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                                U256::from(0x1u128),
+                                context,
+                            )?,
+                            context,
+                        )?,
+                        context,
+                    )?;
                     mstore(U256::from(0x20u128), U256::from(0x1u128), context)?;
                     let dataSlot_6 = keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?;
                     let mut dataSlot_7 = U256::from(0x0u128);
-                    mstore(U256::from(0x0u128), and(value1_1, sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?, context)?, context)?;
+                    mstore(
+                        U256::from(0x0u128),
+                        and(
+                            value1_1,
+                            sub(
+                                shl(U256::from(0xa0u128), U256::from(0x1u128), context)?,
+                                U256::from(0x1u128),
+                                context,
+                            )?,
+                            context,
+                        )?,
+                        context,
+                    )?;
                     mstore(U256::from(0x20u128), dataSlot_6, context)?;
                     dataSlot_7 = keccak256(U256::from(0x0u128), U256::from(0x40u128), context)?;
                     let _3 = sload(dataSlot_7, context)?;
@@ -308,9 +754,7 @@ fn main() {
         gas: U256::from(100 * 1000),
         calldata: vec![],
     };
-    let result = erc20_403::erc20_403_deployed::fun_runTests(
-        &mut context
-    );
+    let result = erc20_403::erc20_403_deployed::fun_runTests(&mut context);
     println!("result: {:#?}", result);
     // println!("context: {:#?}", context);
 }

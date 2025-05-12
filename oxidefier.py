@@ -1,6 +1,7 @@
 from collections import defaultdict
 import json
 from pathlib import Path
+import re
 import sys
 from typing import Union
 
@@ -276,12 +277,15 @@ def function_definition_to_rust(node) -> str:
             name + ": U256"
             for name in param_names
         ] +
-        ["context: &mut Context"]
+        ["context: &mut Context<CI>"]
     )
 
     return \
-        f"pub fn {name}({params}) -> YulOutput<" + \
-        function_result_type(len(returnVariables)) + "> {\n" + \
+        f"pub fn {name}<CI>({params}) -> YulOutput<" + \
+        function_result_type(len(returnVariables)) + ">\n" + \
+        "where\n" + \
+        indent("Context<CI>: ContractInteractions,\n") + \
+        "{\n" + \
         indent(
             "".join(
                 "let " +
@@ -388,7 +392,10 @@ def top_level_to_rust(node) -> str:
             if function.get('nodeType') == 'YulFunctionDefinition'
         ]
         body = \
-            "pub fn body(context: &mut Context) -> YulOutput<()> {\n" + \
+            "pub fn body<CI: ContractInteractions>(context: &mut Context<CI>) -> YulOutput<()>\n" + \
+            "where\n" + \
+            indent("Context<CI>: ContractInteractions,\n") + \
+            "{\n" + \
             indent(
                 block_to_rust(None, node)[0] + "\n" + \
                 "Ok(())"
@@ -403,8 +410,11 @@ def object_to_rust(node) -> str:
     node_type = node.get('nodeType')
 
     if node_type == 'YulObject':
+        # The names end with a generated number, we remove it
+        name = re.sub(r'_[0-9]+$', '', node['name']).lower()
+        name = re.sub(r'_[0-9]+_deployed$', '_deployed', name)
         return \
-            "pub mod " + node['name'].lower() + " {\n" + \
+            "pub mod " + name + " {\n" + \
             indent(
                 "use alloy_primitives::U256;" + "\n" + \
                 "use evm_opcodes::*;" + "\n" + \
@@ -452,22 +462,33 @@ use evm_opcodes::*;
 
 """
     rust_file += rust_code
-    rust_file += f"""
+    rust_file += """
 
-fn main() {{
-    let context = Context {{
+fn main() {
+    let mut context = Context {
+        contract_interactions: std::marker::PhantomData::<DummyContractInteractions>,
         memory: Memory::new(),
         immutables: std::collections::HashMap::new(),
+        address: U256::from(123),
+        caller: U256::from(124),
+        callvalue: U256::from(12),
         gas: U256::from(100 * 1000),
         timestamp: U256::from(1000 * 1000),
         calldata: vec![],
-    }};
-    // let result = {first_object_name}::{first_object_name}_deployed::fun_runTests(
-    //     &mut context
-    // );
-    // println!("result: {{:#?}}", result);
-    // println!("context: {{:#?}}", context);
-}}
+        chain_id: U256::from(123456),
+    };
+
+    let result = morpho::morpho_deployed::fun_withdraw(
+        U256::from(0),
+        U256::from(1),
+        U256::from(2),
+        U256::from(3),
+        U256::from(4),
+        &mut context,
+    );
+    println!("result: {:#?}", result);
+    println!("context: {:#?}", context);
+}
 """
 
     output_path = Path("output") / contract_name
