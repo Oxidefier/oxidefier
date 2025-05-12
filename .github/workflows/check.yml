@@ -34,6 +34,7 @@ jobs:
       run: |
         # erc20
         cd third-parties/openzeppelin-contracts/contracts
+        sed -i "s/abstract contract ERC20/contract ERC20/" token/ERC20/ERC20.sol
         solc --base-path . --include-path node_modules/ token/ERC20/ERC20.sol --ir-optimized-ast-json --optimize --yul-optimizations hg --overwrite --output-dir yul-json
         cp yul-json/ERC20_opt_yul_ast.json ../../../contracts/erc20/contract.json
         cd ../../..
@@ -77,6 +78,7 @@ jobs:
       run: |
         for dir in contracts/*; do
           echo "Translating $dir"
+          echo python oxidefier.py $dir/contract.json ${dir##*/}
           python oxidefier.py $dir/contract.json ${dir##*/}
           echo
         done

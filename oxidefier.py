@@ -444,7 +444,7 @@ def file_to_rust(contract_name: str, file_path: Path):
         data = json.load(file)
 
     if data is None:
-        return False
+        raise ValueError("The file is empty")
 
     rust_code = object_to_rust(data)
     first_object_name = data['name'].lower()
