@@ -1,6 +1,7 @@
 from collections import defaultdict
 import json
 from pathlib import Path
+import re
 import sys
 from typing import Union
 
@@ -73,16 +74,12 @@ def block_to_rust(
             if node.get('nodeType') == 'YulFunctionDefinition':
                 continue
 
-            statement, new_mutated_variables = statement_to_rust(node, mutated_variables)
+            statement, new_mutated_variables = \
+                statement_to_rust(node, return_variables, mutated_variables)
             statements += [statement]
             mutated_variables.update(new_mutated_variables)
 
-        if return_variables is not None:
-            suffix = [variable_names_to_rust(return_variables)]
-        else:
-            suffix = []
-
-        return "\n".join(list(reversed(statements)) + suffix), mutated_variables
+        return "\n".join(reversed(statements)), mutated_variables
 
     return f"// Unsupported block node type: {node_type}", set()
 
@@ -93,11 +90,15 @@ def is_pre_empty_block(node) -> bool:
 
 # Returns the translation of the statement and the list of variables that are
 # mutated by the statement.
-def statement_to_rust(node, next_mutated_variables: set[str]) -> tuple[str, set[str]]:
+def statement_to_rust(
+    node,
+    return_variables: Union[None, list],
+    next_mutated_variables: set[str],
+) -> tuple[str, set[str]]:
     node_type = node.get('nodeType')
 
     if node_type == 'YulBlock':
-        return block_to_rust(None, node)
+        return block_to_rust(return_variables, node)
 
     elif node_type == 'YulFunctionDefinition':
         # We ignore this case because we only handle top-level function definitions
@@ -130,7 +131,7 @@ def statement_to_rust(node, next_mutated_variables: set[str]) -> tuple[str, set[
 
     elif node_type == 'YulIf':
         condition = expression_to_rust(node.get('condition'))
-        then_body, mutated_variables = block_to_rust(None, node.get('body'))
+        then_body, mutated_variables = block_to_rust(return_variables, node.get('body'))
         return (
             "if " + condition + " != U256::ZERO {\n" + \
             indent(then_body) + "\n" + \
@@ -143,7 +144,7 @@ def statement_to_rust(node, next_mutated_variables: set[str]) -> tuple[str, set[
         cases = [
             (
                 expression_to_rust(case.get('value')),
-                block_to_rust(None, case.get('body')),
+                block_to_rust(return_variables, case.get('body')),
             )
             for case in node.get('cases', [])
             # TODO: handle the default case in a switch
@@ -173,7 +174,9 @@ def statement_to_rust(node, next_mutated_variables: set[str]) -> tuple[str, set[
         return "continue;", set()
 
     elif node_type == 'YulLeave':
-        return "return;", set()
+        if return_variables is None:
+            return "return;", set()
+        return "return Ok(" + variable_names_to_rust(return_variables) + ");", set()
 
     elif node_type == 'YulForLoop':
         if not is_pre_empty_block(node.get('pre')):
@@ -190,11 +193,11 @@ def statement_to_rust(node, next_mutated_variables: set[str]) -> tuple[str, set[
                         'post': node.get('post'),
                         'body': node.get('body'),
                     }]
-            }, next_mutated_variables)
+            }, return_variables, next_mutated_variables)
 
         condition = expression_to_rust(node.get('condition'))
-        post, post_mutated_variables = block_to_rust(None, node.get('post'))
-        body, body_mutated_variables = block_to_rust(None, node.get('body'))
+        post, post_mutated_variables = block_to_rust(return_variables, node.get('post'))
+        body, body_mutated_variables = block_to_rust(return_variables, node.get('body'))
 
         return (
             "// for loop\n" + \
@@ -262,7 +265,8 @@ def function_result_type(arity: int) -> str:
 
 def function_definition_to_rust(node) -> str:
     name = variable_name_to_rust(node)
-    body, mutated_variables = block_to_rust(None, node.get('body'))
+    returnVariables = node.get('returnVariables', [])
+    body, mutated_variables = block_to_rust(returnVariables, node.get('body'))
     param_names: list[str] = [
         variable_name_to_rust(param)
         for param in node.get('parameters', [])
@@ -273,12 +277,15 @@ def function_definition_to_rust(node) -> str:
             name + ": U256"
             for name in param_names
         ] +
-        ["context: &mut Context"]
+        ["context: &mut Context<CI>"]
     )
-    returnVariables = node.get('returnVariables', [])
+
     return \
-        f"pub fn {name}({params}) -> YulOutput<" + \
-        function_result_type(len(returnVariables)) + "> {\n" + \
+        f"pub fn {name}<CI>({params}) -> YulOutput<" + \
+        function_result_type(len(returnVariables)) + ">\n" + \
+        "where\n" + \
+        indent("Context<CI>: ContractInteractions,\n") + \
+        "{\n" + \
         indent(
             "".join(
                 "let " +
@@ -385,7 +392,10 @@ def top_level_to_rust(node) -> str:
             if function.get('nodeType') == 'YulFunctionDefinition'
         ]
         body = \
-            "pub fn body(context: &mut Context) -> YulOutput<()> {\n" + \
+            "pub fn body<CI>(context: &mut Context<CI>) -> YulOutput<()>\n" + \
+            "where\n" + \
+            indent("Context<CI>: ContractInteractions,\n") + \
+            "{\n" + \
             indent(
                 block_to_rust(None, node)[0] + "\n" + \
                 "Ok(())"
@@ -400,8 +410,11 @@ def object_to_rust(node) -> str:
     node_type = node.get('nodeType')
 
     if node_type == 'YulObject':
+        # The names end with a generated number, we remove it
+        name = re.sub(r'_[0-9]+$', '', node['name']).lower()
+        name = re.sub(r'_[0-9]+_deployed$', '_deployed', name)
         return \
-            "pub mod " + node['name'].lower() + " {\n" + \
+            "pub mod " + name + " {\n" + \
             indent(
                 "use alloy_primitives::U256;" + "\n" + \
                 "use evm_opcodes::*;" + "\n" + \
@@ -425,41 +438,68 @@ def object_to_rust(node) -> str:
     return f"// Unsupported object node type: {node_type}"
 
 
-def main():
-    """python scripts/shallow_embed.py <path_to_yul_json_file> <contract_name>"""
-    with open(sys.argv[1], 'r') as file:
+# Return if the file was not empty
+def file_to_rust(contract_name: str, file_path: Path):
+    with open(file_path, 'r') as file:
         data = json.load(file)
-    contract_name = sys.argv[2]
+
+    if data is None:
+        raise ValueError("The file is empty")
 
     rust_code = object_to_rust(data)
     first_object_name = data['name'].lower()
 
     rust_file = """// Generated by Oxidefier
 
-#![allow(non_snake_case)]
-#![allow(unused_assignments)]
 #![allow(mixed_script_confusables)]
+#![allow(non_snake_case)]
+#![allow(uncommon_codepoints)]
+#![allow(unused_assignments)]
+#![allow(unused_variables)]
 
 use alloy_primitives::U256;
 use evm_opcodes::*;
 
 """
     rust_file += rust_code
-    rust_file += f"""
+    rust_file += """
 
-fn main() {{
-    let mut context = Context {{
+fn main() {
+    let context = Context {
+        contract_interactions: std::marker::PhantomData::<DummyContractInteractions>,
         memory: Memory::new(),
+        immutables: std::collections::HashMap::new(),
+        storage: std::collections::HashMap::new(),
+        address: U256::from(123),
+        caller: U256::from(124),
+        callvalue: U256::from(12),
         gas: U256::from(100 * 1000),
+        timestamp: U256::from(1000 * 1000),
         calldata: vec![],
-    }};
-    let result = {first_object_name}::{first_object_name}_deployed::fun_runTests(
-        &mut context
-    );
-    println!("result: {{:#?}}", result);
-    // println!("context: {{:#?}}", context);
-}}
+        chain_id: U256::from(123456),
+    };
+
+    // let result = exp_unit_test::exp_unit_test_deployed::fun_test_Exp(&mut context);
+    // println!("result: {:#?}", result);
+    // println!("context: {:#?}", context);
+}
 """
+
+    output_path = Path("output") / contract_name
+    Path(output_path).mkdir(parents=True, exist_ok=True)
+    # Create an "src/" folder in the output folder
+    src_folder = output_path / "src"
+    src_folder.mkdir(parents=True, exist_ok=True)
+    main_rs_file = src_folder / Path("main.rs")
+    main_rs_file.write_text(rust_file)
+
+
+def main():
+    """python oxidefier.py <path_to_yul_json_file> <contract_name>"""
+    file_path = sys.argv[1]
+    contract_name = sys.argv[2]
+
+    file_to_rust(contract_name, Path(file_path))
 
     cargo_toml = f"""[package]
 name = "{contract_name}"
@@ -470,17 +510,7 @@ edition.workspace = true
 alloy-primitives.workspace = true
 evm_opcodes.workspace = true
 """
-
-    output_path = Path("output") / contract_name
-    Path(output_path).mkdir(parents=True, exist_ok=True)
-    # Create an "src/" folder in the output folder
-    src_folder = output_path / "src"
-    src_folder.mkdir(parents=True, exist_ok=True)
-    # Create a "main.rs" file in the "src/" folder
-    main_rs_file = src_folder / "main.rs"
-    main_rs_file.write_text(rust_file)
-    # Create a "Cargo.toml" file in the output folder
-    cargo_toml_file = output_path / "Cargo.toml"
+    cargo_toml_file = Path("output") / contract_name / "Cargo.toml"
     cargo_toml_file.write_text(cargo_toml)
 
 

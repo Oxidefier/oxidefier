@@ -1,0 +1,12 @@
+[submodule "third-parties/sablier-lockup"]
+	path = third-parties/sablier-lockup
+	url = https://github.com/Oxidefier/lockup.git
+[submodule "third-parties/prb-math"]
+	path = third-parties/prb-math
+	url = https://github.com/PaulRBerg/prb-math.git
+[submodule "third-parties/morpho-blue"]
+	path = third-parties/morpho-blue
+	url = https://github.com/morpho-org/morpho-blue.git
+[submodule "third-parties/openzeppelin-contracts"]
+	path = third-parties/openzeppelin-contracts
+	url = https://github.com/OpenZeppelin/openzeppelin-contracts.git
