@@ -23,6 +23,7 @@ jobs:
         sudo add-apt-repository ppa:ethereum/ethereum
         sudo apt-get update
         sudo apt-get install -y solc
+        solc --version
     - name: Install Rust
       run: |
         curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y
@@ -35,7 +36,7 @@ jobs:
         # erc20
         cd third-parties/openzeppelin-contracts/contracts
         sed -i "s/abstract contract ERC20/contract ERC20/" token/ERC20/ERC20.sol
-        solc --base-path . --include-path node_modules/ token/ERC20/ERC20.sol --ir-optimized-ast-json --optimize --yul-optimizations hg --overwrite --output-dir yul-json
+        solc --base-path . token/ERC20/ERC20.sol --ir-optimized-ast-json --optimize --yul-optimizations hg --overwrite --output-dir yul-json
         cp yul-json/ERC20_opt_yul_ast.json ../../../contracts/erc20/contract.json
         cd ../../..
 

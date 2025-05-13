@@ -465,7 +465,7 @@ pub mod sablierlockup {
         Ok(result)
     }
 
-    pub fn update_storage_value_offsett_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+    pub fn update_storage_value_offset_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
     where
         Context<CI>: ContractInteractions,
     {
@@ -479,7 +479,7 @@ pub mod sablierlockup {
         Context<CI>: ContractInteractions,
     {
         constructor_NoDelegateCall(context)?;
-        update_storage_value_offsett_address_to_address(U256::from(0x0u128), var_initialAdmin, context)?;
+        update_storage_value_offset_address_to_address(U256::from(0x0u128), var_initialAdmin, context)?;
         let expr = convert_rational_by_to_address(U256::from(0x0u128), context)?;
         let _1 = convert_address_to_address(expr, context)?;
         let _2 = convert_address_to_address(var_initialAdmin, context)?;
@@ -656,7 +656,7 @@ pub mod sablierlockup {
         Ok(())
     }
 
-    pub fn update_storage_value_offsett_string_to_string<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+    pub fn update_storage_value_offset_string_to_string<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
     where
         Context<CI>: ContractInteractions,
     {
@@ -669,8 +669,8 @@ pub mod sablierlockup {
         Context<CI>: ContractInteractions,
     {
         constructor_IERC721Errors(_1, context)?;
-        update_storage_value_offsett_string_to_string(U256::from(0x1u128), var_name_mpos, context)?;
-        update_storage_value_offsett_string_to_string(U256::from(0x2u128), var_symbol_mpos, context)?;
+        update_storage_value_offset_string_to_string(U256::from(0x1u128), var_name_mpos, context)?;
+        update_storage_value_offset_string_to_string(U256::from(0x2u128), var_symbol_mpos, context)?;
         Ok(())
     }
 
@@ -701,7 +701,7 @@ pub mod sablierlockup {
         Ok(ret)
     }
 
-    pub fn update_storage_value_offsett_contract_ILockupNFTDescriptor_to_contract_ILockupNFTDescriptor<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+    pub fn update_storage_value_offset_contract_ILockupNFTDescriptor_to_contract_ILockupNFTDescriptor<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
     where
         Context<CI>: ContractInteractions,
     {
@@ -715,7 +715,7 @@ pub mod sablierlockup {
         Context<CI>: ContractInteractions,
     {
         constructor_ERC721(_mpos, _mpos_1, var_initialAdmin, context)?;
-        update_storage_value_offsett_contract_ILockupNFTDescriptor_to_contract_ILockupNFTDescriptor(U256::from(0x8u128), var_initialNFTDescriptor_address, context)?;
+        update_storage_value_offset_contract_ILockupNFTDescriptor_to_contract_ILockupNFTDescriptor(U256::from(0x8u128), var_initialNFTDescriptor_address, context)?;
         Ok(())
     }
 
@@ -794,7 +794,7 @@ pub mod sablierlockup {
         Ok(result)
     }
 
-    pub fn update_storage_value_offsett_uint256_to_uint256<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+    pub fn update_storage_value_offset_uint256_to_uint256<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
     where
         Context<CI>: ContractInteractions,
     {
@@ -812,7 +812,7 @@ pub mod sablierlockup {
         constructor_SablierLockupBase(var_initialAdmin, var_initialNFTDescriptor_74_address, _9_mpos, _10_mpos, context)?;
         mstore(U256::from(0xa0u128), var_maxCount, context)?;
         let _1 = convert_rational_by_to_uint256(U256::from(0x1u128), context)?;
-        update_storage_value_offsett_uint256_to_uint256(U256::from(0x7u128), _1, context)?;
+        update_storage_value_offset_uint256_to_uint256(U256::from(0x7u128), _1, context)?;
         Ok(())
     }
 
@@ -4276,7 +4276,7 @@ pub mod sablierlockup {
             Ok(data)
         }
 
-        pub fn array_dataslot_array_struct_Segment_storage_dyn_ptr<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn array_dataslot_array_struct_Segment_storage_dyn__ptr<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4298,7 +4298,7 @@ pub mod sablierlockup {
             Ok(data)
         }
 
-        pub fn array_dataslot_array_struct_Tranche_storage_dyn_ptr<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn array_dataslot_array_struct_Tranche_storage_dyn__ptr<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4336,7 +4336,7 @@ pub mod sablierlockup {
             Ok(length)
         }
 
-        pub fn array_length_array_struct_Segment_storage_dyn_ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn array_length_array_struct_Segment_storage_dyn__ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4363,7 +4363,7 @@ pub mod sablierlockup {
             Ok(length)
         }
 
-        pub fn array_length_array_struct_Tranche_storage_dyn_ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn array_length_array_struct_Tranche_storage_dyn__ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4400,17 +4400,17 @@ pub mod sablierlockup {
             Ok(())
         }
 
-        pub fn storage_array_index_access_struct_Segment__dyn_ptr<CI>(array: U256, index: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        pub fn storage_array_index_access_struct_Segment_storage_dyn__ptr<CI>(array: U256, index: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
         where
             Context<CI>: ContractInteractions,
         {
             let mut slot = U256::ZERO;
             let mut offset = U256::ZERO;
-            let arrayLength = array_length_array_struct_Segment_storage_dyn_ptr(array, context)?;
+            let arrayLength = array_length_array_struct_Segment_storage_dyn__ptr(array, context)?;
             if iszero(lt(index, arrayLength, context)?, context)? != U256::ZERO {
                 panic_error_0x32(context)?;
             }
-            let dataArea = array_dataslot_array_struct_Segment_storage_dyn_ptr(array, context)?;
+            let dataArea = array_dataslot_array_struct_Segment_storage_dyn__ptr(array, context)?;
             slot = add(dataArea, mul(index, U256::from(0x1u128), context)?, context)?;
             offset = U256::from(0x0u128);
             Ok((slot, offset))
@@ -4485,7 +4485,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offset_24t_uint40_to_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_24_uint40_to_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4533,7 +4533,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint128_to_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_uint128_to_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4572,7 +4572,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_userDefinedValueType_UD2x18_to_userDefinedValueType_UD2x18<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_userDefinedValueType_UD2x18_to_userDefinedValueType_UD2x18<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4587,11 +4587,11 @@ pub mod sablierlockup {
         {
             let memberSlot = add(slot, U256::from(0x0u128), context)?;
             let memberValue = read_from_memoryt_uint128(add(value, U256::from(0x0u128), context)?, context)?;
-            update_storage_value_offsett_uint128_to_uint128(memberSlot, memberValue, context)?;
+            update_storage_value_offset_uint128_to_uint128(memberSlot, memberValue, context)?;
             let memberValue_1 = read_from_memoryt_userDefinedValueType_UD2x18(add(value, U256::from(0x20u128), context)?, context)?;
-            update_storage_value_offsett_userDefinedValueType_UD2x18_to_userDefinedValueType_UD2x18(memberSlot, memberValue_1, context)?;
+            update_storage_value_offset_userDefinedValueType_UD2x18_to_userDefinedValueType_UD2x18(memberSlot, memberValue_1, context)?;
             let memberValue_2 = read_from_memoryt_uint40(add(value, U256::from(0x40u128), context)?, context)?;
-            update_storage_value_offset_24t_uint40_to_uint40(memberSlot, memberValue_2, context)?;
+            update_storage_value_offset_24_uint40_to_uint40(memberSlot, memberValue_2, context)?;
             Ok(())
         }
 
@@ -4616,7 +4616,7 @@ pub mod sablierlockup {
             Ok(())
         }
 
-        pub fn array_push_from_struct_Segment_to_array_struct_Segment_storage_dyn_ptr<CI>(array: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn array_push_from_struct_Segment_to_array_struct_Segment_storage_dyn__ptr<CI>(array: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4625,22 +4625,22 @@ pub mod sablierlockup {
                 panic_error_0x41(context)?;
             }
             sstore(array, add(oldLen, U256::from(0x1u128), context)?, context)?;
-            let (slot, offset) = storage_array_index_access_struct_Segment__dyn_ptr(array, oldLen, context)?;
+            let (slot, offset) = storage_array_index_access_struct_Segment_storage_dyn__ptr(array, oldLen, context)?;
             update_storage_value_struct_Segment_to_struct_Segment(slot, offset, value0, context)?;
             Ok(())
         }
 
-        pub fn storage_array_index_access_struct_Tranche__dyn_ptr<CI>(array: U256, index: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        pub fn storage_array_index_access_struct_Tranche_storage_dyn__ptr<CI>(array: U256, index: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
         where
             Context<CI>: ContractInteractions,
         {
             let mut slot = U256::ZERO;
             let mut offset = U256::ZERO;
-            let arrayLength = array_length_array_struct_Tranche_storage_dyn_ptr(array, context)?;
+            let arrayLength = array_length_array_struct_Tranche_storage_dyn__ptr(array, context)?;
             if iszero(lt(index, arrayLength, context)?, context)? != U256::ZERO {
                 panic_error_0x32(context)?;
             }
-            let dataArea = array_dataslot_array_struct_Tranche_storage_dyn_ptr(array, context)?;
+            let dataArea = array_dataslot_array_struct_Tranche_storage_dyn__ptr(array, context)?;
             slot = add(dataArea, mul(index, U256::from(0x1u128), context)?, context)?;
             offset = U256::from(0x0u128);
             Ok((slot, offset))
@@ -4658,7 +4658,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offset_16t_uint40_to_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_t_uint40_to_t_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4673,9 +4673,9 @@ pub mod sablierlockup {
         {
             let memberSlot = add(slot, U256::from(0x0u128), context)?;
             let memberValue = read_from_memoryt_uint128(add(value, U256::from(0x0u128), context)?, context)?;
-            update_storage_value_offsett_uint128_to_uint128(memberSlot, memberValue, context)?;
+            update_storage_value_offset_uint128_to_uint128(memberSlot, memberValue, context)?;
             let memberValue_1 = read_from_memoryt_uint40(add(value, U256::from(0x20u128), context)?, context)?;
-            update_storage_value_offset_16t_uint40_to_uint40(memberSlot, memberValue_1, context)?;
+            update_storage_value_offset_t_uint40_to_t_uint40(memberSlot, memberValue_1, context)?;
             Ok(())
         }
 
@@ -4690,7 +4690,7 @@ pub mod sablierlockup {
             Ok(())
         }
 
-        pub fn array_push_from_struct_Tranche_to_array_struct_Tranche_storage_dyn_ptr<CI>(array: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn array_push_from_struct_Tranche_to_array_struct_Tranche_storage_dyn__ptr<CI>(array: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4699,7 +4699,7 @@ pub mod sablierlockup {
                 panic_error_0x41(context)?;
             }
             sstore(array, add(oldLen, U256::from(0x1u128), context)?, context)?;
-            let (slot, offset) = storage_array_index_access_struct_Tranche__dyn_ptr(array, oldLen, context)?;
+            let (slot, offset) = storage_array_index_access_struct_Tranche_storage_dyn__ptr(array, oldLen, context)?;
             update_storage_value_struct_Tranche_to_struct_Tranche(slot, offset, value0, context)?;
             Ok(())
         }
@@ -6551,15 +6551,6 @@ pub mod sablierlockup {
             Ok(converted)
         }
 
-        pub fn convert_array_array_struct_Segment_storage_dyn_storage_to_array_struct_Segment__dyn_ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut converted = U256::ZERO;
-            converted = value;
-            Ok(converted)
-        }
-
         pub fn shift_right_0_unsigned<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
@@ -6569,7 +6560,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offsett_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_t_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -6583,7 +6574,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_uint128(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_t_uint128(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -6596,7 +6587,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offset_24t_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -6610,7 +6601,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_24t_uint40(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_uint40(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -6623,7 +6614,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offsett_userDefinedValueType_UD2x18<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_userDefinedValueType_UD2x18<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -6637,7 +6628,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_userDefinedValueType_UD2x18(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_userDefinedValueType_UD2x18(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -6689,7 +6680,7 @@ pub mod sablierlockup {
             Ok(converted)
         }
 
-        pub fn copy_array_from_storage_to_memory_array_struct_Segment__dyn<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn copy_array_from_storage_to_memory_array_struct_Segment_storage_dyn<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -6716,12 +6707,21 @@ pub mod sablierlockup {
             Ok(memPtr)
         }
 
-        pub fn convert_array_array_struct_Segment_storage_dyn_to_array_struct_Segment_dyn<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn convert_array_array_struct_Segment_storage_dyn__to_array_struct_Segment_dyn<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
             let mut converted = U256::ZERO;
-            converted = copy_array_from_storage_to_memory_array_struct_Segment__dyn(value, context)?;
+            converted = copy_array_from_storage_to_memory_array_struct_Segment_storage_dyn(value, context)?;
+            Ok(converted)
+        }
+
+        pub fn convert_array_array_struct_Segment_storage_dyn_storage_to_array_struct_Segment_storage_dyn__ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut converted = U256::ZERO;
+            converted = value;
             Ok(converted)
         }
 
@@ -6743,16 +6743,7 @@ pub mod sablierlockup {
             Ok(converted)
         }
 
-        pub fn convert_array_array_struct_Tranche_storage_dyn_storage_to_array_struct_Tranche__dyn_ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut converted = U256::ZERO;
-            converted = value;
-            Ok(converted)
-        }
-
-        pub fn extract_from_storage_value_offset_16t_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_t_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -6766,7 +6757,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_16t_uint40(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_t_uint40(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -6792,7 +6783,7 @@ pub mod sablierlockup {
             Ok(converted)
         }
 
-        pub fn copy_array_from_storage_to_memory_array_struct_Tranche__dyn<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn copy_array_from_storage_to_memory_array_struct_Tranche_storage_dyn<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -6819,12 +6810,21 @@ pub mod sablierlockup {
             Ok(memPtr)
         }
 
-        pub fn convert_array_array_struct_Tranche_storage_dyn_to_array_struct_Tranche_dyn<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn convert_array_array_struct_Tranche_storage_dyn__to_array_struct_Tranche_dyn<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
             let mut converted = U256::ZERO;
-            converted = copy_array_from_storage_to_memory_array_struct_Tranche__dyn(value, context)?;
+            converted = copy_array_from_storage_to_memory_array_struct_Tranche_storage_dyn(value, context)?;
+            Ok(converted)
+        }
+
+        pub fn convert_array_array_struct_Tranche_storage_dyn_storage_to_array_struct_Tranche_storage_dyn__ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut converted = U256::ZERO;
+            converted = value;
             Ok(converted)
         }
 
@@ -8315,7 +8315,7 @@ pub mod sablierlockup {
             Ok(converted)
         }
 
-        pub fn extract_from_storage_value_offset_16t_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -8329,7 +8329,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_16t_uint128(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_uint128(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -8508,7 +8508,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint128_to_t_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_t_uint128_to_t_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -8523,11 +8523,11 @@ pub mod sablierlockup {
         {
             let memberSlot = add(slot, U256::from(0x0u128), context)?;
             let memberValue = read_from_memoryt_uint128(add(value, U256::from(0x0u128), context)?, context)?;
-            update_storage_value_offsett_uint128_to_uint128(memberSlot, memberValue, context)?;
+            update_storage_value_offset_uint128_to_uint128(memberSlot, memberValue, context)?;
             let memberValue_1 = read_from_memoryt_uint128(add(value, U256::from(0x20u128), context)?, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(memberSlot, memberValue_1, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(memberSlot, memberValue_1, context)?;
             let memberValue_2 = read_from_memoryt_uint128(add(value, U256::from(0x40u128), context)?, context)?;
-            update_storage_value_offsett_uint128_to_uint128(add(slot, U256::from(0x1u128), context)?, memberValue_2, context)?;
+            update_storage_value_offset_uint128_to_uint128(add(slot, U256::from(0x1u128), context)?, memberValue_2, context)?;
             Ok(())
         }
 
@@ -8601,7 +8601,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offset_20t_uint40_to_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_20_uint40_to_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -8640,7 +8640,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offset_21t_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_21_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -8670,93 +8670,12 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offset_22t_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_22_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
             let convertedValue = convert_bool_to_bool(value, context)?;
             sstore(slot, update_byte_slice_shift_22(sload(slot, context)?, prepare_store_bool(convertedValue, context)?, context)?, context)?;
-            Ok(())
-        }
-
-        pub fn shift_left_240<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut newValue = U256::ZERO;
-            newValue = shl(U256::from(0xf0u128), value, context)?;
-            Ok(newValue)
-        }
-
-        pub fn update_byte_slice_shift_30<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut result = U256::ZERO;
-            let mask = shl(U256::from(0xf0u128), U256::from(0xffu128), context)?;
-            toInsert = shift_left_240(toInsert, context)?;
-            value = and(value, not(mask, context)?, context)?;
-            result = or(value, and(toInsert, mask, context)?, context)?;
-            Ok(result)
-        }
-
-        pub fn update_storage_value_offset_30t_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let convertedValue = convert_bool_to_bool(value, context)?;
-            sstore(slot, update_byte_slice_shift_30(sload(slot, context)?, prepare_store_bool(convertedValue, context)?, context)?, context)?;
-            Ok(())
-        }
-
-        pub fn prepare_store_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut ret = U256::ZERO;
-            ret = value;
-            Ok(ret)
-        }
-
-        pub fn update_byte_slice_20_shift<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut result = U256::ZERO;
-            let mask = sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?;
-            toInsert = shift_left(toInsert, context)?;
-            value = and(value, not(mask, context)?, context)?;
-            result = or(value, and(toInsert, mask, context)?, context)?;
-            Ok(result)
-        }
-
-        pub fn update_storage_value_offsett_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let convertedValue = convert_address_to_address(value, context)?;
-            sstore(slot, update_byte_slice_20_shift(sload(slot, context)?, prepare_store_address(convertedValue, context)?, context)?, context)?;
-            Ok(())
-        }
-
-        pub fn update_byte_slice_1_shift_20<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut result = U256::ZERO;
-            let mask = shl(U256::from(0xa0u128), U256::from(0xffu128), context)?;
-            toInsert = shift_left_160(toInsert, context)?;
-            value = and(value, not(mask, context)?, context)?;
-            result = or(value, and(toInsert, mask, context)?, context)?;
-            Ok(result)
-        }
-
-        pub fn update_storage_value_offsett_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let convertedValue = convert_bool_to_bool(value, context)?;
-            sstore(slot, update_byte_slice_1_shift_20(sload(slot, context)?, prepare_store_bool(convertedValue, context)?, context)?, context)?;
             Ok(())
         }
 
@@ -8781,12 +8700,63 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_bool_to_t_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_31_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
             let convertedValue = convert_bool_to_bool(value, context)?;
             sstore(slot, update_byte_slice_shift_31(sload(slot, context)?, prepare_store_bool(convertedValue, context)?, context)?, context)?;
+            Ok(())
+        }
+
+        pub fn prepare_store_address<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut ret = U256::ZERO;
+            ret = value;
+            Ok(ret)
+        }
+
+        pub fn update_byte_slice_20_shift<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut result = U256::ZERO;
+            let mask = sub(shl(U256::from(0xa0u128), U256::from(0x1u128), context)?, U256::from(0x1u128), context)?;
+            toInsert = shift_left(toInsert, context)?;
+            value = and(value, not(mask, context)?, context)?;
+            result = or(value, and(toInsert, mask, context)?, context)?;
+            Ok(result)
+        }
+
+        pub fn update_storage_value_offset_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let convertedValue = convert_address_to_address(value, context)?;
+            sstore(slot, update_byte_slice_20_shift(sload(slot, context)?, prepare_store_address(convertedValue, context)?, context)?, context)?;
+            Ok(())
+        }
+
+        pub fn update_byte_slice_1_shift_20<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut result = U256::ZERO;
+            let mask = shl(U256::from(0xa0u128), U256::from(0xffu128), context)?;
+            toInsert = shift_left_160(toInsert, context)?;
+            value = and(value, not(mask, context)?, context)?;
+            result = or(value, and(toInsert, mask, context)?, context)?;
+            Ok(result)
+        }
+
+        pub fn update_storage_value_offset_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let convertedValue = convert_bool_to_bool(value, context)?;
+            sstore(slot, update_byte_slice_1_shift_20(sload(slot, context)?, prepare_store_bool(convertedValue, context)?, context)?, context)?;
             Ok(())
         }
 
@@ -8799,7 +8769,7 @@ pub mod sablierlockup {
             Ok(ret)
         }
 
-        pub fn update_storage_value_offsett_contract_IERC20_to_contract_IERC20<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_contract_IERC20_to_contract_IERC20<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -8838,7 +8808,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_enum_Model_to_enum_Model<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_enum_Model_to_enum_Model<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -8847,11 +8817,41 @@ pub mod sablierlockup {
             Ok(())
         }
 
-        pub fn update_storage_value_offsett_struct_Amounts_to_struct_Amounts<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_struct_Amounts_to_struct_Amounts<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
             copy_struct_to_storage_from_struct_Amounts_to_struct_Amounts(slot, value, context)?;
+            Ok(())
+        }
+
+        pub fn shift_left_240<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut newValue = U256::ZERO;
+            newValue = shl(U256::from(0xf0u128), value, context)?;
+            Ok(newValue)
+        }
+
+        pub fn update_byte_slice_shift_30<CI>(mut value: U256, mut toInsert: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut result = U256::ZERO;
+            let mask = shl(U256::from(0xf0u128), U256::from(0xffu128), context)?;
+            toInsert = shift_left_240(toInsert, context)?;
+            value = and(value, not(mask, context)?, context)?;
+            result = or(value, and(toInsert, mask, context)?, context)?;
+            Ok(result)
+        }
+
+        pub fn update_storage_value_offset_t_bool_to_t_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let convertedValue = convert_bool_to_bool(value, context)?;
+            sstore(slot, update_byte_slice_shift_30(sload(slot, context)?, prepare_store_bool(convertedValue, context)?, context)?, context)?;
             Ok(())
         }
 
@@ -8876,7 +8876,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint40_to_t_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_uint40_to_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -8891,28 +8891,28 @@ pub mod sablierlockup {
         {
             let memberSlot = add(slot, U256::from(0x0u128), context)?;
             let memberValue = read_from_memoryt_address(add(value, U256::from(0x0u128), context)?, context)?;
-            update_storage_value_offsett_address_to_address(memberSlot, memberValue, context)?;
+            update_storage_value_offset_address_to_address(memberSlot, memberValue, context)?;
             let memberValue_1 = read_from_memoryt_uint40(add(value, U256::from(0x20u128), context)?, context)?;
-            update_storage_value_offset_20t_uint40_to_uint40(memberSlot, memberValue_1, context)?;
+            update_storage_value_offset_20_uint40_to_uint40(memberSlot, memberValue_1, context)?;
             let memberValue_2 = read_from_memoryt_uint40(add(value, U256::from(0x40u128), context)?, context)?;
-            update_storage_value_offsett_uint40_to_t_uint40(memberSlot, memberValue_2, context)?;
+            update_storage_value_offset_uint40_to_uint40(memberSlot, memberValue_2, context)?;
             let memberValue_3 = read_from_memoryt_bool(add(value, U256::from(0x60u128), context)?, context)?;
-            update_storage_value_offset_30t_bool_to_bool(memberSlot, memberValue_3, context)?;
+            update_storage_value_offset_t_bool_to_t_bool(memberSlot, memberValue_3, context)?;
             let memberValue_4 = read_from_memoryt_bool(add(value, U256::from(0x80u128), context)?, context)?;
-            update_storage_value_offsett_bool_to_t_bool(memberSlot, memberValue_4, context)?;
+            update_storage_value_offset_31_bool_to_bool(memberSlot, memberValue_4, context)?;
             let memberSlot_1 = add(slot, U256::from(0x1u128), context)?;
             let memberValue_5 = read_from_memoryt_contract_IERC20(add(value, U256::from(0xa0u128), context)?, context)?;
-            update_storage_value_offsett_contract_IERC20_to_contract_IERC20(memberSlot_1, memberValue_5, context)?;
+            update_storage_value_offset_contract_IERC20_to_contract_IERC20(memberSlot_1, memberValue_5, context)?;
             let memberValue_6 = read_from_memoryt_bool(add(value, U256::from(0xc0u128), context)?, context)?;
-            update_storage_value_offsett_bool_to_bool(memberSlot_1, memberValue_6, context)?;
+            update_storage_value_offset_bool_to_bool(memberSlot_1, memberValue_6, context)?;
             let memberValue_7 = read_from_memoryt_bool(add(value, U256::from(0xe0u128), context)?, context)?;
-            update_storage_value_offset_21t_bool_to_bool(memberSlot_1, memberValue_7, context)?;
+            update_storage_value_offset_21_bool_to_bool(memberSlot_1, memberValue_7, context)?;
             let memberValue_8 = read_from_memoryt_bool(add(value, U256::from(0x100u128), context)?, context)?;
-            update_storage_value_offset_22t_bool_to_bool(memberSlot_1, memberValue_8, context)?;
+            update_storage_value_offset_22_bool_to_bool(memberSlot_1, memberValue_8, context)?;
             let memberValue_9 = read_from_memoryt_enum_Model(add(value, U256::from(0x120u128), context)?, context)?;
-            update_storage_value_offsett_enum_Model_to_enum_Model(memberSlot_1, memberValue_9, context)?;
+            update_storage_value_offset_enum_Model_to_enum_Model(memberSlot_1, memberValue_9, context)?;
             let memberValue_10 = read_from_memoryt_struct_Amounts(add(value, U256::from(0x140u128), context)?, context)?;
-            update_storage_value_offsett_struct_Amounts_to_struct_Amounts(add(slot, U256::from(0x2u128), context)?, memberValue_10, context)?;
+            update_storage_value_offset_struct_Amounts_to_struct_Amounts(add(slot, U256::from(0x2u128), context)?, memberValue_10, context)?;
             Ok(())
         }
 
@@ -9055,7 +9055,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offset_0t_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_0_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -9101,7 +9101,7 @@ pub mod sablierlockup {
                 revert(U256::from(0x0u128), sub(_6, U256::from(0x0u128), context)?, context)?;
             }
             let _7 = mapping_index_access_mapping_address_bool_of_address(U256::from(0x9u128), var_recipient, context)?;
-            update_storage_value_offset_0t_bool_to_bool(_7, U256::from(0x1u128), context)?;
+            update_storage_value_offset_0_bool_to_bool(_7, U256::from(0x1u128), context)?;
             let _8 = convert_address_to_address(caller(context)?, context)?;
             let _9 = allocate_unbounded(context)?;
             let _10 = abi_encode_tuple_address(_9, var_recipient, context)?;
@@ -9109,7 +9109,7 @@ pub mod sablierlockup {
             Ok(())
         }
 
-        pub fn extract_from_storage_value_offsett_address<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_address<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -9123,7 +9123,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_address(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_address(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -9166,7 +9166,7 @@ pub mod sablierlockup {
             Ok(())
         }
 
-        pub fn mapping_index_access_mapping_address_mapping_address_bool_of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn mapping_index_access_mapping_address_mapping_address_bool__of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -9177,7 +9177,7 @@ pub mod sablierlockup {
             Ok(dataSlot)
         }
 
-        pub fn extract_from_storage_value_offset_0t_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_0_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -9191,7 +9191,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_0t_bool(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_0_bool(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -9211,7 +9211,7 @@ pub mod sablierlockup {
             let mut var = U256::ZERO;
             let zero_bool = zero_value_for_split_bool(context)?;
             var = zero_bool;
-            let _1 = mapping_index_access_mapping_address_mapping_address_bool_of_address(U256::from(0x6u128), var_owner, context)?;
+            let _1 = mapping_index_access_mapping_address_mapping_address_bool__of_address(U256::from(0x6u128), var_owner, context)?;
             let _2 = mapping_index_access_mapping_address_bool_of_address(_1, var_operator, context)?;
             let _3 = read_from_storage_split_offset_0_bool(_2, context)?;
             var = _3;
@@ -9310,7 +9310,7 @@ pub mod sablierlockup {
                 }
             }
             let _7 = mapping_index_access_mapping_uint256_address_of_uint256(U256::from(0x5u128), var_tokenId, context)?;
-            update_storage_value_offsett_address_to_address(_7, var_to, context)?;
+            update_storage_value_offset_address_to_address(_7, var_to, context)?;
             Ok(())
         }
 
@@ -9368,7 +9368,7 @@ pub mod sablierlockup {
             Ok(dataSlot)
         }
 
-        pub fn extract_from_storage_value_offsett_uint256<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_uint256<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -9382,7 +9382,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_uint256(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_uint256(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -9636,7 +9636,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint256_to_uint256<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_uint256_to_uint256<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -9683,7 +9683,7 @@ pub mod sablierlockup {
                 let _2 = mapping_index_access_mapping_address_uint256_of_address(U256::from(0x4u128), expr, context)?;
                 let _3 = read_from_storage_split_offset_uint256(_2, context)?;
                 let expr_4 = wrapping_sub_uint256(_3, _1, context)?;
-                update_storage_value_offsett_uint256_to_uint256(_2, expr_4, context)?;
+                update_storage_value_offset_uint256_to_uint256(_2, expr_4, context)?;
             }
             let expr_5 = iszero(eq(cleanup_address(var_to, context)?, cleanup_address(expr_1, context)?, context)?, context)?;
             if expr_5 != U256::ZERO {
@@ -9691,10 +9691,10 @@ pub mod sablierlockup {
                 let _5 = mapping_index_access_mapping_address_uint256_of_address(U256::from(0x4u128), var_to, context)?;
                 let _6 = read_from_storage_split_offset_uint256(_5, context)?;
                 let expr_6 = wrapping_add_uint256(_6, _4, context)?;
-                update_storage_value_offsett_uint256_to_uint256(_5, expr_6, context)?;
+                update_storage_value_offset_uint256_to_uint256(_5, expr_6, context)?;
             }
             let _7 = mapping_index_access_mapping_uint256_address_of_uint256(U256::from(0x3u128), var_tokenId, context)?;
-            update_storage_value_offsett_address_to_address(_7, var_to, context)?;
+            update_storage_value_offset_address_to_address(_7, var_to, context)?;
             let _8 = convert_address_to_address(expr, context)?;
             let _9 = convert_address_to_address(var_to, context)?;
             let _10 = convert_uint256_to_uint256(var_tokenId, context)?;
@@ -9725,7 +9725,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offset_22t_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_22_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -9739,7 +9739,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_22t_bool(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_22_bool(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -9838,7 +9838,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offset_20t_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -9852,7 +9852,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_20t_bool(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_bool(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -9889,7 +9889,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offset_21t_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_t_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -9903,7 +9903,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_21t_bool(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_t_bool(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -11604,7 +11604,7 @@ pub mod sablierlockup {
             Ok(var)
         }
 
-        pub fn mapping_index_access_mapping_uint256_array_struct_Segment_storage_dyn_of_uint256<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn mapping_index_access_mapping_uint256_array_struct_Segment_storage_dyn__of_uint256<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -11615,7 +11615,7 @@ pub mod sablierlockup {
             Ok(dataSlot)
         }
 
-        pub fn mapping_index_access_mapping_uint256_array_struct_Tranche_storage_dyn_of_uint256<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn mapping_index_access_mapping_uint256_array_struct_Tranche_storage_dyn__of_uint256<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -11648,7 +11648,7 @@ pub mod sablierlockup {
             Ok(dataSlot)
         }
 
-        pub fn extract_from_storage_value_offset_0t_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_0_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -11662,7 +11662,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_0t_uint40(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_0_uint40(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -11675,7 +11675,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offsett_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_25_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -11689,7 +11689,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_uint40(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_25_uint40(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -11702,7 +11702,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offsett_enum_Model<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_enum_Model<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -11716,11 +11716,11 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_enum_Model(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_enum_Model(sload(slot, context)?, context)?;
             Ok(value)
         }
 
-        pub fn extract_from_storage_value_offset_20t_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_20_uint40<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -11734,7 +11734,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_20t_uint40(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_20_uint40(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -11771,8 +11771,8 @@ pub mod sablierlockup {
                 if δ == U256::from(0x0u128) {
                     let expr_3 = eq(cleanup_enum_Model(_5, context)?, cleanup_enum_Model(U256::from(0x2u128), context)?, context)?;
                     if expr_3 != U256::ZERO {
-                        let _10 = mapping_index_access_mapping_uint256_array_struct_Tranche_storage_dyn_of_uint256(U256::from(0xdu128), var_streamId, context)?;
-                        let _1236_mpos = convert_array_array_struct_Tranche_storage_dyn_to_array_struct_Tranche_dyn(_10, context)?;
+                        let _10 = mapping_index_access_mapping_uint256_array_struct_Tranche_storage_dyn__of_uint256(U256::from(0xdu128), var_streamId, context)?;
+                        let _1236_mpos = convert_array_array_struct_Tranche_storage_dyn__to_array_struct_Tranche_dyn(_10, context)?;
                         let expr_4 = fun_VestingMath_calculateLockupTranchedStreamedAmount(_3, expr, expr_638_mpos, _1236_mpos, context)?;
                         var_streamedAmount = expr_4;
                     }
@@ -11911,7 +11911,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offset_30t_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_30_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -11925,11 +11925,11 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_30t_bool(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_30_bool(sload(slot, context)?, context)?;
             Ok(value)
         }
 
-        pub fn extract_from_storage_value_offsett_contract_IERC20<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_contract_IERC20<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -11943,7 +11943,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_contract_IERC20(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_contract_IERC20(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -11982,17 +11982,17 @@ pub mod sablierlockup {
             let expr_4 = checked_sub_uint128(expr, _10, context)?;
             let expr_5 = U256::from(0x1u128);
             let _11 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1330_slot, var_streamId, context)?;
-            update_storage_value_offsett_bool_to_t_bool(add(_11, U256::from(0x0u128), context)?, expr_5, context)?;
+            update_storage_value_offset_31_bool_to_bool(add(_11, U256::from(0x0u128), context)?, expr_5, context)?;
             let _12 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1330_slot, var_streamId, context)?;
-            update_storage_value_offset_30t_bool_to_bool(add(_12, U256::from(0x0u128), context)?, U256::from(0x0u128), context)?;
+            update_storage_value_offset_t_bool_to_t_bool(add(_12, U256::from(0x0u128), context)?, U256::from(0x0u128), context)?;
             let expr_6 = eq(cleanup_uint128(expr_4, context)?, convert_rational_by_to_uint128(U256::from(0x0u128), context)?, context)?;
             if expr_6 != U256::ZERO {
                 let _13 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1330_slot, var_streamId, context)?;
-                update_storage_value_offsett_bool_to_bool(add(_13, expr_5, context)?, expr_5, context)?;
+                update_storage_value_offset_bool_to_bool(add(_13, expr_5, context)?, expr_5, context)?;
             }
             let _14 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1330_slot, var_streamId, context)?;
             let _15 = add(_14, U256::from(0x2u128), context)?;
-            update_storage_value_offsett_uint128_to_uint128(add(_15, expr_5, context)?, expr_3, context)?;
+            update_storage_value_offset_uint128_to_uint128(add(_15, expr_5, context)?, expr_3, context)?;
             let _16 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1330_slot, var_streamId, context)?;
             let _17 = read_from_storage_split_offset_address(add(_16, U256::from(0x0u128), context)?, context)?;
             let expr_7 = fun__ownerOf(var_streamId, context)?;
@@ -12063,7 +12063,7 @@ pub mod sablierlockup {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offsett_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_31_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -12077,7 +12077,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_bool(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_31_bool(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -12618,7 +12618,7 @@ pub mod sablierlockup {
             Ok(())
         }
 
-        pub fn update_storage_value_offsett_struct_Stream_to_struct_Stream<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_struct_Stream_to_struct_Stream<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -12738,12 +12738,12 @@ pub mod sablierlockup {
             write_to_memory_enum_Model(add(expr_758_mpos, U256::from(0x120u128), context)?, var_lockupModel, context)?;
             write_to_memory_struct_Amounts(add(expr_758_mpos, U256::from(0x140u128), context)?, expr_757_mpos, context)?;
             let _13 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(U256::from(0xau128), var_streamId, context)?;
-            update_storage_value_offsett_struct_Stream_to_struct_Stream(_13, expr_758_mpos, context)?;
+            update_storage_value_offset_struct_Stream_to_struct_Stream(_13, expr_758_mpos, context)?;
             let _14 = add(var_params_mpos, U256::from(0x20u128), context)?;
             let _15 = read_from_memoryt_address(_14, context)?;
             fun_mint(_15, var_streamId, context)?;
             let expr = wrapping_add_uint256(var_streamId, convert_rational_1_by_1_to_uint256(U256::from(0x1u128), context)?, context)?;
-            update_storage_value_offsett_uint256_to_uint256(U256::from(0x7u128), expr, context)?;
+            update_storage_value_offset_uint256_to_uint256(U256::from(0x7u128), expr, context)?;
             let _1754_address = read_from_memoryt_contract_IERC20(_7, context)?;
             let expr_1 = convert_contract_SablierLockup_to_address(address(context)?, context)?;
             let _16 = read_from_memoryt_uint128(_10, context)?;
@@ -12823,10 +12823,10 @@ pub mod sablierlockup {
                         break;
                     }
                     let _1181_slot = U256::from(0xcu128);
-                    let _7 = mapping_index_access_mapping_uint256_array_struct_Segment_storage_dyn_of_uint256(_1181_slot, _5, context)?;
-                    let expr_891_self_slot = convert_array_array_struct_Segment_storage_dyn_storage_to_array_struct_Segment__dyn_ptr(_7, context)?;
+                    let _7 = mapping_index_access_mapping_uint256_array_struct_Segment_storage_dyn__of_uint256(_1181_slot, _5, context)?;
+                    let expr_891_self_slot = convert_array_array_struct_Segment_storage_dyn_storage_to_array_struct_Segment_storage_dyn__ptr(_7, context)?;
                     let _1187_mpos = mload(memory_array_index_access_struct_Segment_dyn(var_segments_842_mpos, var_i, context)?, context)?;
-                    array_push_from_struct_Segment_to_array_struct_Segment_storage_dyn_ptr(expr_891_self_slot, _1187_mpos, context)?;
+                    array_push_from_struct_Segment_to_array_struct_Segment_storage_dyn__ptr(expr_891_self_slot, _1187_mpos, context)?;
                 }
                 // post
                 {
@@ -13045,7 +13045,7 @@ pub mod sablierlockup {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint40_to_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_0_uint40_to_uint40<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -13076,19 +13076,19 @@ pub mod sablierlockup {
             if expr_1 != U256::ZERO {
                 let _6 = read_from_memoryt_uint128(add(var_unlockAmounts_929_mpos, U256::from(0x0u128), context)?, context)?;
                 let _7 = mapping_index_access_mapping_uint256_struct_UnlockAmounts_storage_of_uint256(U256::from(0xeu128), _4, context)?;
-                update_storage_value_offsett_uint128_to_uint128(add(_7, U256::from(0x0u128), context)?, _6, context)?;
+                update_storage_value_offset_uint128_to_uint128(add(_7, U256::from(0x0u128), context)?, _6, context)?;
             }
             let expr_2 = gt(cleanup_uint40(var_cliffTime, context)?, convert_rational_by_to_uint40(U256::from(0x0u128), context)?, context)?;
             if expr_2 != U256::ZERO {
                 let _8 = mapping_index_access_mapping_uint256_uint40_of_uint256(U256::from(0xbu128), _4, context)?;
-                update_storage_value_offsett_uint40_to_uint40(_8, var_cliffTime, context)?;
+                update_storage_value_offset_0_uint40_to_uint40(_8, var_cliffTime, context)?;
                 let _9 = add(var_unlockAmounts_929_mpos, U256::from(0x20u128), context)?;
                 let _10 = read_from_memoryt_uint128(_9, context)?;
                 let expr_3 = gt(cleanup_uint128(_10, context)?, convert_rational_by_to_uint128(U256::from(0x0u128), context)?, context)?;
                 if expr_3 != U256::ZERO {
                     let _11 = read_from_memoryt_uint128(_9, context)?;
                     let _12 = mapping_index_access_mapping_uint256_struct_UnlockAmounts_storage_of_uint256(U256::from(0xeu128), _4, context)?;
-                    update_storage_value_offsett_uint128_to_t_uint128(add(_12, U256::from(0x0u128), context)?, _11, context)?;
+                    update_storage_value_offset_t_uint128_to_t_uint128(add(_12, U256::from(0x0u128), context)?, _11, context)?;
                 }
             }
             let expr_1013_mpos = fun_create(_4, var_params_926_mpos, expr_956_mpos, U256::from(0x0u128), context)?;
@@ -13366,7 +13366,7 @@ pub mod sablierlockup {
             Ok(())
         }
 
-        pub fn fun_Helpers_checkCreateLockupTranched<CI>(var_sender: U256, var_timestamps_5123_mpos: U256, var_totalAmount: U256, var_tranches_5129_mpos: U256, var_maxCount: U256, var_brokerFee: U256, var_shape_mpos: U256, var_maxBrokerFee: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn fun_Helpers_checkCreateLockupTranched<CI>(var_sender: U256, var_timestamps_5123_mpos: U256, var_totalAmount: U256, var_tranches_mpos: U256, var_maxCount: U256, var_brokerFee: U256, var_shape_mpos: U256, var_maxBrokerFee: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -13380,7 +13380,7 @@ pub mod sablierlockup {
             let _3 = read_from_memoryt_uint40(add(var_timestamps_5123_mpos, U256::from(0x0u128), context)?, context)?;
             fun_Helpers_checkCreateStream(var_sender, _2, _3, var_shape_mpos, context)?;
             let _4 = read_from_memoryt_uint128(_1, context)?;
-            fun_Helpers_checkTranches(var_tranches_5129_mpos, _4, var_timestamps_5123_mpos, var_maxCount, context)?;
+            fun_Helpers_checkTranches(var_tranches_mpos, _4, var_timestamps_5123_mpos, var_maxCount, context)?;
             Ok(var_createAmounts_5143_mpos)
         }
 
@@ -13413,10 +13413,10 @@ pub mod sablierlockup {
                         break;
                     }
                     let _1518_slot = U256::from(0xdu128);
-                    let _7 = mapping_index_access_mapping_uint256_array_struct_Tranche_storage_dyn_of_uint256(_1518_slot, _5, context)?;
-                    let expr_self_slot = convert_array_array_struct_Tranche_storage_dyn_storage_to_array_struct_Tranche__dyn_ptr(_7, context)?;
+                    let _7 = mapping_index_access_mapping_uint256_array_struct_Tranche_storage_dyn__of_uint256(_1518_slot, _5, context)?;
+                    let expr_self_slot = convert_array_array_struct_Tranche_storage_dyn_storage_to_array_struct_Tranche_storage_dyn__ptr(_7, context)?;
                     let _1524_mpos = mload(memory_array_index_access_struct_Tranche_dyn(var_tranches_1033_mpos, var_i, context)?, context)?;
-                    array_push_from_struct_Tranche_to_array_struct_Tranche_storage_dyn_ptr(expr_self_slot, _1524_mpos, context)?;
+                    array_push_from_struct_Tranche_to_array_struct_Tranche_storage_dyn__ptr(expr_self_slot, _1524_mpos, context)?;
                 }
                 // post
                 {
@@ -14007,8 +14007,8 @@ pub mod sablierlockup {
                 let _6 = abi_encode_enum_Model_enum_Model(add(U256::from(0x0u128), U256::from(0x4u128), context)?, _5, U256::from(0x1u128), context)?;
                 revert(U256::from(0x0u128), sub(_6, U256::from(0x0u128), context)?, context)?;
             }
-            let _7 = mapping_index_access_mapping_uint256_array_struct_Segment_storage_dyn_of_uint256(U256::from(0xcu128), var_streamId, context)?;
-            var_segments_mpos = convert_array_array_struct_Segment_storage_dyn_to_array_struct_Segment_dyn(_7, context)?;
+            let _7 = mapping_index_access_mapping_uint256_array_struct_Segment_storage_dyn__of_uint256(U256::from(0xcu128), var_streamId, context)?;
+            var_segments_mpos = convert_array_array_struct_Segment_storage_dyn__to_array_struct_Segment_dyn(_7, context)?;
             Ok(var_segments_mpos)
         }
 
@@ -14184,8 +14184,8 @@ pub mod sablierlockup {
                 let _6 = abi_encode_enum_Model_enum_Model(add(U256::from(0x0u128), U256::from(0x4u128), context)?, _5, U256::from(0x2u128), context)?;
                 revert(U256::from(0x0u128), sub(_6, U256::from(0x0u128), context)?, context)?;
             }
-            let _7 = mapping_index_access_mapping_uint256_array_struct_Tranche_storage_dyn_of_uint256(U256::from(0xdu128), var_streamId, context)?;
-            var_tranches_mpos = convert_array_array_struct_Tranche_storage_dyn_to_array_struct_Tranche_dyn(_7, context)?;
+            let _7 = mapping_index_access_mapping_uint256_array_struct_Tranche_storage_dyn__of_uint256(U256::from(0xdu128), var_streamId, context)?;
+            var_tranches_mpos = convert_array_array_struct_Tranche_storage_dyn__to_array_struct_Tranche_dyn(_7, context)?;
             Ok(var_tranches_mpos)
         }
 
@@ -14277,9 +14277,9 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut var_token_address = U256::ZERO;
-            let zero_contract_IERC20_address = zero_value_for_split_contract_IERC20(context)?;
-            var_token_address = zero_contract_IERC20_address;
-            var_token_address = modifier_notNull_2749(zero_contract_IERC20_address, var_streamId, context)?;
+            let zero_contract_IERC20_563_address = zero_value_for_split_contract_IERC20(context)?;
+            var_token_address = zero_contract_IERC20_563_address;
+            var_token_address = modifier_notNull_2749(zero_contract_IERC20_563_address, var_streamId, context)?;
             Ok(var_token_address)
         }
 
@@ -15079,7 +15079,7 @@ pub mod sablierlockup {
                 revert(U256::from(0x0u128), sub(_3, U256::from(0x0u128), context)?, context)?;
             }
             let _4 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(U256::from(0xau128), var_streamId, context)?;
-            update_storage_value_offset_30t_bool_to_bool(add(_4, U256::from(0x0u128), context)?, U256::from(0x0u128), context)?;
+            update_storage_value_offset_t_bool_to_t_bool(add(_4, U256::from(0x0u128), context)?, U256::from(0x0u128), context)?;
             Ok(())
         }
 
@@ -15337,9 +15337,9 @@ pub mod sablierlockup {
                 let _1 = abi_encode_tuple_address(add(U256::from(0x0u128), U256::from(0x4u128), context)?, var_operator, context)?;
                 revert(U256::from(0x0u128), sub(_1, U256::from(0x0u128), context)?, context)?;
             }
-            let _2 = mapping_index_access_mapping_address_mapping_address_bool_of_address(U256::from(0x6u128), var_owner, context)?;
+            let _2 = mapping_index_access_mapping_address_mapping_address_bool__of_address(U256::from(0x6u128), var_owner, context)?;
             let _3 = mapping_index_access_mapping_address_bool_of_address(_2, var_operator, context)?;
-            update_storage_value_offset_0t_bool_to_bool(_3, var_approved, context)?;
+            update_storage_value_offset_0_bool_to_bool(_3, var_approved, context)?;
             let _4 = convert_address_to_address(var_owner, context)?;
             let _5 = convert_address_to_address(var_operator, context)?;
             let _6 = allocate_unbounded(context)?;
@@ -15372,7 +15372,7 @@ pub mod sablierlockup {
             Ok(())
         }
 
-        pub fn extract_from_storage_value_offsett_contract_ILockupNFTDescriptor<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_contract_ILockupNFTDescriptor<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -15386,7 +15386,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_contract_ILockupNFTDescriptor(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_contract_ILockupNFTDescriptor(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -15399,7 +15399,7 @@ pub mod sablierlockup {
             Ok(ret)
         }
 
-        pub fn update_storage_value_offsett_contract_ILockupNFTDescriptor_to_contract_ILockupNFTDescriptor<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_contract_ILockupNFTDescriptor_to_contract_ILockupNFTDescriptor<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -15413,7 +15413,7 @@ pub mod sablierlockup {
             Context<CI>: ContractInteractions,
         {
             let _428_address = read_from_storage_split_offset_contract_ILockupNFTDescriptor(U256::from(0x8u128), context)?;
-            update_storage_value_offsett_contract_ILockupNFTDescriptor_to_contract_ILockupNFTDescriptor(U256::from(0x8u128), var_newNFTDescriptor_address, context)?;
+            update_storage_value_offset_contract_ILockupNFTDescriptor_to_contract_ILockupNFTDescriptor(U256::from(0x8u128), var_newNFTDescriptor_address, context)?;
             let _1 = convert_address_to_address(caller(context)?, context)?;
             let _2 = allocate_unbounded(context)?;
             let _3 = abi_encode_contract_ILockupNFTDescriptor_contract_ILockupNFTDescriptor(_2, _428_address, var_newNFTDescriptor_address, context)?;
@@ -15745,7 +15745,7 @@ pub mod sablierlockup {
         where
             Context<CI>: ContractInteractions,
         {
-            update_storage_value_offsett_address_to_address(U256::from(0x0u128), var_newAdmin, context)?;
+            update_storage_value_offset_address_to_address(U256::from(0x0u128), var_newAdmin, context)?;
             let _1 = convert_address_to_address(caller(context)?, context)?;
             let _2 = convert_address_to_address(var_newAdmin, context)?;
             let _3 = allocate_unbounded(context)?;
@@ -15875,7 +15875,7 @@ pub mod sablierlockup {
             let expr = checked_add_uint128(_3, var_amount, context)?;
             let _4 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1634_slot, var_streamId, context)?;
             let _5 = add(_4, U256::from(0x2u128), context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(add(_5, U256::from(0x0u128), context)?, expr, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(add(_5, U256::from(0x0u128), context)?, expr, context)?;
             let _6 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1634_slot, var_streamId, context)?;
             let _7 = add(_6, U256::from(0x2u128), context)?;
             let var_amounts_4300_mpos = convert_struct_Amounts_storage_to_struct_Amounts(_7, context)?;
@@ -15886,9 +15886,9 @@ pub mod sablierlockup {
             let expr_2 = iszero(lt(cleanup_uint128(_8, context)?, cleanup_uint128(expr_1, context)?, context)?, context)?;
             if expr_2 != U256::ZERO {
                 let _11 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1634_slot, var_streamId, context)?;
-                update_storage_value_offsett_bool_to_bool(add(_11, U256::from(0x1u128), context)?, U256::from(0x1u128), context)?;
+                update_storage_value_offset_bool_to_bool(add(_11, U256::from(0x1u128), context)?, U256::from(0x1u128), context)?;
                 let _12 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1634_slot, var_streamId, context)?;
-                update_storage_value_offset_30t_bool_to_bool(add(_12, U256::from(0x0u128), context)?, U256::from(0x0u128), context)?;
+                update_storage_value_offset_t_bool_to_t_bool(add(_12, U256::from(0x0u128), context)?, U256::from(0x0u128), context)?;
             }
             let _13 = mapping_index_access_mapping_uint256_struct_Stream_storage_of_uint256(_1634_slot, var_streamId, context)?;
             let _1680_address = read_from_storage_split_offset_contract_IERC20(add(_13, U256::from(0x1u128), context)?, context)?;

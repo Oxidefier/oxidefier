@@ -440,7 +440,7 @@ pub mod morpho {
         Ok(result)
     }
 
-    pub fn update_storage_value_offsett_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+    pub fn update_storage_value_offset_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
     where
         Context<CI>: ContractInteractions,
     {
@@ -466,7 +466,7 @@ pub mod morpho {
         finalize_allocation(expr_143_mpos, sub(_2, expr_143_mpos, context)?, context)?;
         let expr_4 = keccak256(array_dataslot_bytes(expr_143_mpos, context)?, array_length_bytes(expr_143_mpos, context)?, context)?;
         mstore(U256::from(0x80u128), expr_4, context)?;
-        update_storage_value_offsett_address_to_address(U256::from(0x0u128), var_newOwner, context)?;
+        update_storage_value_offset_address_to_address(U256::from(0x0u128), var_newOwner, context)?;
         let _3 = convert_address_to_address(var_newOwner, context)?;
         let _4 = allocate_unbounded(context)?;
         let _5 = abi_encode_tuple(_4, context)?;
@@ -1595,24 +1595,6 @@ pub mod morpho {
             Ok(cleaned)
         }
 
-        pub fn shift_right_128_unsigned<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut newValue = U256::ZERO;
-            newValue = shr(U256::from(0x80u128), value, context)?;
-            Ok(newValue)
-        }
-
-        pub fn extract_from_storage_value_offset_16t_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut value = U256::ZERO;
-            value = cleanup_from_storage_uint128(shift_right_128_unsigned(slot_value, context)?, context)?;
-            Ok(value)
-        }
-
         pub fn shift_right_0_unsigned<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
@@ -1622,12 +1604,30 @@ pub mod morpho {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offsett_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_t_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
             value = cleanup_from_storage_uint128(shift_right_0_unsigned(slot_value, context)?, context)?;
+            Ok(value)
+        }
+
+        pub fn shift_right_128_unsigned<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut newValue = U256::ZERO;
+            newValue = shr(U256::from(0x80u128), value, context)?;
+            Ok(newValue)
+        }
+
+        pub fn extract_from_storage_value_offset_uint128<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut value = U256::ZERO;
+            value = cleanup_from_storage_uint128(shift_right_128_unsigned(slot_value, context)?, context)?;
             Ok(value)
         }
 
@@ -1637,19 +1637,19 @@ pub mod morpho {
         {
             let mut slotValue = U256::from(0x0u128);
             slotValue = sload(add(value, U256::from(0x0u128), context)?, context)?;
-            let memberValue0 = extract_from_storage_value_offsett_uint128(slotValue, context)?;
+            let memberValue0 = extract_from_storage_value_offset_t_uint128(slotValue, context)?;
             abi_encode_uint128_to_uint128(memberValue0, add(pos, U256::from(0x0u128), context)?, context)?;
-            let memberValue0_1 = extract_from_storage_value_offset_16t_uint128(slotValue, context)?;
+            let memberValue0_1 = extract_from_storage_value_offset_uint128(slotValue, context)?;
             abi_encode_uint128_to_uint128(memberValue0_1, add(pos, U256::from(0x20u128), context)?, context)?;
             slotValue = sload(add(value, U256::from(0x1u128), context)?, context)?;
-            let memberValue0_2 = extract_from_storage_value_offsett_uint128(slotValue, context)?;
+            let memberValue0_2 = extract_from_storage_value_offset_t_uint128(slotValue, context)?;
             abi_encode_uint128_to_uint128(memberValue0_2, add(pos, U256::from(0x40u128), context)?, context)?;
-            let memberValue0_3 = extract_from_storage_value_offset_16t_uint128(slotValue, context)?;
+            let memberValue0_3 = extract_from_storage_value_offset_uint128(slotValue, context)?;
             abi_encode_uint128_to_uint128(memberValue0_3, add(pos, U256::from(0x60u128), context)?, context)?;
             slotValue = sload(add(value, U256::from(0x2u128), context)?, context)?;
-            let memberValue0_4 = extract_from_storage_value_offsett_uint128(slotValue, context)?;
+            let memberValue0_4 = extract_from_storage_value_offset_t_uint128(slotValue, context)?;
             abi_encode_uint128_to_uint128(memberValue0_4, add(pos, U256::from(0x80u128), context)?, context)?;
-            let memberValue0_5 = extract_from_storage_value_offset_16t_uint128(slotValue, context)?;
+            let memberValue0_5 = extract_from_storage_value_offset_uint128(slotValue, context)?;
             abi_encode_uint128_to_uint128(memberValue0_5, add(pos, U256::from(0xa0u128), context)?, context)?;
             Ok(())
         }
@@ -2834,7 +2834,7 @@ pub mod morpho {
             Ok(memPtr)
         }
 
-        pub fn convert_stringliteral_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn convert_stringliteral_0329_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -2848,7 +2848,7 @@ pub mod morpho {
             Context<CI>: ContractInteractions,
         {
             let mut ret_mpos = U256::ZERO;
-            let _1094_mpos = convert_stringliteral_to_string(context)?;
+            let _1094_mpos = convert_stringliteral_0329_to_string(context)?;
             ret_mpos = _1094_mpos;
             Ok(ret_mpos)
         }
@@ -3635,7 +3635,7 @@ pub mod morpho {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -3665,7 +3665,7 @@ pub mod morpho {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint256_to_uint256<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_uint256_to_uint256<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -3679,15 +3679,15 @@ pub mod morpho {
             Context<CI>: ContractInteractions,
         {
             let memberValue = read_from_memoryt_address(add(value, U256::from(0x0u128), context)?, context)?;
-            update_storage_value_offsett_address_to_address(add(slot, U256::from(0x0u128), context)?, memberValue, context)?;
+            update_storage_value_offset_address_to_address(add(slot, U256::from(0x0u128), context)?, memberValue, context)?;
             let memberValue_1 = read_from_memoryt_address(add(value, U256::from(0x20u128), context)?, context)?;
-            update_storage_value_offsett_address_to_address(add(slot, U256::from(0x1u128), context)?, memberValue_1, context)?;
+            update_storage_value_offset_address_to_address(add(slot, U256::from(0x1u128), context)?, memberValue_1, context)?;
             let memberValue_2 = read_from_memoryt_address(add(value, U256::from(0x40u128), context)?, context)?;
-            update_storage_value_offsett_address_to_address(add(slot, U256::from(0x2u128), context)?, memberValue_2, context)?;
+            update_storage_value_offset_address_to_address(add(slot, U256::from(0x2u128), context)?, memberValue_2, context)?;
             let memberValue_3 = read_from_memoryt_address(add(value, U256::from(0x60u128), context)?, context)?;
-            update_storage_value_offsett_address_to_address(add(slot, U256::from(0x3u128), context)?, memberValue_3, context)?;
+            update_storage_value_offset_address_to_address(add(slot, U256::from(0x3u128), context)?, memberValue_3, context)?;
             let memberValue_4 = read_from_memoryt_uint256(add(value, U256::from(0x80u128), context)?, context)?;
-            update_storage_value_offsett_uint256_to_uint256(add(slot, U256::from(0x4u128), context)?, memberValue_4, context)?;
+            update_storage_value_offset_uint256_to_uint256(add(slot, U256::from(0x4u128), context)?, memberValue_4, context)?;
             Ok(())
         }
 
@@ -3750,8 +3750,8 @@ pub mod morpho {
             Context<CI>: ContractInteractions,
         {
             let mut var = U256::ZERO;
-            let zero_uint256 = zero_value_for_split_uint256(context)?;
-            var = zero_uint256;
+            let zero_t_uint256 = zero_value_for_split_uint256(context)?;
+            var = zero_t_uint256;
             let expr = constant_VIRTUAL_SHARES(context)?;
             let expr_1 = checked_add_uint256(var_totalShares, expr, context)?;
             let expr_2 = constant_VIRTUAL_ASSETS(context)?;
@@ -3841,7 +3841,7 @@ pub mod morpho {
             Ok(dataSlot)
         }
 
-        pub fn mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -3863,7 +3863,7 @@ pub mod morpho {
             Ok(dataSlot)
         }
 
-        pub fn extract_from_storage_value_offsett_address<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_address<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -3877,7 +3877,7 @@ pub mod morpho {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_address(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_address(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -3886,7 +3886,7 @@ pub mod morpho {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_uint128(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_t_uint128(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -3895,11 +3895,11 @@ pub mod morpho {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offset_16t_uint128(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_uint128(sload(slot, context)?, context)?;
             Ok(value)
         }
 
-        pub fn extract_from_storage_value_offsett_uint256<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_uint256<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -3913,7 +3913,7 @@ pub mod morpho {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_uint256(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_uint256(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -3966,7 +3966,7 @@ pub mod morpho {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint128_to_t_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_t_uint128_to_t_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -3987,7 +3987,7 @@ pub mod morpho {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint128_to_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_uint128_to_uint128<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4043,13 +4043,13 @@ pub mod morpho {
                 let _14 = add(_13, U256::from(0x1u128), context)?;
                 let _15 = read_from_storage_split_offset_t_uint128(_14, context)?;
                 let expr_8 = checked_add_uint128(_15, expr_7, context)?;
-                update_storage_value_offsett_uint128_to_uint128(_14, expr_8, context)?;
+                update_storage_value_offset_uint128_to_uint128(_14, expr_8, context)?;
                 let expr_9 = fun_toUint128(expr_6, context)?;
                 let _16 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_973_slot, var_id, context)?;
                 let _17 = add(_16, U256::from(0x0u128), context)?;
                 let _18 = read_from_storage_split_offset_t_uint128(_17, context)?;
                 let expr_10 = checked_add_uint128(_18, expr_9, context)?;
-                update_storage_value_offsett_uint128_to_uint128(_17, expr_10, context)?;
+                update_storage_value_offset_uint128_to_uint128(_17, expr_10, context)?;
                 let mut var_feeShares = U256::ZERO;
                 let zero_uint256 = zero_value_for_split_uint256(context)?;
                 var_feeShares = zero_uint256;
@@ -4069,19 +4069,19 @@ pub mod morpho {
                     let _28 = convert_uint128_to_uint256(_27, context)?;
                     let expr_14 = fun_toSharesDown(expr_12, expr_13, _28, context)?;
                     var_feeShares = expr_14;
-                    let _29 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), var_id, context)?;
+                    let _29 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), var_id, context)?;
                     let _30 = read_from_storage_split_offset_address(U256::from(0x1u128), context)?;
                     let _31 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_29, _30, context)?;
                     let _32 = add(_31, U256::from(0x0u128), context)?;
                     let _33 = read_from_storage_split_offset_uint256(_32, context)?;
                     let expr_15 = checked_add_uint256(_33, expr_14, context)?;
-                    update_storage_value_offsett_uint256_to_uint256(_32, expr_15, context)?;
+                    update_storage_value_offset_uint256_to_uint256(_32, expr_15, context)?;
                     let expr_16 = fun_toUint128(expr_14, context)?;
                     let _34 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_973_slot, var_id, context)?;
                     let _35 = add(_34, U256::from(0x0u128), context)?;
                     let _36 = read_from_storage_split_offset_uint128(_35, context)?;
                     let expr_17 = checked_add_uint128(_36, expr_16, context)?;
-                    update_storage_value_offsett_uint128_to_t_uint128(_35, expr_17, context)?;
+                    update_storage_value_offset_t_uint128_to_t_uint128(_35, expr_17, context)?;
                 }
                 let _37 = convert_bytes32_to_bytes32(var_id, context)?;
                 let _38 = allocate_unbounded(context)?;
@@ -4090,7 +4090,7 @@ pub mod morpho {
             }
             let expr_18 = convert_uint256_to_uint128(timestamp(context)?, context)?;
             let _40 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_973_slot, var_id, context)?;
-            update_storage_value_offsett_uint128_to_uint128(add(_40, U256::from(0x2u128), context)?, expr_18, context)?;
+            update_storage_value_offset_uint128_to_uint128(add(_40, U256::from(0x2u128), context)?, expr_18, context)?;
             Ok(())
         }
 
@@ -4190,7 +4190,7 @@ pub mod morpho {
             let mut var_ = U256::ZERO;
             let zero_bool = zero_value_for_split_bool(context)?;
             var_ = zero_bool;
-            let _1 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), var_id, context)?;
+            let _1 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), var_id, context)?;
             let _2 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_1, var_borrower, context)?;
             let _3 = read_from_storage_split_offset_t_uint128(add(_2, U256::from(0x1u128), context)?, context)?;
             let expr = convert_uint128_to_uint256(_3, context)?;
@@ -4201,7 +4201,7 @@ pub mod morpho {
             let _8 = convert_uint128_to_uint256(_5, context)?;
             let _9 = convert_uint128_to_uint256(_7, context)?;
             let expr_1 = fun_toAssetsUp(expr, _8, _9, context)?;
-            let _10 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), var_id, context)?;
+            let _10 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), var_id, context)?;
             let _11 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_10, var_borrower, context)?;
             let _12 = read_from_storage_split_offset_uint128(add(_11, U256::from(0x1u128), context)?, context)?;
             let expr_2 = convert_uint128_to_uint256(_12, context)?;
@@ -4221,7 +4221,7 @@ pub mod morpho {
             let mut var = U256::ZERO;
             let zero_bool = zero_value_for_split_bool(context)?;
             var = zero_bool;
-            let _1 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), var_id, context)?;
+            let _1 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), var_id, context)?;
             let _2 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_1, var_borrower, context)?;
             let _3 = read_from_storage_split_offset_t_uint128(add(_2, U256::from(0x1u128), context)?, context)?;
             let expr = eq(cleanup_uint128(_3, context)?, convert_rational_by_to_uint128(U256::from(0x0u128), context)?, context)?;
@@ -4275,7 +4275,7 @@ pub mod morpho {
             Ok(dataSlot)
         }
 
-        pub fn mapping_index_access_mapping_address_mapping_address_bool_of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn mapping_index_access_mapping_address_mapping_address_bool__of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4286,7 +4286,7 @@ pub mod morpho {
             Ok(dataSlot)
         }
 
-        pub fn extract_from_storage_value_offsett_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4300,7 +4300,7 @@ pub mod morpho {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_bool(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_bool(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -4314,7 +4314,7 @@ pub mod morpho {
             let expr = eq(cleanup_address(caller(context)?, context)?, cleanup_address(var_onBehalf, context)?, context)?;
             let mut expr_1 = expr;
             if iszero(expr, context)? != U256::ZERO {
-                let _1 = mapping_index_access_mapping_address_mapping_address_bool_of_address(U256::from(0x6u128), var_onBehalf, context)?;
+                let _1 = mapping_index_access_mapping_address_mapping_address_bool__of_address(U256::from(0x6u128), var_onBehalf, context)?;
                 let _2 = mapping_index_access_mapping_address_bool_of_address(_1, caller(context)?, context)?;
                 let _3 = read_from_storage_split_offset_bool(_2, context)?;
                 expr_1 = _3;
@@ -4451,24 +4451,24 @@ pub mod morpho {
                 var_assets = expr_7;
             }
             let expr_9 = fun_toUint128(var_shares, context)?;
-            let _15 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
+            let _15 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
             let _16 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_15, var_onBehalf, context)?;
             let _17 = add(_16, U256::from(0x1u128), context)?;
             let _18 = read_from_storage_split_offset_t_uint128(_17, context)?;
             let expr_10 = checked_add_uint128(_18, expr_9, context)?;
-            update_storage_value_offsett_uint128_to_uint128(_17, expr_10, context)?;
+            update_storage_value_offset_uint128_to_uint128(_17, expr_10, context)?;
             let expr_11 = fun_toUint128(var_shares, context)?;
             let _19 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_212_slot, expr, context)?;
             let _20 = add(_19, U256::from(0x1u128), context)?;
             let _21 = read_from_storage_split_offset_uint128(_20, context)?;
             let expr_12 = checked_add_uint128(_21, expr_11, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(_20, expr_12, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(_20, expr_12, context)?;
             let expr_13 = fun_toUint128(var_assets, context)?;
             let _22 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_212_slot, expr, context)?;
             let _23 = add(_22, U256::from(0x1u128), context)?;
             let _24 = read_from_storage_split_offset_t_uint128(_23, context)?;
             let expr_14 = checked_add_uint128(_24, expr_13, context)?;
-            update_storage_value_offsett_uint128_to_uint128(_23, expr_14, context)?;
+            update_storage_value_offset_uint128_to_uint128(_23, expr_14, context)?;
             let expr_15 = fun__isHealthy(var_marketParams_792_mpos, expr, var_onBehalf, context)?;
             let expr_927_mpos = constant_INSUFFICIENT_COLLATERAL(context)?;
             require_helper_string(expr_15, expr_927_mpos, context)?;
@@ -4530,7 +4530,7 @@ pub mod morpho {
             Ok(dataSlot)
         }
 
-        pub fn update_storage_value_offsett_struct_MarketParams_to_struct_MarketParams<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_struct_MarketParams_to_struct_MarketParams<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4562,9 +4562,9 @@ pub mod morpho {
             require_helper_string(expr_1, expr_405_mpos, context)?;
             let expr_2 = convert_uint256_to_uint128(timestamp(context)?, context)?;
             let _10 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_569_slot, expr, context)?;
-            update_storage_value_offsett_uint128_to_uint128(add(_10, U256::from(0x2u128), context)?, expr_2, context)?;
+            update_storage_value_offset_uint128_to_uint128(add(_10, U256::from(0x2u128), context)?, expr_2, context)?;
             let _11 = mapping_index_access_mapping_userDefinedValueType_Id_struct_MarketParams_storage_of_userDefinedValueType_Id(U256::from(0x8u128), expr, context)?;
-            update_storage_value_offsett_struct_MarketParams_to_struct_MarketParams(_11, var_marketParams_369_mpos, context)?;
+            update_storage_value_offset_struct_MarketParams_to_struct_MarketParams(_11, var_marketParams_369_mpos, context)?;
             let _12 = convert_bytes32_to_bytes32(expr, context)?;
             let _13 = allocate_unbounded(context)?;
             let _14 = abi_encode_struct_MarketParams(_13, var_marketParams_369_mpos, context)?;
@@ -4632,7 +4632,7 @@ pub mod morpho {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_bool_to_bool<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4651,7 +4651,7 @@ pub mod morpho {
             let expr_213_mpos = constant_ALREADY_SET(context)?;
             require_helper_string(expr, expr_213_mpos, context)?;
             let _3 = mapping_index_access_mapping_address_bool_of_address(U256::from(0x4u128), var_irm, context)?;
-            update_storage_value_offsett_bool_to_bool(_3, U256::from(0x1u128), context)?;
+            update_storage_value_offset_bool_to_bool(_3, U256::from(0x1u128), context)?;
             let _4 = convert_address_to_address(var_irm, context)?;
             let _5 = allocate_unbounded(context)?;
             let _6 = abi_encode_tuple(_5, context)?;
@@ -4708,7 +4708,7 @@ pub mod morpho {
             let expr_251_mpos = constant_MAX_LLTV_EXCEEDED(context)?;
             require_helper_string(expr_2, expr_251_mpos, context)?;
             let _3 = mapping_index_access_mapping_uint256_bool_of_uint256(U256::from(0x5u128), var_lltv, context)?;
-            update_storage_value_offsett_bool_to_bool(_3, U256::from(0x1u128), context)?;
+            update_storage_value_offset_bool_to_bool(_3, U256::from(0x1u128), context)?;
             let _4 = allocate_unbounded(context)?;
             let _5 = abi_encode_uint256(_4, var_lltv, context)?;
             log1(_4, sub(_5, _4, context)?, U256::from_be_slice(&[0x29, 0x7b, 0x80, 0xe7, 0xa8, 0x96, 0xfa, 0xd4, 0x70, 0xc6, 0x30, 0xf6, 0x57, 0x50, 0x72, 0xd6, 0x09, 0xbd, 0xe9, 0x97, 0x26, 0x0f, 0xf3, 0xdb, 0x85, 0x19, 0x39, 0x40, 0x5e, 0xc2, 0x91, 0x39]), context)?;
@@ -4911,10 +4911,10 @@ pub mod morpho {
             mstore(expr_3398_mpos, sub(_2, add(expr_3398_mpos, U256::from(0x20u128), context)?, context)?, context)?;
             finalize_allocation(expr_3398_mpos, sub(_2, expr_3398_mpos, context)?, context)?;
             let _3 = mload(expr_3398_mpos, context)?;
-            let expr_3399_component = call(gas(context)?, expr, U256::from(0x0u128), add(expr_3398_mpos, U256::from(0x20u128), context)?, _3, U256::from(0x0u128), U256::from(0x0u128), context)?;
+            let expr_component = call(gas(context)?, expr, U256::from(0x0u128), add(expr_3398_mpos, U256::from(0x20u128), context)?, _3, U256::from(0x0u128), U256::from(0x0u128), context)?;
             let expr_component_mpos = extract_returndata(context)?;
             let expr_3404_mpos = constant_TRANSFER_FROM_REVERTED(context)?;
-            require_helper_string(expr_3399_component, expr_3404_mpos, context)?;
+            require_helper_string(expr_component, expr_3404_mpos, context)?;
             let expr_3 = array_length_bytes(expr_component_mpos, context)?;
             let expr_4 = eq(cleanup_uint256(expr_3, context)?, convert_rational_0_by_1_to_uint256(U256::from(0x0u128), context)?, context)?;
             let mut expr_5 = expr_4;
@@ -5047,7 +5047,7 @@ pub mod morpho {
         {
             let mut ret = U256::ZERO;
             let mut slot = U256::from(0x6u128);
-            slot = mapping_index_access_mapping_address_mapping_address_bool_of_address(U256::from(0x6u128), key, context)?;
+            slot = mapping_index_access_mapping_address_mapping_address_bool__of_address(U256::from(0x6u128), key, context)?;
             slot = mapping_index_access_mapping_address_bool_of_address(slot, key_1, context)?;
             ret = read_from_storage_split_dynamic_bool(slot, U256::from(0x0u128), context)?;
             Ok(ret)
@@ -5245,42 +5245,42 @@ pub mod morpho {
             let expr_23 = fun_toAssetsUp(var_repaidShares, _25, _26, context)?;
             let expr_24 = fun_toUint128(var_repaidShares, context)?;
             let _782_slot = U256::from(0x2u128);
-            let _27 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(_782_slot, expr, context)?;
+            let _27 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(_782_slot, expr, context)?;
             let _28 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_27, var_borrower, context)?;
             let _29 = add(_28, U256::from(0x1u128), context)?;
             let _30 = read_from_storage_split_offset_t_uint128(_29, context)?;
             let expr_25 = checked_sub_uint128(_30, expr_24, context)?;
-            update_storage_value_offsett_uint128_to_uint128(_29, expr_25, context)?;
+            update_storage_value_offset_uint128_to_uint128(_29, expr_25, context)?;
             let expr_26 = fun_toUint128(var_repaidShares, context)?;
             let _31 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_slot, expr, context)?;
             let _32 = add(_31, U256::from(0x1u128), context)?;
             let _33 = read_from_storage_split_offset_uint128(_32, context)?;
             let expr_27 = checked_sub_uint128(_33, expr_26, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(_32, expr_27, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(_32, expr_27, context)?;
             let _34 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_slot, expr, context)?;
             let _35 = read_from_storage_split_offset_t_uint128(add(_34, U256::from(0x1u128), context)?, context)?;
             let _36 = convert_uint128_to_uint256(_35, context)?;
             let expr_28 = fun_zeroFloorSub(_36, expr_23, context)?;
             let expr_29 = fun_toUint128(expr_28, context)?;
             let _37 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_slot, expr, context)?;
-            update_storage_value_offsett_uint128_to_uint128(add(_37, U256::from(0x1u128), context)?, expr_29, context)?;
+            update_storage_value_offset_uint128_to_uint128(add(_37, U256::from(0x1u128), context)?, expr_29, context)?;
             let expr_30 = fun_toUint128(var_seizedAssets, context)?;
-            let _38 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(_782_slot, expr, context)?;
+            let _38 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(_782_slot, expr, context)?;
             let _39 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_38, var_borrower, context)?;
             let _40 = add(_39, U256::from(0x1u128), context)?;
             let _41 = read_from_storage_split_offset_uint128(_40, context)?;
             let expr_31 = checked_sub_uint128(_41, expr_30, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(_40, expr_31, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(_40, expr_31, context)?;
             let mut var_badDebtShares = U256::ZERO;
             var_badDebtShares = zero_uint256;
             let mut var_badDebtAssets = U256::ZERO;
             var_badDebtAssets = zero_uint256;
-            let _42 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(_782_slot, expr, context)?;
+            let _42 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(_782_slot, expr, context)?;
             let _43 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_42, var_borrower, context)?;
             let _44 = read_from_storage_split_offset_uint128(add(_43, U256::from(0x1u128), context)?, context)?;
             let expr_32 = eq(cleanup_uint128(_44, context)?, convert_rational_by_to_uint128(U256::from(0x0u128), context)?, context)?;
             if expr_32 != U256::ZERO {
-                let _45 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(_782_slot, expr, context)?;
+                let _45 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(_782_slot, expr, context)?;
                 let _46 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_45, var_borrower, context)?;
                 let _47 = read_from_storage_split_offset_t_uint128(add(_46, U256::from(0x1u128), context)?, context)?;
                 let _48 = convert_uint128_to_uint256(_47, context)?;
@@ -5302,23 +5302,23 @@ pub mod morpho {
                 let _59 = add(_58, U256::from(0x1u128), context)?;
                 let _60 = read_from_storage_split_offset_t_uint128(_59, context)?;
                 let expr_36 = checked_sub_uint128(_60, expr_35, context)?;
-                update_storage_value_offsett_uint128_to_uint128(_59, expr_36, context)?;
+                update_storage_value_offset_uint128_to_uint128(_59, expr_36, context)?;
                 let expr_37 = fun_toUint128(expr_34, context)?;
                 let _61 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_slot, expr, context)?;
                 let _62 = add(_61, U256::from(0x0u128), context)?;
                 let _63 = read_from_storage_split_offset_t_uint128(_62, context)?;
                 let expr_38 = checked_sub_uint128(_63, expr_37, context)?;
-                update_storage_value_offsett_uint128_to_uint128(_62, expr_38, context)?;
+                update_storage_value_offset_uint128_to_uint128(_62, expr_38, context)?;
                 let expr_39 = fun_toUint128(_48, context)?;
                 let _64 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_slot, expr, context)?;
                 let _65 = add(_64, U256::from(0x1u128), context)?;
                 let _66 = read_from_storage_split_offset_uint128(_65, context)?;
                 let expr_40 = checked_sub_uint128(_66, expr_39, context)?;
-                update_storage_value_offsett_uint128_to_t_uint128(_65, expr_40, context)?;
+                update_storage_value_offset_t_uint128_to_t_uint128(_65, expr_40, context)?;
                 let _67 = convert_rational_by_to_uint128(U256::from(0x0u128), context)?;
-                let _68 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(_782_slot, expr, context)?;
+                let _68 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(_782_slot, expr, context)?;
                 let _69 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_68, var_borrower, context)?;
-                update_storage_value_offsett_uint128_to_uint128(add(_69, U256::from(0x1u128), context)?, _67, context)?;
+                update_storage_value_offset_uint128_to_uint128(add(_69, U256::from(0x1u128), context)?, _67, context)?;
             }
             let _70 = convert_bytes32_to_bytes32(expr, context)?;
             let _71 = convert_address_to_address(caller(context)?, context)?;
@@ -5500,7 +5500,7 @@ pub mod morpho {
             let mut ret_1 = U256::ZERO;
             let mut ret_2 = U256::ZERO;
             let mut slot = U256::from(0x2u128);
-            slot = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(slot, key, context)?;
+            slot = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(slot, key, context)?;
             slot = mapping_index_access_mapping_address_struct_Position_storage_of_address(slot, key_1, context)?;
             ret = read_from_storage_split_offset_uint256(add(slot, U256::from(0x0u128), context)?, context)?;
             ret_1 = read_from_storage_split_offset_t_uint128(add(slot, U256::from(0x1u128), context)?, context)?;
@@ -5529,9 +5529,9 @@ pub mod morpho {
         {
             let mut var = U256::ZERO;
             let mut var_1 = U256::ZERO;
-            let zero_t_uint256 = zero_value_for_split_uint256(context)?;
-            var = zero_t_uint256;
-            var_1 = zero_t_uint256;
+            let zero_uint256 = zero_value_for_split_uint256(context)?;
+            var = zero_uint256;
+            var_1 = zero_uint256;
             let expr = fun_id(var_marketParams_974_mpos, context)?;
             let _25_slot = U256::from(0x3u128);
             let _1 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_25_slot, expr, context)?;
@@ -5561,25 +5561,25 @@ pub mod morpho {
                 var_assets = expr_6;
             }
             let expr_8 = fun_toUint128(var_shares, context)?;
-            let _15 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
+            let _15 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
             let _16 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_15, var_onBehalf, context)?;
             let _17 = add(_16, U256::from(0x1u128), context)?;
             let _18 = read_from_storage_split_offset_t_uint128(_17, context)?;
             let expr_9 = checked_sub_uint128(_18, expr_8, context)?;
-            update_storage_value_offsett_uint128_to_uint128(_17, expr_9, context)?;
+            update_storage_value_offset_uint128_to_uint128(_17, expr_9, context)?;
             let expr_10 = fun_toUint128(var_shares, context)?;
             let _19 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_25_slot, expr, context)?;
             let _20 = add(_19, U256::from(0x1u128), context)?;
             let _21 = read_from_storage_split_offset_uint128(_20, context)?;
             let expr_11 = checked_sub_uint128(_21, expr_10, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(_20, expr_11, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(_20, expr_11, context)?;
             let _22 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_25_slot, expr, context)?;
             let _23 = read_from_storage_split_offset_t_uint128(add(_22, U256::from(0x1u128), context)?, context)?;
             let _24 = convert_uint128_to_uint256(_23, context)?;
             let expr_12 = fun_zeroFloorSub(_24, var_assets, context)?;
             let expr_13 = fun_toUint128(expr_12, context)?;
             let _25 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_25_slot, expr, context)?;
-            update_storage_value_offsett_uint128_to_uint128(add(_25, U256::from(0x1u128), context)?, expr_13, context)?;
+            update_storage_value_offset_uint128_to_uint128(add(_25, U256::from(0x1u128), context)?, expr_13, context)?;
             let _26 = convert_bytes32_to_bytes32(expr, context)?;
             let _27 = convert_address_to_address(caller(context)?, context)?;
             let _28 = convert_address_to_address(var_onBehalf, context)?;
@@ -5638,15 +5638,15 @@ pub mod morpho {
         where
             Context<CI>: ContractInteractions,
         {
-            let _1 = mapping_index_access_mapping_address_mapping_address_bool_of_address(U256::from(0x6u128), caller(context)?, context)?;
+            let _1 = mapping_index_access_mapping_address_mapping_address_bool__of_address(U256::from(0x6u128), caller(context)?, context)?;
             let _2 = mapping_index_access_mapping_address_bool_of_address(_1, var_authorized, context)?;
             let _3 = read_from_storage_split_offset_bool(_2, context)?;
             let expr = iszero(eq(cleanup_bool(var_newIsAuthorized, context)?, cleanup_bool(_3, context)?, context)?, context)?;
             let expr_1772_mpos = constant_ALREADY_SET(context)?;
             require_helper_string(expr, expr_1772_mpos, context)?;
-            let _4 = mapping_index_access_mapping_address_mapping_address_bool_of_address(U256::from(0x6u128), caller(context)?, context)?;
+            let _4 = mapping_index_access_mapping_address_mapping_address_bool__of_address(U256::from(0x6u128), caller(context)?, context)?;
             let _5 = mapping_index_access_mapping_address_bool_of_address(_4, var_authorized, context)?;
-            update_storage_value_offsett_bool_to_bool(_5, var_newIsAuthorized, context)?;
+            update_storage_value_offset_bool_to_bool(_5, var_newIsAuthorized, context)?;
             let _6 = convert_address_to_address(caller(context)?, context)?;
             let _7 = convert_address_to_address(var_authorized, context)?;
             let _8 = allocate_unbounded(context)?;
@@ -5715,7 +5715,7 @@ pub mod morpho {
             let _5 = mapping_index_access_mapping_address_uint256_of_address(U256::from(0x7u128), _4, context)?;
             let _6 = read_from_storage_split_offset_uint256(_5, context)?;
             let _7 = increment_uint256(_6, context)?;
-            update_storage_value_offsett_uint256_to_uint256(_5, _7, context)?;
+            update_storage_value_offset_uint256_to_uint256(_5, _7, context)?;
             let expr_1 = eq(cleanup_uint256(_3, context)?, cleanup_uint256(_6, context)?, context)?;
             let expr_1826_mpos = constant_INVALID_NONCE(context)?;
             require_helper_string(expr_1, expr_1826_mpos, context)?;
@@ -5761,11 +5761,11 @@ pub mod morpho {
             let _22 = add(var_authorization_mpos, U256::from(0x40u128), context)?;
             let _23 = read_from_memoryt_bool(_22, context)?;
             let _24 = read_from_memoryt_address(_15, context)?;
-            let _25 = mapping_index_access_mapping_address_mapping_address_bool_of_address(U256::from(0x6u128), _24, context)?;
+            let _25 = mapping_index_access_mapping_address_mapping_address_bool__of_address(U256::from(0x6u128), _24, context)?;
             let _26 = add(var_authorization_mpos, U256::from(0x20u128), context)?;
             let _27 = read_from_memoryt_address(_26, context)?;
             let _28 = mapping_index_access_mapping_address_bool_of_address(_25, _27, context)?;
-            update_storage_value_offsett_bool_to_bool(_28, _23, context)?;
+            update_storage_value_offset_bool_to_bool(_28, _23, context)?;
             let _29 = read_from_memoryt_address(_15, context)?;
             let _30 = read_from_memoryt_address(_26, context)?;
             let _31 = read_from_memoryt_bool(_22, context)?;
@@ -5815,7 +5815,7 @@ pub mod morpho {
             fun_accrueInterest(var_marketParams_mpos, expr, context)?;
             let expr_5 = convert_uint256_to_uint128(var_newFee, context)?;
             let _5 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_164_slot, expr, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(add(_5, U256::from(0x2u128), context)?, expr_5, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(add(_5, U256::from(0x2u128), context)?, expr_5, context)?;
             let _6 = convert_bytes32_to_bytes32(expr, context)?;
             let _7 = allocate_unbounded(context)?;
             let _8 = abi_encode_uint256(_7, var_newFee, context)?;
@@ -5866,7 +5866,7 @@ pub mod morpho {
             let expr = iszero(eq(cleanup_address(var_newFeeRecipient, context)?, cleanup_address(_1, context)?, context)?, context)?;
             let expr_351_mpos = constant_ALREADY_SET(context)?;
             require_helper_string(expr, expr_351_mpos, context)?;
-            update_storage_value_offsett_address_to_address(U256::from(0x1u128), var_newFeeRecipient, context)?;
+            update_storage_value_offset_address_to_address(U256::from(0x1u128), var_newFeeRecipient, context)?;
             let _2 = convert_address_to_address(var_newFeeRecipient, context)?;
             let _3 = allocate_unbounded(context)?;
             let _4 = abi_encode_tuple(_3, context)?;
@@ -5917,7 +5917,7 @@ pub mod morpho {
             let expr = iszero(eq(cleanup_address(var_newOwner, context)?, cleanup_address(_1, context)?, context)?, context)?;
             let expr_185_mpos = constant_ALREADY_SET(context)?;
             require_helper_string(expr, expr_185_mpos, context)?;
-            update_storage_value_offsett_address_to_address(U256::from(0x0u128), var_newOwner, context)?;
+            update_storage_value_offset_address_to_address(U256::from(0x0u128), var_newOwner, context)?;
             let _2 = convert_address_to_address(var_newOwner, context)?;
             let _3 = allocate_unbounded(context)?;
             let _4 = abi_encode_tuple(_3, context)?;
@@ -5997,24 +5997,24 @@ pub mod morpho {
                 let expr_6 = fun_toAssetsUp(var_shares, _7, _8, context)?;
                 var_assets = expr_6;
             }
-            let _15 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
+            let _15 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
             let _16 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_15, var_onBehalf, context)?;
             let _17 = add(_16, U256::from(0x0u128), context)?;
             let _18 = read_from_storage_split_offset_uint256(_17, context)?;
             let expr_8 = checked_add_uint256(_18, var_shares, context)?;
-            update_storage_value_offsett_uint256_to_uint256(_17, expr_8, context)?;
+            update_storage_value_offset_uint256_to_uint256(_17, expr_8, context)?;
             let expr_9 = fun_toUint128(var_shares, context)?;
             let _19 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_610_slot, expr, context)?;
             let _20 = add(_19, U256::from(0x0u128), context)?;
             let _21 = read_from_storage_split_offset_uint128(_20, context)?;
             let expr_10 = checked_add_uint128(_21, expr_9, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(_20, expr_10, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(_20, expr_10, context)?;
             let expr_11 = fun_toUint128(var_assets, context)?;
             let _22 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_610_slot, expr, context)?;
             let _23 = add(_22, U256::from(0x0u128), context)?;
             let _24 = read_from_storage_split_offset_t_uint128(_23, context)?;
             let expr_12 = checked_add_uint128(_24, expr_11, context)?;
-            update_storage_value_offsett_uint128_to_uint128(_23, expr_12, context)?;
+            update_storage_value_offset_uint128_to_uint128(_23, expr_12, context)?;
             let _25 = convert_bytes32_to_bytes32(expr, context)?;
             let _26 = convert_address_to_address(caller(context)?, context)?;
             let _27 = convert_address_to_address(var_onBehalf, context)?;
@@ -6087,12 +6087,12 @@ pub mod morpho {
             let expr_mpos = constant_ZERO_ADDRESS(context)?;
             require_helper_string(expr_4, expr_mpos, context)?;
             let expr_5 = fun_toUint128(var_assets, context)?;
-            let _3 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
+            let _3 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
             let _4 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_3, var_onBehalf, context)?;
             let _5 = add(_4, U256::from(0x1u128), context)?;
             let _6 = read_from_storage_split_offset_uint128(_5, context)?;
             let expr_6 = checked_add_uint128(_6, expr_5, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(_5, expr_6, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(_5, expr_6, context)?;
             let _7 = convert_bytes32_to_bytes32(expr, context)?;
             let _8 = convert_address_to_address(caller(context)?, context)?;
             let _9 = convert_address_to_address(var_onBehalf, context)?;
@@ -6185,24 +6185,24 @@ pub mod morpho {
                 let expr_7 = fun_toAssetsDown(var_shares, _7, _8, context)?;
                 var_assets = expr_7;
             }
-            let _15 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
+            let _15 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
             let _16 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_15, var_onBehalf, context)?;
             let _17 = add(_16, U256::from(0x0u128), context)?;
             let _18 = read_from_storage_split_offset_uint256(_17, context)?;
             let expr_9 = checked_sub_uint256(_18, var_shares, context)?;
-            update_storage_value_offsett_uint256_to_uint256(_17, expr_9, context)?;
+            update_storage_value_offset_uint256_to_uint256(_17, expr_9, context)?;
             let expr_10 = fun_toUint128(var_shares, context)?;
             let _19 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_331_slot, expr, context)?;
             let _20 = add(_19, U256::from(0x0u128), context)?;
             let _21 = read_from_storage_split_offset_uint128(_20, context)?;
             let expr_11 = checked_sub_uint128(_21, expr_10, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(_20, expr_11, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(_20, expr_11, context)?;
             let expr_12 = fun_toUint128(var_assets, context)?;
             let _22 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_331_slot, expr, context)?;
             let _23 = add(_22, U256::from(0x0u128), context)?;
             let _24 = read_from_storage_split_offset_t_uint128(_23, context)?;
             let expr_13 = checked_sub_uint128(_24, expr_12, context)?;
-            update_storage_value_offsett_uint128_to_uint128(_23, expr_13, context)?;
+            update_storage_value_offset_uint128_to_uint128(_23, expr_13, context)?;
             let _25 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_331_slot, expr, context)?;
             let _26 = read_from_storage_split_offset_t_uint128(add(_25, U256::from(0x1u128), context)?, context)?;
             let _27 = mapping_index_access_mapping_userDefinedValueType_Id_struct_Market_storage_of_userDefinedValueType_Id(_331_slot, expr, context)?;
@@ -6261,12 +6261,12 @@ pub mod morpho {
             require_helper_string(expr_5, expr_1300_mpos, context)?;
             fun_accrueInterest(var_marketParams_1249_mpos, expr, context)?;
             let expr_6 = fun_toUint128(var_assets, context)?;
-            let _3 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage_of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
+            let _3 = mapping_index_access_mapping_userDefinedValueType_Id_mapping_address_struct_Position_storage__of_userDefinedValueType_Id(U256::from(0x2u128), expr, context)?;
             let _4 = mapping_index_access_mapping_address_struct_Position_storage_of_address(_3, var_onBehalf, context)?;
             let _5 = add(_4, U256::from(0x1u128), context)?;
             let _6 = read_from_storage_split_offset_uint128(_5, context)?;
             let expr_7 = checked_sub_uint128(_6, expr_6, context)?;
-            update_storage_value_offsett_uint128_to_t_uint128(_5, expr_7, context)?;
+            update_storage_value_offset_t_uint128_to_t_uint128(_5, expr_7, context)?;
             let expr_8 = fun__isHealthy(var_marketParams_1249_mpos, expr, var_onBehalf, context)?;
             let expr_1326_mpos = constant_INSUFFICIENT_COLLATERAL(context)?;
             require_helper_string(expr_8, expr_1326_mpos, context)?;

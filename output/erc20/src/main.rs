@@ -408,7 +408,7 @@ pub mod erc20 {
         Ok(())
     }
 
-    pub fn update_storage_value_offsett_string_to_string<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+    pub fn update_storage_value_offset_string_to_string<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
     where
         Context<CI>: ContractInteractions,
     {
@@ -420,8 +420,8 @@ pub mod erc20 {
     where
         Context<CI>: ContractInteractions,
     {
-        update_storage_value_offsett_string_to_string(U256::from(0x3u128), var_name_mpos, context)?;
-        update_storage_value_offsett_string_to_string(U256::from(0x4u128), var_symbol_mpos, context)?;
+        update_storage_value_offset_string_to_string(U256::from(0x3u128), var_name_mpos, context)?;
+        update_storage_value_offset_string_to_string(U256::from(0x4u128), var_symbol_mpos, context)?;
         Ok(())
     }
 
@@ -1033,7 +1033,7 @@ pub mod erc20 {
             Ok(converted)
         }
 
-        pub fn mapping_index_access_mapping_address_mapping_address_uint256_of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn mapping_index_access_mapping_address_mapping_address_uint256__of_address<CI>(slot: U256, key: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -1064,7 +1064,7 @@ pub mod erc20 {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offsett_uint256<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_uint256<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -1078,7 +1078,7 @@ pub mod erc20 {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_uint256(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_uint256(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -1098,7 +1098,7 @@ pub mod erc20 {
             let mut var = U256::ZERO;
             let zero_t_uint256 = zero_value_for_split_uint256(context)?;
             var = zero_t_uint256;
-            let _1 = mapping_index_access_mapping_address_mapping_address_uint256_of_address(U256::from(0x1u128), var_owner, context)?;
+            let _1 = mapping_index_access_mapping_address_mapping_address_uint256__of_address(U256::from(0x1u128), var_owner, context)?;
             let _2 = mapping_index_access_mapping_address_uint256_of_address(_1, var_spender, context)?;
             let _3 = read_from_storage_split_offset_uint256(_2, context)?;
             var = _3;
@@ -1158,7 +1158,7 @@ pub mod erc20 {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_uint256_to_uint256<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_uint256_to_uint256<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -1184,9 +1184,9 @@ pub mod erc20 {
                 let _2 = abi_encode_tuple_address(add(U256::from(0x0u128), U256::from(0x4u128), context)?, expr, context)?;
                 revert(U256::from(0x0u128), sub(_2, U256::from(0x0u128), context)?, context)?;
             }
-            let _3 = mapping_index_access_mapping_address_mapping_address_uint256_of_address(U256::from(0x1u128), var_owner, context)?;
+            let _3 = mapping_index_access_mapping_address_mapping_address_uint256__of_address(U256::from(0x1u128), var_owner, context)?;
             let _4 = mapping_index_access_mapping_address_uint256_of_address(_3, var_spender, context)?;
-            update_storage_value_offsett_uint256_to_uint256(_4, var_value, context)?;
+            update_storage_value_offset_uint256_to_uint256(_4, var_value, context)?;
             if var_emitEvent != U256::ZERO {
                 let _5 = convert_address_to_address(var_owner, context)?;
                 let _6 = convert_address_to_address(var_spender, context)?;
@@ -1450,7 +1450,7 @@ pub mod erc20 {
                 }
                 let expr_3 = wrapping_sub_uint256(_2, var_value, context)?;
                 let _4 = mapping_index_access_mapping_address_uint256_of_address(U256::from(0x0u128), var_from, context)?;
-                update_storage_value_offsett_uint256_to_uint256(_4, expr_3, context)?;
+                update_storage_value_offset_uint256_to_uint256(_4, expr_3, context)?;
             }
             let expr_5 = eq(cleanup_address(var_to, context)?, cleanup_address(expr, context)?, context)?;
             // switch
@@ -1459,7 +1459,7 @@ pub mod erc20 {
                 let _6 = mapping_index_access_mapping_address_uint256_of_address(U256::from(0x0u128), var_to, context)?;
                 let _7 = read_from_storage_split_offset_uint256(_6, context)?;
                 let expr_6 = wrapping_add_uint256(_7, var_value, context)?;
-                update_storage_value_offsett_uint256_to_uint256(_6, expr_6, context)?;
+                update_storage_value_offset_uint256_to_uint256(_6, expr_6, context)?;
             }
             let _9 = convert_address_to_address(var_from, context)?;
             let _10 = convert_address_to_address(var_to, context)?;

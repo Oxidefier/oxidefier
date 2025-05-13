@@ -637,7 +637,7 @@ pub mod exp_unit_test {
             Ok(data)
         }
 
-        pub fn array_dataslot_array_struct_Set_storage_dyn_ptr<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn array_dataslot_array_struct_Set_storage_dyn__ptr<CI>(ptr: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -676,7 +676,7 @@ pub mod exp_unit_test {
             Ok(length)
         }
 
-        pub fn array_length_array_struct_Set_storage_dyn_ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn array_length_array_struct_Set_storage_dyn__ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -695,17 +695,17 @@ pub mod exp_unit_test {
             Ok(())
         }
 
-        pub fn storage_array_index_access_struct_Set__dyn_ptr<CI>(array: U256, index: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
+        pub fn storage_array_index_access_struct_Set_storage_dyn__ptr<CI>(array: U256, index: U256, context: &mut Context<CI>) -> YulOutput<(U256, U256)>
         where
             Context<CI>: ContractInteractions,
         {
             let mut slot = U256::ZERO;
             let mut offset = U256::ZERO;
-            let arrayLength = array_length_array_struct_Set_storage_dyn_ptr(array, context)?;
+            let arrayLength = array_length_array_struct_Set_storage_dyn__ptr(array, context)?;
             if iszero(lt(index, arrayLength, context)?, context)? != U256::ZERO {
                 panic_error_0x32(context)?;
             }
-            let dataArea = array_dataslot_array_struct_Set_storage_dyn_ptr(array, context)?;
+            let dataArea = array_dataslot_array_struct_Set_storage_dyn__ptr(array, context)?;
             slot = add(dataArea, mul(index, U256::from(0x3u128), context)?, context)?;
             offset = U256::from(0x0u128);
             Ok((slot, offset))
@@ -751,7 +751,7 @@ pub mod exp_unit_test {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_userDefinedValueType_UD60x18_to_userDefinedValueType_UD60x18<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_userDefinedValueType_UD60x18_to_userDefinedValueType_UD60x18<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -765,11 +765,11 @@ pub mod exp_unit_test {
             Context<CI>: ContractInteractions,
         {
             let memberValue = read_from_memoryt_userDefinedValueType_UD60x18(add(value, U256::from(0x0u128), context)?, context)?;
-            update_storage_value_offsett_userDefinedValueType_UD60x18_to_userDefinedValueType_UD60x18(add(slot, U256::from(0x0u128), context)?, memberValue, context)?;
+            update_storage_value_offset_userDefinedValueType_UD60x18_to_userDefinedValueType_UD60x18(add(slot, U256::from(0x0u128), context)?, memberValue, context)?;
             let memberValue_1 = read_from_memoryt_userDefinedValueType_UD60x18(add(value, U256::from(0x20u128), context)?, context)?;
-            update_storage_value_offsett_userDefinedValueType_UD60x18_to_userDefinedValueType_UD60x18(add(slot, U256::from(0x1u128), context)?, memberValue_1, context)?;
+            update_storage_value_offset_userDefinedValueType_UD60x18_to_userDefinedValueType_UD60x18(add(slot, U256::from(0x1u128), context)?, memberValue_1, context)?;
             let memberValue_2 = read_from_memoryt_userDefinedValueType_UD60x18(add(value, U256::from(0x40u128), context)?, context)?;
-            update_storage_value_offsett_userDefinedValueType_UD60x18_to_userDefinedValueType_UD60x18(add(slot, U256::from(0x2u128), context)?, memberValue_2, context)?;
+            update_storage_value_offset_userDefinedValueType_UD60x18_to_userDefinedValueType_UD60x18(add(slot, U256::from(0x2u128), context)?, memberValue_2, context)?;
             Ok(())
         }
 
@@ -794,7 +794,7 @@ pub mod exp_unit_test {
             Ok(())
         }
 
-        pub fn array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr<CI>(array: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr<CI>(array: U256, value0: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -803,7 +803,7 @@ pub mod exp_unit_test {
                 panic_error_0x41(context)?;
             }
             sstore(array, add(oldLen, U256::from(0x1u128), context)?, context)?;
-            let (slot, offset) = storage_array_index_access_struct_Set__dyn_ptr(array, oldLen, context)?;
+            let (slot, offset) = storage_array_index_access_struct_Set_storage_dyn__ptr(array, oldLen, context)?;
             update_storage_value_struct_Set_to_struct_Set(slot, offset, value0, context)?;
             Ok(())
         }
@@ -2473,7 +2473,7 @@ pub mod exp_unit_test {
             Ok(())
         }
 
-        pub fn cleanup_storage_array_end_array_struct_Set__dyn<CI>(array: U256, len: U256, startIndex: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn cleanup_storage_array_end_array_struct_Set_storage_dyn<CI>(array: U256, len: U256, startIndex: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -2522,11 +2522,11 @@ pub mod exp_unit_test {
             }
             let oldLen = array_length_array_struct_Set_storage_dyn(array, context)?;
             sstore(array, newLen, context)?;
-            cleanup_storage_array_end_array_struct_Set__dyn(array, oldLen, newLen, context)?;
+            cleanup_storage_array_end_array_struct_Set_storage_dyn(array, oldLen, newLen, context)?;
             Ok(())
         }
 
-        pub fn clear_storage_array_array_struct_Set__dyn<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn clear_storage_array_array_struct_Set_storage_dyn<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -2810,16 +2810,7 @@ pub mod exp_unit_test {
             Ok(converted)
         }
 
-        pub fn convert_array_array_struct_Set_storage_dyn_storage_to_array_struct_Set__dyn_ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut converted = U256::ZERO;
-            converted = value;
-            Ok(converted)
-        }
-
-        pub fn extract_from_storage_value_offsett_userDefinedValueType_UD60x18<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_userDefinedValueType_UD60x18<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -2833,7 +2824,7 @@ pub mod exp_unit_test {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_userDefinedValueType_UD60x18(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_userDefinedValueType_UD60x18(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -2869,7 +2860,7 @@ pub mod exp_unit_test {
             Ok(converted)
         }
 
-        pub fn copy_array_from_storage_to_memory_array_struct_Set__dyn<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn copy_array_from_storage_to_memory_array_struct_Set_storage_dyn<CI>(slot: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -2896,12 +2887,21 @@ pub mod exp_unit_test {
             Ok(memPtr)
         }
 
-        pub fn convert_array_array_struct_Set_storage_dyn_to_array_struct_Set_dyn<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn convert_array_array_struct_Set_storage_dyn__to_array_struct_Set_dyn<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
             let mut converted = U256::ZERO;
-            converted = copy_array_from_storage_to_memory_array_struct_Set__dyn(value, context)?;
+            converted = copy_array_from_storage_to_memory_array_struct_Set_storage_dyn(value, context)?;
+            Ok(converted)
+        }
+
+        pub fn convert_array_array_struct_Set_storage_dyn_storage_to_array_struct_Set_storage_dyn__ptr<CI>(value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut converted = U256::ZERO;
+            converted = value;
             Ok(converted)
         }
 
@@ -4444,6 +4444,33 @@ pub mod exp_unit_test {
             Ok(converted)
         }
 
+        pub fn store_literal_in_memory_81376b9868b292a46a1c486d344e427a3088657fda629b5f4a647822d329cd6a<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("416c696365000000000000000000000000000000000000000000000000000000"), context)?;
+            Ok(())
+        }
+
+        pub fn copy_literal_to_memory_81376b9868b292a46a1c486d344e427a3088657fda629b5f4a647822d329cd6a<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut memPtr = U256::ZERO;
+            memPtr = allocate_memory_array_string(U256::from(0x5u128), context)?;
+            store_literal_in_memory_81376b9868b292a46a1c486d344e427a3088657fda629b5f4a647822d329cd6a(add(memPtr, U256::from(0x20u128), context)?, context)?;
+            Ok(memPtr)
+        }
+
+        pub fn convert_stringliteral_8137_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
+        where
+            Context<CI>: ContractInteractions,
+        {
+            let mut converted = U256::ZERO;
+            converted = copy_literal_to_memory_81376b9868b292a46a1c486d344e427a3088657fda629b5f4a647822d329cd6a(context)?;
+            Ok(converted)
+        }
+
         pub fn convert_stringliteral_8f44_to_bytes32<CI>(context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
@@ -4477,33 +4504,6 @@ pub mod exp_unit_test {
         {
             let mut converted = U256::ZERO;
             converted = copy_literal_to_memory_c4d84668fea1f48030e1c93f55c218803f2ec8eefbd44fdb844b99c496a7cc0e(context)?;
-            Ok(converted)
-        }
-
-        pub fn store_literal_in_memory_81376b9868b292a46a1c486d344e427a3088657fda629b5f4a647822d329cd6a<CI>(memPtr: U256, context: &mut Context<CI>) -> YulOutput<()>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            mstore(add(memPtr, U256::from(0x0u128), context)?, from_hex("416c696365000000000000000000000000000000000000000000000000000000"), context)?;
-            Ok(())
-        }
-
-        pub fn copy_literal_to_memory_81376b9868b292a46a1c486d344e427a3088657fda629b5f4a647822d329cd6a<CI>(context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut memPtr = U256::ZERO;
-            memPtr = allocate_memory_array_string(U256::from(0x5u128), context)?;
-            store_literal_in_memory_81376b9868b292a46a1c486d344e427a3088657fda629b5f4a647822d329cd6a(add(memPtr, U256::from(0x20u128), context)?, context)?;
-            Ok(memPtr)
-        }
-
-        pub fn convert_stringliteral_to_string<CI>(context: &mut Context<CI>) -> YulOutput<U256>
-        where
-            Context<CI>: ContractInteractions,
-        {
-            let mut converted = U256::ZERO;
-            converted = copy_literal_to_memory_81376b9868b292a46a1c486d344e427a3088657fda629b5f4a647822d329cd6a(context)?;
             Ok(converted)
         }
 
@@ -4547,7 +4547,7 @@ pub mod exp_unit_test {
             Ok(result)
         }
 
-        pub fn update_storage_value_offsett_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_address_to_address<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4561,11 +4561,11 @@ pub mod exp_unit_test {
             Context<CI>: ContractInteractions,
         {
             let memberValue = read_from_memoryt_address(add(value, U256::from(0x0u128), context)?, context)?;
-            update_storage_value_offsett_address_to_address(add(slot, U256::from(0x0u128), context)?, memberValue, context)?;
+            update_storage_value_offset_address_to_address(add(slot, U256::from(0x0u128), context)?, memberValue, context)?;
             let memberValue_1 = read_from_memoryt_address(add(value, U256::from(0x20u128), context)?, context)?;
-            update_storage_value_offsett_address_to_address(add(slot, U256::from(0x1u128), context)?, memberValue_1, context)?;
+            update_storage_value_offset_address_to_address(add(slot, U256::from(0x1u128), context)?, memberValue_1, context)?;
             let memberValue_2 = read_from_memoryt_address(add(value, U256::from(0x40u128), context)?, context)?;
-            update_storage_value_offsett_address_to_address(add(slot, U256::from(0x2u128), context)?, memberValue_2, context)?;
+            update_storage_value_offset_address_to_address(add(slot, U256::from(0x2u128), context)?, memberValue_2, context)?;
             Ok(())
         }
 
@@ -4578,7 +4578,7 @@ pub mod exp_unit_test {
             Ok(newValue)
         }
 
-        pub fn extract_from_storage_value_offsett_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_bool<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4592,7 +4592,7 @@ pub mod exp_unit_test {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_bool(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_bool(sload(slot, context)?, context)?;
             Ok(value)
         }
 
@@ -4781,7 +4781,7 @@ pub mod exp_unit_test {
             Ok(var_addr)
         }
 
-        pub fn extract_from_storage_value_offsett_address<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
+        pub fn extract_from_storage_value_offset_address<CI>(slot_value: U256, context: &mut Context<CI>) -> YulOutput<U256>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4795,11 +4795,11 @@ pub mod exp_unit_test {
             Context<CI>: ContractInteractions,
         {
             let mut value = U256::ZERO;
-            value = extract_from_storage_value_offsett_address(sload(slot, context)?, context)?;
+            value = extract_from_storage_value_offset_address(sload(slot, context)?, context)?;
             Ok(value)
         }
 
-        pub fn update_storage_value_offsett_struct_Users_to_struct_Users<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_struct_Users_to_struct_Users<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -4819,7 +4819,7 @@ pub mod exp_unit_test {
         where
             Context<CI>: ContractInteractions,
         {
-            let _mpos = convert_stringliteral_to_string(context)?;
+            let _mpos = convert_stringliteral_8137_to_string(context)?;
             let expr = fun_makeAddr(_mpos, context)?;
             let _2_mpos = convert_stringliteral_28ca_to_string(context)?;
             let expr_1 = fun_makeAddr(_2_mpos, context)?;
@@ -4829,7 +4829,7 @@ pub mod exp_unit_test {
             write_to_memory_address(add(expr_13079_mpos, U256::from(0x0u128), context)?, expr, context)?;
             write_to_memory_address(add(expr_13079_mpos, U256::from(0x20u128), context)?, expr_1, context)?;
             write_to_memory_address(add(expr_13079_mpos, U256::from(0x40u128), context)?, expr_2, context)?;
-            update_storage_value_offsett_struct_Users_to_struct_Users(U256::from(0x9u128), expr_13079_mpos, context)?;
+            update_storage_value_offset_struct_Users_to_struct_Users(U256::from(0x9u128), expr_13079_mpos, context)?;
             let _4_slot = U256::from(0x9u128);
             let expr_address = constant_vm_13027(context)?;
             let expr_13084_address = convert_contract_Vm_to_address(expr_address, context)?;
@@ -4928,14 +4928,14 @@ pub mod exp_unit_test {
             Ok(var_mpos)
         }
 
-        pub fn storage_set_to_zero_array_struct_Set__dyn<CI>(slot: U256, offset: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn storage_set_to_zero_array_struct_Set_storage_dyn<CI>(slot: U256, offset: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
             if iszero(eq(offset, U256::from(0x0u128), context)?, context)? != U256::ZERO {
                 panic_error_0x00(context)?;
             }
-            clear_storage_array_array_struct_Set__dyn(slot, context)?;
+            clear_storage_array_array_struct_Set_storage_dyn(slot, context)?;
             Ok(())
         }
 
@@ -4955,74 +4955,74 @@ pub mod exp_unit_test {
             let mut var__mpos = U256::ZERO;
             let zero_array_struct_Set_dyn_mpos = zero_value_for_split_array_struct_Set_dyn(context)?;
             var__mpos = zero_array_struct_Set_dyn_mpos;
-            storage_set_to_zero_array_struct_Set__dyn(U256::from(0xfu128), U256::from(0x0u128), context)?;
+            storage_set_to_zero_array_struct_Set_storage_dyn(U256::from(0xfu128), U256::from(0x0u128), context)?;
             let _slot = U256::from(0xfu128);
-            let expr_self_slot = convert_array_array_struct_Set_storage_dyn_storage_to_array_struct_Set__dyn_ptr(_slot, context)?;
+            let expr_self_slot = convert_array_array_struct_Set_storage_dyn_storage_to_array_struct_Set_storage_dyn__ptr(_slot, context)?;
             let expr = U256::from(0xde0b6b3a7640000u128);
             let _1 = convert_rational_1_by_1_to_uint256(U256::from(0x1u128), context)?;
             let _2 = convert_rational_1000000000000000000_by_1_to_uint256(expr, context)?;
             let expr_100_mpos = fun_set_1889(_1, _2, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_100_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_100_mpos, context)?;
             let _3 = convert_rational_1000_by_1_to_uint256(U256::from(0x3e8u128), context)?;
             let _4 = convert_rational_1000000000000000999_by_1_to_uint256(U256::from(0xde0b6b3a76403e7u128), context)?;
             let expr_109_mpos = fun_set_1889(_3, _4, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_109_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_109_mpos, context)?;
             let _5 = convert_rational_2718281828459045234_by_1_to_uint256(U256::from(0x25b946ebc0b36172u128), context)?;
             let expr_118_mpos = fun_set_1889(_2, _5, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_118_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_118_mpos, context)?;
             let _6 = convert_rational_2000000000000000000_by_1_to_uint256(U256::from(0x1bc16d674ec80000u128), context)?;
             let _7 = convert_rational_7389056098930650223_by_1_to_uint256(U256::from(0x668b335f8231ec6fu128), context)?;
             let expr_127_mpos = fun_set_1889(_6, _7, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_127_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_127_mpos, context)?;
             let expr_1 = constant_E(context)?;
             let _8 = convert_rational_15154262241479264171_by_1_to_uint256(U256::from(0xd24ec137c87c87abu128), context)?;
             let expr_136_mpos = fun_set(expr_1, _8, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_136_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_136_mpos, context)?;
             let _9 = convert_rational_3000000000000000000_by_1_to_uint256(U256::from(0x29a2241af62c0000u128), context)?;
             let _10 = convert_rational_20085536923187667724_by_1_to_uint256(U256::from(0x116be2969f597e30cu128), context)?;
             let expr_145_mpos = fun_set_1889(_9, _10, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_145_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_145_mpos, context)?;
             let expr_2 = constant_PI(context)?;
             let _11 = convert_rational_23140692632779268962_by_1_to_uint256(U256::from(0x141244158494ea362u128), context)?;
             let expr_154_mpos = fun_set(expr_2, _11, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_154_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_154_mpos, context)?;
             let _12 = convert_rational_4000000000000000000_by_1_to_uint256(U256::from(0x3782dace9d900000u128), context)?;
             let _13 = convert_rational_54598150033144239019_by_1_to_uint256(U256::from(0x2f5b3982e870b53abu128), context)?;
             let expr_163_mpos = fun_set_1889(_12, _13, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_163_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_163_mpos, context)?;
             let _14 = convert_rational_11892150000000000000_by_1_to_uint256(U256::from(0xa509676aeda96000u128), context)?;
             let _15 = convert_t_rational_by_to_t_uint256(U256::from(0x1ef0ea7657ddddc32e4eu128), context)?;
             let expr_172_mpos = fun_set_1889(_14, _15, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_172_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_172_mpos, context)?;
             let _16 = convert_rational_16000000000000000000_by_1_to_uint256(U256::from(0xde0b6b3a76400000u128), context)?;
             let _17 = convert_rational_8886110520507872601090007_by_1_to_uint256(U256::from(0x759b5043d8a9673e6a7d7u128), context)?;
             let expr_181_mpos = fun_set_1889(_16, _17, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_181_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_181_mpos, context)?;
             let _18 = convert_rational_20820000000000000000_by_1_to_uint256(U256::from(0x120ef7fb0dfa20000u128), context)?;
             let _19 = convert_rational_1101567497354306722521735975_by_1_to_uint256(U256::from(0x38f31fdb044ae1bbbf4e327u128), context)?;
             let expr_190_mpos = fun_set_1889(_18, _19, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_190_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_190_mpos, context)?;
             let _20 = convert_rational_33333333000000000000_by_1_to_uint256(U256::from(0x1ce97c9c184ce5000u128), context)?;
             let _21 = convert_rational_299559147061116199277615819889397_by_1_to_uint256(U256::from(0xec4f7cec30a583ebd883f119af5u128), context)?;
             let expr_199_mpos = fun_set_1889(_20, _21, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_199_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_199_mpos, context)?;
             let _22 = convert_rational_64000000000000000000_by_1_to_uint256(U256::from(0x3782dace9d9000000u128), context)?;
             let _23 = convert_rational_6235149080811616783682415370612321304359995711_by_1_to_uint256(U256::from_be_slice(&[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x01, 0x17, 0x98, 0x00, 0x4d, 0x75, 0x5d, 0x3b, 0x4b, 0x29, 0xbd, 0xd4, 0xbc, 0x37, 0x53, 0x97, 0xc0, 0xb0, 0x09, 0x3f]), context)?;
             let expr_208_mpos = fun_set_1889(_22, _23, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_208_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_208_mpos, context)?;
             let _24 = convert_rational_71002000000000000000_by_1_to_uint256(U256::from(0x3d959c6d0b6490000u128), context)?;
             let _25 = convert_rational_6851360256686183998595702657852843771046889809565_by_1_to_uint256(U256::from_be_slice(&[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x04, 0xb0, 0x19, 0x9e, 0x90, 0xf5, 0x16, 0x07, 0xdf, 0xc2, 0xfa, 0xa1, 0x44, 0x7a, 0xef, 0x85, 0x6f, 0x99, 0x10, 0x66, 0x9d]), context)?;
             let expr_217_mpos = fun_set_1889(_24, _25, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_217_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_217_mpos, context)?;
             let _26 = convert_rational_88722839111672999627_by_1_to_uint256(U256::from(0x4cf46d8192b672ecbu128), context)?;
             let _27 = convert_rational_340282366920938463222979506443879150094819893272894857679_by_1_to_uint256(U256::from_be_slice(&[0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x0d, 0xe0, 0xb6, 0xb3, 0xa7, 0x63, 0xff, 0xff, 0x4b, 0x25, 0x96, 0x70, 0x62, 0x4a, 0xfa, 0x56, 0xb1, 0xa2, 0x7f, 0x70, 0x24, 0x19, 0x61, 0xcf]), context)?;
             let expr_226_mpos = fun_set_1889(_26, _27, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_226_mpos, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_226_mpos, context)?;
             let expr_3 = constant_EXP_MAX_INPUT(context)?;
             let _28 = convert_rational_6277101735386680754977611748738314679353920434623901771623000000000000000000_by_1_to_uint256(U256::from_be_slice(&[0x0d, 0xe0, 0xb6, 0xb3, 0xa7, 0x63, 0xff, 0xfe, 0x96, 0xbc, 0x4f, 0x50, 0xe2, 0x36, 0xfa, 0x6e, 0x83, 0xba, 0x8d, 0x35, 0xb1, 0xc2, 0xa9, 0x6a, 0x01, 0xa2, 0x7c, 0x52, 0x95, 0x3c, 0x00, 0x00]), context)?;
             let expr_235_mpos = fun_set(expr_3, _28, context)?;
-            array_push_from_struct_Set_to_array_struct_Set_storage_dyn_ptr(expr_self_slot, expr_235_mpos, context)?;
-            var__mpos = convert_array_array_struct_Set_storage_dyn_to_array_struct_Set_dyn(_slot, context)?;
+            array_push_from_struct_Set_to_array_struct_Set_storage_dyn__ptr(expr_self_slot, expr_235_mpos, context)?;
+            var__mpos = convert_array_array_struct_Set_storage_dyn__to_array_struct_Set_dyn(_slot, context)?;
             Ok(var__mpos)
         }
 
@@ -5815,7 +5815,7 @@ pub mod exp_unit_test {
             Ok(())
         }
 
-        pub fn update_storage_value_offsett_struct_Set_to_struct_Set<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
+        pub fn update_storage_value_offset_struct_Set_to_struct_Set<CI>(slot: U256, value: U256, context: &mut Context<CI>) -> YulOutput<()>
         where
             Context<CI>: ContractInteractions,
         {
@@ -5848,7 +5848,7 @@ pub mod exp_unit_test {
                         break;
                     }
                     let _29_mpos = mload(memory_array_index_access_struct_Set_dyn(expr_245_mpos, var_i, context)?, context)?;
-                    update_storage_value_offsett_struct_Set_to_struct_Set(U256::from(0xcu128), _29_mpos, context)?;
+                    update_storage_value_offset_struct_Set_to_struct_Set(U256::from(0xcu128), _29_mpos, context)?;
                     modifier_whenNotZero(context)?;
                     let _1 = convert_rational_1_by_1_to_uint256(U256::from(0x1u128), context)?;
                     let expr_2 = wrapping_add_uint256(var_i, _1, context)?;
