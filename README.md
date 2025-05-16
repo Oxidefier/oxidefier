@@ -1,5 +1,7 @@
 # Oxidefier
 
+> From Solidity to Rust! 🦀 🟣
+
 ## Usage
 
 We translate the JSON corresponding to the Yul of a Solidity smart contract to a Rust file. This Yul might or might not be optimized. We recommend to use the unoptimized Yul to have a more predictable translation in Rust, and let the Rust compiler optimize the output.
