@@ -1,0 +1,8 @@
+[package]
+name = "erc20_single_file"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+alloy-primitives.workspace = true
+evm_opcodes.workspace = true

@@ -40,6 +40,14 @@ jobs:
         cp yul-json/ERC20_opt_yul_ast.json ../../../contracts/erc20/contract.json
         cd ../../..
 
+        # erc20_single_file
+        solc --ir-optimized --optimize --yul-optimizations hg contracts/erc20_single_file/contract.sol \
+          | tail -1 \
+          > contracts/erc20_single_file/contract.yul
+        solc --ir-optimized-ast-json --optimize --yul-optimizations hg contracts/erc20_single_file/contract.sol \
+          | tail -1 \
+          > contracts/erc20_single_file/contract.json
+
         # exp_test
         cd third-parties/prb-math
         npm install
